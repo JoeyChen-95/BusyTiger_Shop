@@ -9,4 +9,5 @@ import java.util.List;
 public interface BookMapper {
     List<Book> selectAllBooks();
     Book selectBookById(Integer id);
+
 }

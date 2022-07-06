@@ -5,10 +5,7 @@ import com.example.server.service.BookService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,6 +25,11 @@ public class BookController {
     @GetMapping(value = "/selectBookById")
     public Book selectBookById(@RequestParam("bookId") Integer bookId){
         return bookService.selectBookById(bookId);
+    }
+
+    @PostMapping(value = "/redisAddBook")
+    public void redisAddBook(@RequestParam("bookId") Integer bookId,@RequestParam("bookName") String bookName,@RequestParam("bookDesc") String bookDesc){
+        bookService.redisAddBook(bookId,bookName,bookDesc);
     }
 
 
