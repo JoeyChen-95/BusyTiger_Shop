@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    username: root        #????????
+    password: admin123        #???????
+    url: jdbc:mysql://127.0.0.1:3306/temp_db?useSSL=false       #???url
+    driver-class-name: com.mysql.cj.jdbc.Driver                  #?????
+  rabbitmq:
+    username: guest
+    password: guest
+    host: 127.0.0.1
+    publisher-returns: true
+  redis:
+    host: 127.0.0.1
+    database: 0
+    port: 6379
+    password: admin123
+mybatis:
+  mapper-locations: classpath:com/example/server/mapper/*.xml
+  type-aliases-package: com.example.server.model
+
+
+
