@@ -1,7 +1,9 @@
 package com.example.server.model;
-import com.example.server.model.UserEnum.ShippingManagement;
+import com.example.server.model.UserEnum.Shipping;
 import com.example.server.model.UserEnum.UserMemberShip;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class User {
@@ -10,6 +12,6 @@ public class User {
     String password;
     String email;
     String primaryPhone;
-    ShippingManagement shippingManagement;
+    List<Shipping> shippingList;
     UserMemberShip memberShip;
 }

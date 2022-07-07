@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service("bookService")
+@Service("itemService")
 public class ItemService {
     @Autowired
     private ItemMapper itemMapper;

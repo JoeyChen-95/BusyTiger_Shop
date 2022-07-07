@@ -29,7 +29,7 @@ public class ItemController {
     }
 
     @PostMapping(value = "/insertItem")
-    public Item createItem(@RequestParam("itemId") Integer itemId,
+    public Item insertItem(@RequestParam("itemId") Integer itemId,
                            @RequestParam("itemName") String itemName,
                            @RequestParam("itemPrice") Integer itemPrice,
                            @RequestParam("itemTag") Tag itemTag,
