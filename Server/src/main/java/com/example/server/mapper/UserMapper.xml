@@ -18,6 +18,12 @@
         from user
         where id = #{id}
     </select>
+    <select id="selectUserByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where username = #{username}
+    </select>
     <select id="selectAllUsers" resultMap="BaseResultMap">
         select * from user
     </select>

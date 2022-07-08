@@ -10,5 +10,7 @@ import java.util.List;
 public interface UserMapper {
     List<User> selectAllUsers();
     User selectUserById(Integer id);
+
+    User selectUserByUsername(String username);
     void insertUser(Integer id, String username, String password, String email,String primaryPhone,String memberShip);
 }
