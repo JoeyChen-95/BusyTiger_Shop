@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class Item {
     Integer id;
+    Integer sellerId;
     String name;
     Integer price;
     Tag tag;

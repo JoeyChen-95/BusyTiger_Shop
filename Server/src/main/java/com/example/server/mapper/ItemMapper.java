@@ -9,6 +9,9 @@ import java.util.List;
 public interface ItemMapper {
     List<Item> selectAllItems();
     Item selectItemById(Integer id);
-    void insertItem(Integer id, String name, Integer price, String tag, String status, String description);
+    void insertItem(Integer id, Integer sellerId, String name, Integer price, String tag, String status, String description);
 
+    void updateItemStatus(Integer id, String status);
+
+    void deleteItemById(Integer id);
 }

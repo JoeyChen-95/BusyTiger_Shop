@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.server.mapper.OrderMapper">
+    <resultMap id="BaseResultMap" type="com.example.server.model.Order">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="buyerId" jdbcType="INTEGER" property="buyerId"/>
+        <result column="itemId" jdbcType="INTEGER" property="itemId"/>
+        <result column="status" typeHandler="org.apache.ibatis.type.EnumTypeHandler" property="status"/>
+        <result column="courier" typeHandler="org.apache.ibatis.type.EnumTypeHandler" property="courier"/>
+        <result column="courierFee" jdbcType="VARCHAR" property="courierFee"/>
+        <result column="createTime" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="completeTime" jdbcType="TIMESTAMP" property="completeTime"/>
+        <result column="comment" jdbcType="VARCHAR" property="comment"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, buyerId, itemId, status, courier, courierFee, createTime, completeTime, comment
+    </sql>
+    <select id="selectOrderById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from orderTable
+        where id = #{id}
+    </select>
+
+    <select id="selectAllOrders" resultMap="BaseResultMap">
+        select * from orderTable
+    </select>
+
+    <insert id="buy">
+        insert into orderTable (id,buyerId,itemId,comment) values (#{id},#{buyerId},#{itemId},#{comment});
+    </insert>
+
+</mapper>
