@@ -10,8 +10,12 @@ import java.util.List;
 @Mapper
 public interface OrderMapper {
     List<Order> selectAllOrders();
-    Order selectOrderById(Integer id);
-    void buy(String id,Integer buyerId, Integer itemId, String comment);
 
-    void shipOrder();
+    Order selectOrderById(String id);
+
+    void buy(String id, Integer buyerId, Integer itemId, String comment);
+
+    void updateShippingInfo(String id, String courier, String trackingNo, Integer courierFee);
+
+    void updateOrderStatus(String id, String status);
 }

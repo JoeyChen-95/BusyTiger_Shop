@@ -16,7 +16,7 @@
     <sql id="Base_Column_List">
         id, buyerId, itemId, status, courier, trackingNo, courierFee, createTime, completeTime, comment
     </sql>
-    <select id="selectOrderById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="selectOrderById" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from orderTable
@@ -31,8 +31,13 @@
         insert into orderTable (id,buyerId,itemId,comment) values (#{id},#{buyerId},#{itemId},#{comment});
     </insert>
 
-    <update id="shipOrder">
-        update orderTable set
+    <update id="updateShippingInfo">
+        update orderTable set courier=#{courier}, trackingNo=#{trackingNo}, courierFee=#{courierFee} where id=#{id}
     </update>
+
+    <update id="updateOrderStatus">
+        update orderTable set status=#{status} where id=#{id}
+    </update>
+
 
 </mapper>

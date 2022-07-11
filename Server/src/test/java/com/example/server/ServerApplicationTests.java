@@ -2,6 +2,7 @@ package com.example.server;
 
 import com.example.server.mapper.OrderMapper;
 import com.example.server.model.ItemEnum.ItemStatus;
+import com.example.server.model.OrderEnum.Courier;
 import com.example.server.service.ItemService;
 import com.example.server.service.OrderService;
 import com.example.server.service.UserService;
@@ -35,13 +36,19 @@ class ServerApplicationTests {
 
     @Test
     void updateItemStatusTest(){
-        System.out.println(itemService.updateItemStatus(1, ItemStatus.SOLD));
-        System.out.println(itemService.updateItemStatus(2, ItemStatus.PRIVATE));
+        itemService.updateItemStatus(1, ItemStatus.SOLD);
+        itemService.updateItemStatus(2, ItemStatus.PRIVATE);
     }
 
     @Test
     void deleteItemTest(){
         itemService.deleteItemById(2);
+    }
+
+    @Test
+    void shipOrderTest(){
+        orderService.shipOrder("985a3bf1281d4ca8b3c634bd2cd1286b", Courier.Canada_Post,"CA1231231555",20);
+
     }
 
 

@@ -1,5 +1,6 @@
 package com.example.server.controller;
 
+import com.example.server.exception.ItemException.ItemException;
 import com.example.server.model.Item;
 import com.example.server.model.ItemEnum.ItemStatus;
 import com.example.server.model.ItemEnum.Tag;
@@ -24,29 +25,39 @@ public class ItemController {
     }
 
     @GetMapping(value = "/selectItemById")
-    public Item selectBookById(@RequestParam("itemId") Integer itemId) {
+    public Item selectItemById(@RequestParam("itemId") Integer itemId) {
         return itemService.selectItemById(itemId);
     }
 
     @DeleteMapping(value = "/deleteItemById")
-    public Item deleteItemById(@RequestParam("deleteItemById") Integer id) {
-        return itemService.deleteItemById(id);
+    public ResponseBody deleteItemById(@RequestParam("deleteItemById") Integer id) {
+        try {
+            itemService.deleteItemById(id);
+        } catch (ItemException e) {
+            return new ResponseBody(500, e.getMessage());
+        }
+        return new ResponseBody(200, "Delete item successfully");
     }
 
     @PutMapping(value = "updateItemStatus")
-    public Item updateItemStatus(@RequestParam("itemId") Integer itemId,
-                                 @RequestParam("newStatus") ItemStatus status) {
-        return itemService.updateItemStatus(itemId, status);
+    public ResponseBody updateItemStatus(@RequestParam("itemId") Integer itemId,
+                                         @RequestParam("newStatus") ItemStatus status) {
+        try {
+            itemService.updateItemStatus(itemId, status);
+        } catch (ItemException e) {
+            return new ResponseBody(500, e.getMessage());
+        }
+        return new ResponseBody(200, "Update item's status successfully");
     }
 
     @PostMapping(value = "/insertItem")
-    public Item insertItem(@RequestParam("itemId") Integer itemId,
-                           @RequestParam("sellerId") Integer sellerId,
-                           @RequestParam("itemName") String itemName,
-                           @RequestParam("itemPrice") Integer itemPrice,
-                           @RequestParam("itemTag") Tag itemTag,
-                           @RequestParam("itemStatus") ItemStatus itemStatus,
-                           @RequestParam("itemDesc") String itemDesc) {
+    public ResponseBody insertItem(@RequestParam("itemId") Integer itemId,
+                                   @RequestParam("sellerId") Integer sellerId,
+                                   @RequestParam("itemName") String itemName,
+                                   @RequestParam("itemPrice") Integer itemPrice,
+                                   @RequestParam("itemTag") Tag itemTag,
+                                   @RequestParam("itemStatus") ItemStatus itemStatus,
+                                   @RequestParam("itemDesc") String itemDesc) {
         Item item = new Item();
         item.setId(itemId);
         item.setSellerId(sellerId);
@@ -55,6 +66,11 @@ public class ItemController {
         item.setTag(itemTag);
         item.setStatus(itemStatus);
         item.setDescription(itemDesc);
-        return itemService.insertItem(item);
+        try {
+            itemService.insertItem(item);
+        } catch (ItemException e) {
+            return new ResponseBody(500, e.getMessage());
+        }
+        return new ResponseBody(200, "Add item successfully");
     }
 }

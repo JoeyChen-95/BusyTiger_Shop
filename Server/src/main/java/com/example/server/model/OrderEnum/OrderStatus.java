@@ -1,5 +1,5 @@
 package com.example.server.model.OrderEnum;
 
 public enum OrderStatus {
-    PROCESSING,SHIPPED,COMPLETED,RETURNING,CANCELED,EXCEPTION
+    PROCESSING, SHIPPED, COMPLETED, RETURNING, CANCELED, EXCEPTION
 }

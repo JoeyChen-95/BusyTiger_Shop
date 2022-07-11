@@ -5,6 +5,7 @@ CREATE TABLE `orderTable` (
                                    `itemId` int NOT NULL,
                                    `status` VARCHAR(30) DEFAULT 'PROCESSING',
                                    `courier` VARCHAR(30) DEFAULT NULL,
+                                   `trackingNo` VARCHAR(30) DEFAULT NULL,
                                    `courierFee` int DEFAULT 0,
                                    `createTime` datetime DEFAULT now(),
                                    `completeTime` datetime DEFAULT NULL,

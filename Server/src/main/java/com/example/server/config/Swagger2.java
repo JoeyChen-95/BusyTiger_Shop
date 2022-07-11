@@ -29,8 +29,9 @@ public class Swagger2 {
     //是否开启swagger，正式环境一般是需要关闭的，可根据springboot的多环境配置进行设置
     @Value(value = "${swagger.enabled}")
     Boolean swaggerEnabled;
+
     @Bean
-    public Docket createRestApi(){
+    public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
@@ -39,7 +40,7 @@ public class Swagger2 {
                 .build().directModelSubstitute(Timestamp.class, Date.class);
     }
 
-    private ApiInfo apiInfo(){
+    private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Store Service")
                 .description("Api doc")

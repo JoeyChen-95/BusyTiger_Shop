@@ -1,4 +1,5 @@
 package com.example.server.model;
+
 import com.example.server.model.UserEnum.Shipping;
 import com.example.server.model.UserEnum.UserMemberShip;
 import lombok.Data;
