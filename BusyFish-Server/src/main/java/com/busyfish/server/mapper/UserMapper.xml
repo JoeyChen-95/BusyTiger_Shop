@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.busyfish.server.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.busyfish.server.model.User">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="primaryPhone" jdbcType="VARCHAR" property="primaryPhone"/>
+        <result column="memberShip" typeHandler="org.apache.ibatis.type.EnumTypeHandler" property="memberShip"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, username, password, email, primaryPhone, memberShip
+    </sql>
+    <select id="selectUserById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where id = #{id}
+    </select>
+    <select id="selectUserByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where username = #{username}
+    </select>
+    <select id="selectAllUsers" resultMap="BaseResultMap">
+        select * from user
+    </select>
+
+    <insert id="insertUser" >
+        insert into user (id,username,password,email,primaryPhone,memberShip) values (#{id},#{username},#{password},#{email},#{primaryPhone},#{memberShip});
+    </insert>
+
+</mapper>

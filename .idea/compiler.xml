@@ -6,15 +6,15 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Server" />
-        <module name="Test" />
+        <module name="BusyFish-Server" />
+        <module name="BusyFish" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Server" options="-parameters" />
-      <module name="Test" options="-parameters" />
+      <module name="BusyFish" options="-parameters" />
+      <module name="BusyFish-Server" options="-parameters" />
     </option>
   </component>
 </project>
