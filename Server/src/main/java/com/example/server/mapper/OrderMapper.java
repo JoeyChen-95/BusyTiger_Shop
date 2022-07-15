@@ -18,4 +18,6 @@ public interface OrderMapper {
     void updateShippingInfo(String id, String courier, String trackingNo, Integer courierFee);
 
     void updateOrderStatus(String id, String status);
+
+    void deleteOrderById(String id);
 }

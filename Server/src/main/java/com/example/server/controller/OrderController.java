@@ -5,8 +5,10 @@ import com.example.server.model.Order;
 import com.example.server.model.OrderEnum.Courier;
 import com.example.server.model.OrderEnum.OrderStatus;
 import com.example.server.service.OrderService;
+import com.sun.org.apache.regexp.internal.RE;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -85,5 +87,15 @@ public class OrderController {
             return new ResponseBody(500, e.getMessage());
         }
         return new ResponseBody(200, "Order status is updated successfully!");
+    }
+
+    @DeleteMapping(value = "/deleteOrderById")
+    public ResponseBody deleteOrderById(@RequestParam("orderId") String orderId){
+        try{
+            orderService.deleteOrderById(orderId);
+        }catch (OrderException e){
+            return new ResponseBody(500,e.getMessage());
+        }
+        return new ResponseBody(200,"Order is deleted successfully!");
     }
 }

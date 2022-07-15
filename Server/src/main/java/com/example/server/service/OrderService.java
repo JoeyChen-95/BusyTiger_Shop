@@ -13,6 +13,7 @@ import com.example.server.model.UserEnum.UserMemberShip;
 import com.example.server.util.ShippingCodeUtils;
 import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.OrderUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -132,6 +133,17 @@ public class OrderService {
         }
         orderMapper.updateOrderStatus(id, status.name());
         return selectOrderById(id);
+    }
+
+    @Transactional
+    public Order deleteOrderById(String id){
+        Order order=selectOrderById(id);
+        if(order == null){
+            throw new OrderException(ErrorCode.NO_EXISTING_ORDER, "Fail to delete: the order does not exist!");
+        }
+        redisTemplate.delete(ShippingCodeUtils.generateOrderShippingKey(id));
+        orderMapper.deleteOrderById(id);
+        return order;
     }
 
 
