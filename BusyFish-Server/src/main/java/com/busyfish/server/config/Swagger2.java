@@ -35,7 +35,7 @@ public class Swagger2 {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.example.server")) //你的项目基础包名
+                .apis(RequestHandlerSelectors.basePackage("com.busyfish.server")) //你的项目基础包名
                 .paths(PathSelectors.any())
                 .build().directModelSubstitute(Timestamp.class, Date.class);
     }

@@ -15,8 +15,8 @@ spring:
     port: 6379
     password: admin123
 mybatis:
-  mapper-locations: classpath:com/example/server/mapper/*.xml
-  type-aliases-package: com.example.server.model
+  mapper-locations: classpath:com/busyfish/server/mapper/*.xml
+  type-aliases-package: com.busyfish.server.model
 swagger:
   enabled: true
 
