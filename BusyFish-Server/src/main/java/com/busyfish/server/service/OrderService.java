@@ -15,10 +15,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service("orderService")
 public class OrderService {
@@ -36,6 +33,16 @@ public class OrderService {
 
 
     public List<Order> selectAllOrders() {
+        List<Order> orderList=orderMapper.selectAllOrders();
+        for(Order o:orderList){
+            Map orderMap = redisTemplate.boundHashOps(ShippingCodeUtils.generateOrderShippingKey(o.getId())).entries();
+            Shipping shipping=new Shipping();
+            shipping.setAddress( orderMap.get("address").toString());
+            shipping.setName( orderMap.get("name").toString());
+            shipping.setPhone( orderMap.get("phone").toString());
+            o.setShippingAddress(shipping);
+        }
+        System.out.println(orderList);
         return orderMapper.selectAllOrders();
     }
 
@@ -142,6 +149,17 @@ public class OrderService {
         orderMapper.deleteOrderById(id);
         return order;
     }
+
+    @Transactional
+    public Shipping selectShippingAddressByOrderId(String orderId){
+        Map orderMap = redisTemplate.boundHashOps(ShippingCodeUtils.generateOrderShippingKey(orderId)).entries();
+        Shipping shipping=new Shipping();
+        shipping.setAddress( orderMap.get("address").toString());
+        shipping.setName( orderMap.get("name").toString());
+        shipping.setPhone( orderMap.get("phone").toString());
+        return shipping;
+    }
+
 
 
 }

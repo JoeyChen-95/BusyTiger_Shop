@@ -4,6 +4,7 @@ import com.busyfish.server.exception.OrderException.OrderException;
 import com.busyfish.server.model.Order;
 import com.busyfish.server.model.OrderEnum.Courier;
 import com.busyfish.server.model.OrderEnum.OrderStatus;
+import com.busyfish.server.model.UserEnum.Shipping;
 import com.busyfish.server.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,11 @@ public class OrderController {
     @GetMapping(value = "/selectAllOrders")
     public List<Order> selectAllOrders() {
         return orderService.selectAllOrders();
+    }
+
+    @GetMapping(value = "/selectOrderNumber")
+    public Integer selectOrderNumber() {
+        return orderService.selectAllOrders().size();
     }
 
     @GetMapping(value = "/selectOrderById")
@@ -95,5 +101,14 @@ public class OrderController {
             return new ResponseBody(500,e.getMessage());
         }
         return new ResponseBody(200,"Order is deleted successfully!");
+    }
+
+    @GetMapping(value="/selectShippingAddressByOrderId")
+    public Shipping selectShippingAddressByOrderId(@RequestParam("orderId") String orderId){
+        try{
+            return orderService.selectShippingAddressByOrderId(orderId);
+        }catch (Exception e){
+            return new Shipping();
+        }
     }
 }

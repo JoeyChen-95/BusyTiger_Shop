@@ -1,9 +1,3 @@
-import axios from 'axios'
-
-var config = require('../../config')
-var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
-var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
-var AXIOS = axios.create({
-  baseURL: backendUrl,
-  headers: {'Access-Control-Allow-Origin': frontendUrl}
-})
+const config = require('../../config');
+const frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port;
+const backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort;

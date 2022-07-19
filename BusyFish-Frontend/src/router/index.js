@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
 import Page from '../views/SamplePage.vue'
 import DashBoard from "../views/DashBoard";
 import Test from "../views/Test"
@@ -8,6 +7,8 @@ import Page1 from "../views/Page1"
 import Item from "../views/Item"
 import User from "../views/User"
 import Order from "../views/Order"
+import Overview from "../views/Overview";
+import Welcome from "../views/Welcome";
 
 Vue.use(Router)
 
@@ -16,8 +17,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      name: 'welcome',
+      component: Welcome
     },
     {
       path:'/page',
@@ -53,6 +54,10 @@ export default new Router({
     {
       path:'/order',
       component: Order
+    },
+    {
+      path:'/overview',
+      component: Overview
     }
   ]
 })

@@ -50,5 +50,15 @@ class ServerApplicationTests {
 
     }
 
+    @Test
+    void selectAllOrder(){
+        orderService.selectAllOrders();
+    }
+
+    @Test
+    void testGetShipping(){
+        System.out.println(orderService.selectShippingAddressByOrderId("2330f2ae6c30465b814c9b793281d883"));
+    }
+
 
 }

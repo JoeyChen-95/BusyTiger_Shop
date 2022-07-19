@@ -11,14 +11,14 @@
 <!--      <router-view :key="key"> </router-view>-->
 <!--    </div>-->
     <div>
-      <b-navbar toggleable="lg" type="dark" variant="info">
-        <b-navbar-brand href="#">BusyFish-Management</b-navbar-brand>
+      <b-navbar toggleable="xl" type="dark" variant="dark">
+        <b-navbar-brand><router-link to="/"><span>BusyFish-Management</span></router-link></b-navbar-brand>
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
         <b-collapse id="nav-collapse" is-nav>
-          <b-navbar-nav>
-            <b-nav-item><router-link to="/page1/freddy">Overview</router-link></b-nav-item>
+          <b-navbar-nav >
+            <b-nav-item><router-link to="/overview">Overview</router-link></b-nav-item>
             <b-nav-item><router-link to="/item">Item</router-link></b-nav-item>
             <b-nav-item><router-link to="/user">User</router-link></b-nav-item>
             <b-nav-item><router-link to="/order">Order</router-link></b-nav-item>
@@ -67,6 +67,14 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.router-link-active {
+  font-weight: bolder;
+  color: white;
+}
+a{
+  text-decoration: none;
+  color: white;
+}
 </style>
+

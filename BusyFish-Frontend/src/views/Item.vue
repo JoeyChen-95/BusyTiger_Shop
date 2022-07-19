@@ -4,29 +4,31 @@
       Item Management
     </h1>
 
-    <b-button v-click="getItemList">Get</b-button>
+    <b-button @click="getItemList">Refresh</b-button>
     <b-table :items="itemList" :fields="fields" striped responsive="sm">
       <template #cell(show_details)="row">
         <b-button size="sm" @click="row.toggleDetails" class="mr-2">
           {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
         </b-button>
+      </template>
 
-        <!-- As `row.showDetails` is one-way, we call the toggleDetails function on @change -->
-        <b-form-checkbox v-model="row.detailsShowing" @change="row.toggleDetails">
-          Details via check
-        </b-form-checkbox>
+      <template #cell(operation)="row">
+        <b-dropdown text="Operations" size="sm">
+          <b-dropdown-item href="#">Update</b-dropdown-item>
+          <b-dropdown-item @click="deleteItem(parseInt(row.item.id))">Delete</b-dropdown-item>
+        </b-dropdown>
       </template>
 
       <template #row-details="row">
         <b-card>
           <b-row class="mb-2">
-            <b-col sm="3" class="text-sm-right"><b>Age:</b></b-col>
-            <b-col>{{ row.item.age }}</b-col>
+            <b-col sm="3" class="text-sm-right"><b>Description</b></b-col>
+            <b-col>{{ row.item.description }}</b-col>
           </b-row>
 
           <b-row class="mb-2">
-            <b-col sm="3" class="text-sm-right"><b>Is Active:</b></b-col>
-            <b-col>{{ row.item.isActive }}</b-col>
+            <b-col sm="3" class="text-sm-right"><b>Seller's ID</b></b-col>
+            <b-col>{{ row.item.sellerId }}</b-col>
           </b-row>
 
           <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
@@ -38,31 +40,20 @@
 
 <script>
 import axios from 'axios'
-
 var config = require('../../config')
 var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
 var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
 var AXIOS = axios.create({
   baseURL: backendUrl,
-  headers: {'Access-Control-Allow-Origin': frontendUrl}
+  headers: {'Access-Control-Allow-Origin': frontendUrl,
+  }
 })
 
 export default {
   data() {
     return {
-      fields: ['first_name', 'last_name', 'show_details'],
-      items: [
-        { isActive: true, age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
-        { isActive: false, age: 21, first_name: 'Larsen', last_name: 'Shaw' },
-        {
-          isActive: false,
-          age: 89,
-          first_name: 'Geneva',
-          last_name: 'Wilson',
-          _showDetails: true
-        },
-        { isActive: true, age: 38, first_name: 'Jami', last_name: 'Carney' }
-      ],
+      fields: ['id', 'name','price','tag','status','show_details','operation'],
+      items: [],
       itemList:[],
       error:''
     }
@@ -72,9 +63,26 @@ export default {
       AXIOS.get('item/selectAllItems')
         .then(response=>{
           this.itemList=response.data
+          for(const index in response.data){
+            this.items.push(
+              {
+                id: response.data[index].id,
+                name: response.data[index].name,
+                price: response.data[index].price,
+                tag: response.data[index].tag,
+                status: response.data[index].status
+              }
+            )
+          }
         })
         .catch(e=>{
           this.error=e
+        })
+    },
+    deleteItem(id){
+      AXIOS.delete('item/deleteItemById?id='+Integer)
+        .then(response=>{
+
         })
     }
 
