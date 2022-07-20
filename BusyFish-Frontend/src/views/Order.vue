@@ -1,7 +1,10 @@
 <template>
 
   <div>
-    <h1>
+    <div class="wrapper">
+      <AdminNavBar></AdminNavBar>
+    </div>
+    <h1 class="order-title">
       Order Management
     </h1>
     <b-table :items="orderList" :fields="fields" striped responsive="sm">
@@ -73,7 +76,7 @@ var AXIOS = axios.create({
 export default {
   data() {
     return {
-      fields: ['id', 'status','createTime' ,'show_details'],
+      fields: ['id', 'status','createTime' ,'show_details','Operation'],
       items: [],
       orderList: [],
       shippingAddress: {
@@ -112,5 +115,14 @@ export default {
 </script>
 
 <style scoped>
+.order-title{
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  background: #fff;
+  margin: 0 auto;
+}
 
 </style>

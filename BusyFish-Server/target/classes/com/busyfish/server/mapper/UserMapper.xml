@@ -29,7 +29,7 @@
     </select>
 
     <insert id="insertUser" >
-        insert into user (id,username,password,email,primaryPhone,memberShip) values (#{id},#{username},#{password},#{email},#{primaryPhone},#{memberShip});
+        insert into user (username,password,email,primaryPhone,memberShip) values (#{username},#{password},#{email},#{primaryPhone},#{memberShip});
     </insert>
 
 </mapper>

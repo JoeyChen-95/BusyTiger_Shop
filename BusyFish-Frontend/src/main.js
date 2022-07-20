@@ -2,13 +2,15 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import BootstrapVue from "bootstrap-vue"
-import App from './App'
+import App from './views/App'
 import router from './router'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import AdminNavBar from "./views/AdminNavBar";
 
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false
+Vue.component('AdminNavBar',AdminNavBar)
 
 /* eslint-disable no-new */
 new Vue({

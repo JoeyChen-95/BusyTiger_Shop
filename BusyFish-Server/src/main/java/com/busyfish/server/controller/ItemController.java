@@ -5,6 +5,7 @@ import com.busyfish.server.model.Item;
 import com.busyfish.server.model.ItemEnum.ItemStatus;
 import com.busyfish.server.model.ItemEnum.Tag;
 import com.busyfish.server.service.ItemService;
+import com.sun.org.apache.regexp.internal.RE;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class ItemController {
     }
 
     @DeleteMapping(value = "/deleteItemById")
-    public ResponseBody deleteItemById(@RequestParam("deleteItemById") Integer id) {
+    public ResponseBody deleteItemById(@RequestParam("id") Integer id) {
         try {
             itemService.deleteItemById(id);
         } catch (ItemException e) {
@@ -41,9 +42,9 @@ public class ItemController {
 
     @PutMapping(value = "updateItemStatus")
     public ResponseBody updateItemStatus(@RequestParam("itemId") Integer itemId,
-                                         @RequestParam("newStatus") ItemStatus status) {
+                                         @RequestParam("newStatus") ItemStatus newStatus) {
         try {
-            itemService.updateItemStatus(itemId, status);
+            itemService.updateItemStatus(itemId, newStatus);
         } catch (ItemException e) {
             return new ResponseBody(500, e.getMessage());
         }
@@ -51,15 +52,13 @@ public class ItemController {
     }
 
     @PostMapping(value = "/insertItem")
-    public ResponseBody insertItem(@RequestParam("itemId") Integer itemId,
-                                   @RequestParam("sellerId") Integer sellerId,
+    public ResponseBody insertItem(@RequestParam("sellerId") Integer sellerId,
                                    @RequestParam("itemName") String itemName,
                                    @RequestParam("itemPrice") Integer itemPrice,
                                    @RequestParam("itemTag") Tag itemTag,
                                    @RequestParam("itemStatus") ItemStatus itemStatus,
                                    @RequestParam("itemDesc") String itemDesc) {
         Item item = new Item();
-        item.setId(itemId);
         item.setSellerId(sellerId);
         item.setName(itemName);
         item.setPrice(itemPrice);
@@ -72,5 +71,23 @@ public class ItemController {
             return new ResponseBody(500, e.getMessage());
         }
         return new ResponseBody(200, "Add item successfully");
+    }
+
+    @PutMapping(value = "/updateItem")
+    public ResponseBody updateItem(@RequestParam("id") Integer id,
+                                   @RequestParam("sellerId") Integer sellerId,
+                                   @RequestParam("itemName") String itemName,
+                                   @RequestParam("itemPrice") Integer itemPrice,
+                                   @RequestParam("itemTag") Tag itemTag,
+                                   @RequestParam("itemStatus") ItemStatus itemStatus,
+                                   @RequestParam("itemDesc") String itemDesc){
+        try{
+            Item item=new Item(id,sellerId,itemName,itemPrice,itemTag,itemStatus,itemDesc);
+            itemService.updateItem(item);
+        }catch(ItemException e){
+            return new ResponseBody(500, e.getMessage());
+        }
+
+        return new ResponseBody(200, "Update item successfully");
     }
 }

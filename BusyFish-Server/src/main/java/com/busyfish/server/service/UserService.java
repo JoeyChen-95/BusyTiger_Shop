@@ -45,13 +45,13 @@ public class UserService {
     }
 
     public void insertUser(User user) {
-        if (selectUserById(user.getId()) != null) {
-            throw new UserException(ErrorCode.DUPLICATE_USER, "User with this id already exists!");
-        }
+//        if (selectUserById(user.getId()) != null) {
+//            throw new UserException(ErrorCode.DUPLICATE_USER, "User with this id already exists!");
+//        }
         if (selectUserByUsername(user.getUsername()) != null) {
             throw new UserException(ErrorCode.DUPLICATE_USERNAME, "User with this username already exists!");
         }
-        userMapper.insertUser(user.getId(), user.getUsername(), user.getPassword(), user.getEmail(), user.getPrimaryPhone(), user.getMemberShip().toString());
+        userMapper.insertUser(user.getUsername(), user.getPassword(), user.getEmail(), user.getPrimaryPhone(), user.getMemberShip().toString());
     }
 
     @Transactional

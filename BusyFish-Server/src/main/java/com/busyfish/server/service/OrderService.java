@@ -42,7 +42,6 @@ public class OrderService {
             shipping.setPhone( orderMap.get("phone").toString());
             o.setShippingAddress(shipping);
         }
-        System.out.println(orderList);
         return orderMapper.selectAllOrders();
     }
 

@@ -13,5 +13,5 @@ public interface UserMapper {
 
     User selectUserByUsername(String username);
 
-    void insertUser(Integer id, String username, String password, String email, String primaryPhone, String memberShip);
+    void insertUser(String username, String password, String email, String primaryPhone, String memberShip);
 }

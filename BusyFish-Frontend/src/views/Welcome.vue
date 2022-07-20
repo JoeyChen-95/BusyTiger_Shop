@@ -1,5 +1,9 @@
 <template>
-  <h1>Welcome to BusyFish Management System!</h1>
+  <div class="wrapper">
+    <AdminNavBar></AdminNavBar>
+    <h1 class="welcome-title">Welcome to BusyTiger Management System!</h1>
+  </div>
+
 </template>
 
 <script>
@@ -40,5 +44,15 @@ a:focus {
   outline: none;
   background: none;
   text-decoration: none;
+}
+
+.welcome-title{
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  background: #fff;
+  margin: 0 auto;
 }
 </style>

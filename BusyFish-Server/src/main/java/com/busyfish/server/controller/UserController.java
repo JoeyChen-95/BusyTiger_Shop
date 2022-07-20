@@ -38,14 +38,12 @@ public class UserController {
     }
 
     @PostMapping(value = "/insertUser")
-    public ResponseBody insertUser(@RequestParam("userId") Integer userId,
-                                   @RequestParam("username") String username,
+    public ResponseBody insertUser(@RequestParam("username") String username,
                                    @RequestParam("userPassword") String userPassword,
                                    @RequestParam("userEmail") String userEmail,
                                    @RequestParam("userPrimaryPhone") String userPrimaryPhone,
                                    @RequestParam("userMemberShip") UserMemberShip userMemberShip) {
         User user = new User();
-        user.setId(userId);
         user.setUsername(username);
         user.setPassword(userPassword);
         user.setEmail(userEmail);

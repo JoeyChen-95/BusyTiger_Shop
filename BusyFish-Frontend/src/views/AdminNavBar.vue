@@ -1,18 +1,8 @@
 <template>
-  <div class="app">
-<!--    <div class="slide">-->
-<!--      <ul>-->
-<!--        <li><router-link to="/page1/freddy">freddy</router-link></li>-->
-<!--        <li><router-link to="/page1/nick">nick</router-link></li>-->
-<!--        <li><router-link to="/page1/mike">mike</router-link></li>-->
-<!--      </ul>-->
-<!--    </div>-->
-<!--    <div class="content">-->
-<!--      <router-view :key="key"> </router-view>-->
-<!--    </div>-->
+  <div>
     <div>
       <b-navbar toggleable="xl" type="dark" variant="dark">
-        <b-navbar-brand><router-link to="/"><span>BusyFish-Management</span></router-link></b-navbar-brand>
+        <b-navbar-brand><router-link to="/adminWelcome"><span>BusyTiger-Management</span></router-link></b-navbar-brand>
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -37,7 +27,7 @@
                 <em>Administrator</em>
               </template>
               <b-dropdown-item href="#">Profile</b-dropdown-item>
-              <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+              <b-dropdown-item href="/">Sign Out</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
         </b-collapse>
@@ -53,7 +43,6 @@
 
 <script>
 export default {
-  name: 'app',
   data(){
     return{
 

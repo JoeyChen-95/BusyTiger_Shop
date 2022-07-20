@@ -11,9 +11,11 @@ public interface ItemMapper {
 
     Item selectItemById(Integer id);
 
-    void insertItem(Integer id, Integer sellerId, String name, Integer price, String tag, String status, String description);
+    void insertItem(Integer sellerId, String name, Integer price, String tag, String status, String description);
 
     void updateItemStatus(Integer id, String status);
 
     void deleteItemById(Integer id);
+
+    void updateItem(Integer id,Integer sellerId, String name, Integer price, String tag, String status, String description);
 }

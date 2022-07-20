@@ -32,14 +32,18 @@ public class ItemService {
     }
 
     public void insertItem(Item item) {
-        if (selectItemById(item.getId()) != null) {
-            throw new ItemException(ErrorCode.DUPLICATE_ITEM, "Item with this id already exists!");
-        }
+//        if (selectItemById(item.getId()) != null) {
+//            throw new ItemException(ErrorCode.DUPLICATE_ITEM, "Item with this id already exists!");
+//        }
         if (userService.selectUserById(item.getSellerId()) == null) {
             throw new ItemException(ErrorCode.NO_EXISTING_SELLER, "The seller does not exist!");
         }
+        try{
+            itemMapper.insertItem(item.getSellerId(), item.getName(), item.getPrice(), item.getTag().toString(), item.getStatus().toString(), item.getDescription());
+        }catch (Exception e){
+            throw new ItemException(ErrorCode.ITEM_CREATE_FAILURE, "Fail to create item: "+e.getMessage());
+        }
 
-        itemMapper.insertItem(item.getId(), item.getSellerId(), item.getName(), item.getPrice(), item.getTag().toString(), item.getStatus().toString(), item.getDescription());
     }
 
     public void deleteItemById(Integer id) {
@@ -56,5 +60,17 @@ public class ItemService {
             throw new ItemException(ErrorCode.NO_EXISTING_ITEM, "Item with this id already exists!");
         }
         itemMapper.updateItemStatus(id, status.toString());
+    }
+
+    @Transactional
+    public void updateItem(Item item){
+        if (userService.selectUserById(item.getSellerId()) == null) {
+            throw new ItemException(ErrorCode.NO_EXISTING_SELLER, "The seller does not exist!");
+        }
+        try{
+            itemMapper.updateItem(item.getId(),item.getSellerId(), item.getName(), item.getPrice(), item.getTag().toString(), item.getStatus().toString(), item.getDescription());
+        }catch (Exception e){
+            throw new ItemException(ErrorCode.ITEM_CREATE_FAILURE, "Fail to update item: "+e.getMessage());
+        }
     }
 }

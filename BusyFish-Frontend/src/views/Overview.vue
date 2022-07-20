@@ -1,58 +1,63 @@
 <template>
-  <div style="padding-top: 40px">
-    <b-card-group>
-      <div>
-        <router-link to="/item">
-          <b-card
-            title="Order Number"
-            style="max-width: 20rem;"
-            class="mb-2"
-            img-src="https://pic.616pic.com/ys_bnew_img/00/07/03/CuqNUYtEhX.jpg"
-            img-height="320px"
-            img-alt="Image"
-            img-bottom
+  <div class="wrapper">
+    <AdminNavBar></AdminNavBar>
+    <div style="padding-top: 40px">
 
-          >
-            <span class="h2 font-weight-bold mb-0">{{orderNumber}}</span>
-          </b-card>
-        </router-link>
-      </div>
+      <b-card-group>
+        <div>
+          <router-link to="/order">
+            <b-card
+              title="Order Number"
+              style="max-width: 20rem;"
+              class="mb-2"
+              img-src="https://pic.616pic.com/ys_bnew_img/00/07/03/CuqNUYtEhX.jpg"
+              img-height="320px"
+              img-alt="Image"
+              img-bottom
 
-      <div style="padding-left: 30px">
-        <router-link to="/user">
-          <b-card
-            title="User Number"
-            style="max-width: 20rem;"
-            class="mb-2"
-            img-src="https://pic.616pic.com/ys_bnew_img/00/04/49/vcK1P05xD0.jpg"
-            img-alt="Image"
-            img-height="320px"
-            img-bottom
-          >
-            <span class="h2 font-weight-bold mb-0">{{userNumber}}</span>
-          </b-card>
+            >
+              <span class="h2 font-weight-bold mb-0">{{orderNumber}}</span>
+            </b-card>
+          </router-link>
+        </div>
 
-        </router-link>
+        <div style="padding-left: 30px">
+          <router-link to="/user">
+            <b-card
+              title="User Number"
+              style="max-width: 20rem;"
+              class="mb-2"
+              img-src="https://pic.616pic.com/ys_bnew_img/00/04/49/vcK1P05xD0.jpg"
+              img-alt="Image"
+              img-height="320px"
+              img-bottom
+            >
+              <span class="h2 font-weight-bold mb-0">{{userNumber}}</span>
+            </b-card>
 
-      </div>
+          </router-link>
 
-      <div style="padding-left: 30px">
-        <router-link to="/item">
-          <b-card
-            title="Item Number"
-            style="max-width: 20rem;"
-            class="mb-2"
-            img-src="https://pic.616pic.com/ys_bnew_img/00/23/00/6SpNiKWhq1.jpg"
-            img-alt="Image"
-            img-height="320px"
-            img-bottom
-          >
-            <span class="h2 font-weight-bold mb-0">{{itemNumber}}</span>
-          </b-card>
-        </router-link>
-      </div>
-    </b-card-group>
+        </div>
+
+        <div style="padding-left: 30px">
+          <router-link to="/item">
+            <b-card
+              title="Item Number"
+              style="max-width: 20rem;"
+              class="mb-2"
+              img-src="https://pic.616pic.com/ys_bnew_img/00/23/00/6SpNiKWhq1.jpg"
+              img-alt="Image"
+              img-height="320px"
+              img-bottom
+            >
+              <span class="h2 font-weight-bold mb-0">{{itemNumber}}</span>
+            </b-card>
+          </router-link>
+        </div>
+      </b-card-group>
+    </div>
   </div>
+
 </template>
 
 <script>
