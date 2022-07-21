@@ -75,6 +75,67 @@
       </b-sidebar>
     </div>
 
+    <div>
+      <b-sidebar id="update-sidebar" width="600px" aria-labelledby="sidebar-update-title" no-header shadow right>
+        <template #default="{ hide }">
+          <div class="p-3">
+            <h4 id="sidebar-update-title">Update User Information</h4>
+            <b-container fluid>
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Username</label>
+                </b-col>
+                <b-col sm="10">
+                  <b-form-input id="input-default" v-model="userUpdate.username" placeholder=""></b-form-input>
+                </b-col>
+              </b-row>
+
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Name</label>
+                </b-col>
+                <b-col sm="10">
+                  <b-form-input id="input-default" v-model="userUpdate.password" placeholder="Enter item's name"></b-form-input>
+                </b-col>
+              </b-row>
+
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Email</label>
+                </b-col>
+                <b-col sm="10">
+                  <b-form-input id="input-default" v-model="userUpdate.email" placeholder="Enter item's price"></b-form-input>
+                </b-col>
+              </b-row>
+
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Primary Phone</label>
+                </b-col>
+                <b-col sm="10">
+                  <b-form-input id="input-default" v-model="userUpdate.primaryPhone" ></b-form-input>
+                </b-col>
+              </b-row>
+
+
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Membership</label>
+                </b-col>
+                <b-col sm="10">
+                  <b-form-select id="input-default" v-model="userUpdate.memberShip" :options="userCreateMembership" ></b-form-select>
+                </b-col>
+              </b-row>
+
+            </b-container>
+            <b-button variant="primary" @click="updateUser(userUpdate)" block >Update</b-button>
+            <b-button variant="danger" block @click="hide">Close</b-button>
+          </div>
+
+        </template>
+      </b-sidebar>
+    </div>
+
     <b-table :items="userList" :fields="fields" striped responsive="sm">
       <template #cell(show_details)="row">
         <b-button size="sm" @click="row.toggleDetails" class="mr-2">
@@ -84,13 +145,7 @@
 
       <template #cell(operation)="row">
         <b-button @click="deleteUser(parseInt(row.item.id))" size="sm">Delete</b-button>
-        <b-dropdown dropright text="Update Membership" size="sm">
-          <b-dropdown-item @click="updateUserMembership(row.item.id,'REGULAR')">REGULAR</b-dropdown-item>
-          <b-dropdown-item @click="updateUserMembership(row.item.id,'GOLDEN_PRIME')">GOLDEN_PRIME</b-dropdown-item>
-          <b-dropdown-item @click="updateUserMembership(row.item.id,'DIAMOND_PRIME')">DIAMOND_PRIME</b-dropdown-item>
-          <b-dropdown-item @click="updateUserMembership(row.item.id,'FROZEN')">FROZEN</b-dropdown-item>
-          <b-dropdown-item @click="updateUserMembership(row.item.id,'BANNED')">BANNED</b-dropdown-item>
-        </b-dropdown>
+        <b-button v-b-toggle.update-sidebar @click="loadUpdateUser(row.item)" size="sm">Update</b-button>
       </template>
 
       <template #row-details="row">
@@ -149,6 +204,14 @@ export default {
         userPrimaryPhone:'',
         username:''
       },
+      userUpdate:{
+        id:'',
+        username:'',
+        password:'',
+        email:'',
+        primaryPhone:'',
+        memberShip: null
+      },
       userCreateMembership:[ 'REGULAR', 'GOLDEN_PRIME', 'DIAMOND_PRIME', 'BANNED', 'FROZEN']
     }
   },
@@ -195,6 +258,32 @@ export default {
         .catch(e=>{
           this.toastMessage('Fail to create user')
         })
+    },
+    updateUser(userUpdate){
+      var form_data=new FormData()
+      form_data.append('id',userUpdate.id)
+      form_data.append('username',userUpdate.username)
+      form_data.append('password',userUpdate.password)
+      form_data.append('email',userUpdate.email)
+      form_data.append('primaryPhone',userUpdate.primaryPhone)
+      form_data.append('memberShip',userUpdate.memberShip)
+      AXIOS.put('/user/updateUser',form_data,{})
+        .then(response=>{
+          this.refreshUserList()
+          this.toastMessage(response.data.msg)
+        })
+        .catch(e=>{
+          this.toastMessage('Fail to update user')
+        })
+
+    },
+    loadUpdateUser(user){
+      this.userUpdate.id=user.id
+      this.userUpdate.username=user.username
+      this.userUpdate.password=user.password
+      this.userUpdate.email=user.email
+      this.userUpdate.primaryPhone=user.primaryPhone
+      this.userUpdate.memberShip=user.memberShip
     },
     toastMessage(content){
       this.$bvToast.toast(content, {

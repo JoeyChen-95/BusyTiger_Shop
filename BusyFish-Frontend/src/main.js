@@ -7,10 +7,14 @@ import router from './router'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import AdminNavBar from "./views/AdminNavBar";
+import UserNavBar from "./views/user/UserNavBar";
+import axios from "axios";
 
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false
 Vue.component('AdminNavBar',AdminNavBar)
+Vue.component('UserNavBar', UserNavBar)
+axios.defaults.withCredentials=true
 
 /* eslint-disable no-new */
 new Vue({

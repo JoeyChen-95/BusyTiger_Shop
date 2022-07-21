@@ -84,67 +84,72 @@
       </b-sidebar>
     </div>
     <div>
-      <b-sidebar id="update-sidebar" width="600px" aria-labelledby="sidebar-no-header-title" no-header shadow right>
+      <b-sidebar id="update-sidebar" width="600px" aria-labelledby="sidebar-update-title" no-header shadow right>
         <template #default="{ hide }">
+          <div class="p-3">
+            <h4 id="sidebar-update-title">Create an new Item</h4>
+            <b-container fluid>
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Seller's ID</label>
+                </b-col>
+                <b-col sm="10">
+                  <b-form-input id="input-default" v-model="itemUpdate.sellerId" placeholder=""></b-form-input>
+                </b-col>
+              </b-row>
 
-          <b-row class="my-1">
-            <b-col sm="2">
-              <label for="input-default">Seller's ID</label>
-            </b-col>
-            <b-col sm="10">
-              <b-form-input id="input-default" v-model="itemUpdate.sellerId" placeholder=""></b-form-input>
-            </b-col>
-          </b-row>
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Name</label>
+                </b-col>
+                <b-col sm="10">
+                  <b-form-input id="input-default" v-model="itemUpdate.itemName" placeholder="Enter item's name"></b-form-input>
+                </b-col>
+              </b-row>
 
-          <b-row class="my-1">
-            <b-col sm="2">
-              <label for="input-default">Name</label>
-            </b-col>
-            <b-col sm="10">
-              <b-form-input id="input-default" v-model="itemUpdate.itemName" placeholder="Enter item's name"></b-form-input>
-            </b-col>
-          </b-row>
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Price</label>
+                </b-col>
+                <b-col sm="10">
+                  <b-form-input id="input-default" v-model="itemUpdate.itemPrice" placeholder="Enter item's price"></b-form-input>
+                </b-col>
+              </b-row>
 
-          <b-row class="my-1">
-            <b-col sm="2">
-              <label for="input-default">Price</label>
-            </b-col>
-            <b-col sm="10">
-              <b-form-input id="input-default" v-model="itemUpdate.itemPrice" placeholder="Enter item's price"></b-form-input>
-            </b-col>
-          </b-row>
-
-          <b-row class="my-1">
-            <b-col sm="2">
-              <label for="input-default">Tag</label>
-            </b-col>
-            <b-col sm="10">
-              <b-form-select id="input-default" v-model="itemUpdate.itemTag" :options="itemTagForCreate"></b-form-select>
-            </b-col>
-          </b-row>
-
-
-          <b-row class="my-1">
-            <b-col sm="2">
-              <label for="input-default">Status</label>
-            </b-col>
-            <b-col sm="10">
-              <b-form-select id="input-default" v-model="itemUpdate.itemStatus" :options="itemStatusForCreate" ></b-form-select>
-            </b-col>
-          </b-row>
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Tag</label>
+                </b-col>
+                <b-col sm="10">
+                  <b-form-select id="input-default" v-model="itemUpdate.itemTag" :options="itemTagForCreate"></b-form-select>
+                </b-col>
+              </b-row>
 
 
-          <b-row class="my-1">
-            <b-col sm="2">
-              <label for="input-default">Description</label>
-            </b-col>
-            <b-col sm="10">
-              <b-form-input id="input-default" v-model="itemUpdate.itemDesc" placeholder="Enter item's description"></b-form-input>
-            </b-col>
-          </b-row>
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Status</label>
+                </b-col>
+                <b-col sm="10">
+                  <b-form-select id="input-default" v-model="itemUpdate.itemStatus" :options="itemStatusForCreate" ></b-form-select>
+                </b-col>
+              </b-row>
 
-          <b-button variant="primary" block >Update</b-button>
-          <b-button variant="danger" block @click="hide">Close</b-button>
+
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Description</label>
+                </b-col>
+                <b-col sm="10">
+                  <b-form-input id="input-default" v-model="itemUpdate.itemDesc" placeholder="Enter item's description"></b-form-input>
+                </b-col>
+              </b-row>
+
+            </b-container>
+            <b-button variant="primary" @click="updateItem(itemUpdate)" block >Update</b-button>
+            <b-button variant="danger" block @click="hide">Close</b-button>
+          </div>
+
         </template>
       </b-sidebar>
     </div>
@@ -325,6 +330,24 @@ export default {
       this.itemUpdate.itemTag=itemTag
       this.itemUpdate.itemStatus=itemStatus
       this.itemUpdate.itemDesc=itemDesc
+    },
+    updateItem(itemUpdate){
+      var form_data=new FormData()
+      form_data.append('id',itemUpdate.id)
+      form_data.append('sellerId',itemUpdate.sellerId)
+      form_data.append('itemName',itemUpdate.itemName)
+      form_data.append('itemPrice',itemUpdate.itemPrice)
+      form_data.append('itemTag',itemUpdate.itemTag)
+      form_data.append('itemStatus',itemUpdate.itemStatus)
+      form_data.append('itemDesc',itemUpdate.itemDesc)
+      AXIOS.put('item/updateItem',form_data,{})
+        .then(response=>{
+          this.refreshItemList()
+          this.toastMessage(response.data.msg)
+        })
+        .catch(e=>{
+          this.toastMessage("Update item fail!")
+        })
     }
   }
 ,

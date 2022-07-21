@@ -17,7 +17,9 @@ import org.springframework.data.redis.core.BoundListOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -123,6 +125,45 @@ public class UserService {
 
         return "Login Successfully";
 
+    }
+
+    @Transactional
+    public void updateUser(User userUpdate){
+        User userCurrent=selectUserById(userUpdate.getId());
+        if(userCurrent==null){
+            throw new UserException(ErrorCode.NO_EXISTING_USER,"Cannot find the user, so fail to update!");
+        }
+
+        if(!userUpdate.getUsername().equals(userCurrent.getUsername())){
+            if (selectUserByUsername(userUpdate.getUsername()) != null) {
+                throw new UserException(ErrorCode.DUPLICATE_USERNAME, "User with this username already exists!");
+            }
+        }
+
+        try{
+            userMapper.updateUser(userUpdate.getId(), userUpdate.getUsername(), userUpdate.getPassword(), userUpdate.getEmail(), userUpdate.getPrimaryPhone(), userUpdate.getMemberShip().toString());
+        }catch (Exception e){
+            throw new UserException(ErrorCode.USER_UPDATE_FAILURE,"Fail to update user!");
+        }
+    }
+
+    @Transactional
+    public String setSessionId(HttpServletRequest request, User user){
+        request.getSession().setAttribute("userId",user.getId());
+        request.getSession().setAttribute("username",user.getUsername());
+        return "Session setting successfully. <br/> userId: "+user.getId();
+
+    }
+
+    @Transactional
+    public String getSessionId(HttpServletRequest request){
+        int port=request.getServerPort();
+        String sessionId=request.getSession().getId();
+        String userId=request.getSession().getAttribute("userId").toString();
+
+        return "Port: "+ port
+                + "<br/>sessionId: "+sessionId
+                +"<br/>userId: "+userId;
     }
 
 }

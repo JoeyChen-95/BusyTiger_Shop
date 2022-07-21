@@ -9,5 +9,9 @@ public class ErrorCode {
 
     public static final int NO_EXISTING_USERNAME = 110010;
     public static final int WRONG_PASSWORD = 110011;
+
+    public static final int USER_UPDATE_FAILURE = 110012;
     public static final int LOCKED_ACCOUNT = 110099;
+
+
 }

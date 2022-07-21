@@ -15,4 +15,16 @@ public class User {
     String primaryPhone;
     List<Shipping> shippingList;
     UserMemberShip memberShip;
+
+    public User() {
+    }
+
+    public User(Integer id, String username, String password, String email, String primaryPhone, UserMemberShip memberShip) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.primaryPhone = primaryPhone;
+        this.memberShip = memberShip;
+    }
 }

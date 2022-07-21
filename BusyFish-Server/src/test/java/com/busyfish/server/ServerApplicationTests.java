@@ -2,12 +2,19 @@ package com.busyfish.server;
 
 import com.busyfish.server.model.ItemEnum.ItemStatus;
 import com.busyfish.server.model.OrderEnum.Courier;
+import com.busyfish.server.model.User;
 import com.busyfish.server.service.ItemService;
 import com.busyfish.server.service.OrderService;
 import com.busyfish.server.service.UserService;
+import org.apache.catalina.connector.Connector;
+import org.apache.catalina.connector.Request;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockHttpServletRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 
 @SpringBootTest
 class ServerApplicationTests {
@@ -59,6 +66,21 @@ class ServerApplicationTests {
     void testGetShipping(){
         System.out.println(orderService.selectShippingAddressByOrderId("2330f2ae6c30465b814c9b793281d883"));
     }
+
+//    @Test
+//    void testGetSessionId(){
+//        HttpServletRequest httpServletRequest=new Request()
+//        System.out.println(userService.getSessionId(httpServletRequest));
+//    }
+//
+//    @Test
+//    void testSetSessionId(){
+//        HttpServletRequest httpServletRequest=new MockHttpServletRequest();
+//        User user=new User();
+//        user.setUsername("lkwrgkjoirgjirg");
+//        user.setId(1010101);
+//        System.out.println(userService.setSessionId(httpServletRequest,user));
+//    }
 
 
 }

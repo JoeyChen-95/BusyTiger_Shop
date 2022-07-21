@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -92,14 +93,64 @@ public class UserController {
     }
 
     @GetMapping(value = "/login")
-    public ResponseBody login(@RequestParam("username") String username,
+    public ResponseBody login(HttpServletRequest request,
+                              @RequestParam("username") String username,
                               @RequestParam("password") String password) {
+//        try{
+//            int port= request.getServerPort();
+//            String sessionId=request.getSession().getId();
+//            System.out.println(request.getSession().getAttribute("userId"));
+//            System.out.println("Try Session ID"+request.getSession().getId());
+//            String userId=request.getSession().getAttribute("userId").toString();
+//            return new ResponseBody(200,userId+" Login successfully with session");
+//        }catch (Exception e){
+//
+//        }
+
         try {
             userService.login(username, password);
+            request.getSession().setAttribute("userId",selectUserByUsername(username).getId().toString());
+            request.getSession().setAttribute("username",username);
+            System.out.println("Set Session ID "+request.getSession().getId());
         } catch (UserException e) {
             return new ResponseBody(500, e.getMessage());
         }
-        return new ResponseBody(200, "Login successfully");
+
+        return new ResponseBody(200, "Login successfully (First Time)");
+    }
+
+    @GetMapping(value = "/getCurrentUserId")
+    public User getCurrentSessionUserId(HttpServletRequest request){
+        if(request.getSession().getAttribute("userId")==null){
+            return null;
+        }else{
+            Integer userId= Integer.valueOf(request.getSession().getAttribute("userId").toString());
+            String username= request.getSession().getAttribute("username").toString();
+            User user=selectUserById(userId);
+            user.setPassword("????????");
+            return user;
+        }
+    }
+
+    @GetMapping(value = "/deleteSession")
+    public void deleteSession(HttpServletRequest request){
+        request.getSession().invalidate();
+    }
+
+    @PutMapping(value = "/updateUser")
+    public ResponseBody updateUser(@RequestParam("id") Integer id,
+                                   @RequestParam("username") String username,
+                                   @RequestParam("password") String password,
+                                   @RequestParam("email") String email,
+                                   @RequestParam("primaryPhone") String primaryPhone,
+                                   @RequestParam("memberShip") UserMemberShip memberShip){
+        try{
+            User user=new User(id,username,password,email,primaryPhone,memberShip);
+            userService.updateUser(user);
+        }catch (Exception e){
+            return new ResponseBody(500, e.getMessage());
+        }
+        return new ResponseBody(200, "Update user successfully");
     }
 
 

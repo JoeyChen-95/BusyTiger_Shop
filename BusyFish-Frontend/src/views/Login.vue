@@ -63,6 +63,19 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
+
+var config = require('../../config')
+var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
+var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
+var AXIOS = axios.create({
+  baseURL: backendUrl,
+  headers: {'Access-Control-Allow-Origin': frontendUrl
+  },
+  withCredentials:true,
+  crossDomain:true
+})
+
 export default {
   data() {
     return {
@@ -107,9 +120,30 @@ export default {
       if(username=="admin"&&password=="admin"){
         this.$router.push('/adminWelcome')
       }else{
-        this.form.error="username/password wrong"
+        AXIOS.get('/user/login?username='+username+'&password='+password)
+          .then(response=>{
+            if(response.data.code==200){
+              this.$router.push('recommend')
+            }else{
+              this.form.error=response.data.msg
+            }
+          })
+          .catch(e=>{
+            this.form.error="Unknown error"
+          })
       }
-    }
+    },
+    tryToLoginWithSession(){
+      AXIOS.get('user/getCurrentUserId')
+        .then(response=>{
+          if(response.data.id){
+            this.$router.push('recommend')
+          }
+        })
+    },
+  },
+  created() {
+    this.tryToLoginWithSession()
   }
 }
 
