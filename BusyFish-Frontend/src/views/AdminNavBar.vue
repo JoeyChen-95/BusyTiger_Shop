@@ -24,7 +24,8 @@
             <b-nav-item-dropdown right>
               <!-- Using 'button-content' slot -->
               <template #button-content>
-                <em>Administrator</em>
+                <b-icon icon="person-circle"></b-icon>
+                <em>Hello, Administrator!</em>
               </template>
               <b-dropdown-item href="#">Profile</b-dropdown-item>
               <b-dropdown-item href="/">Sign Out</b-dropdown-item>

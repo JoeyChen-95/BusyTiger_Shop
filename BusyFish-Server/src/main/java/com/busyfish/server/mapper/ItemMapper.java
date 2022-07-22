@@ -10,6 +10,7 @@ public interface ItemMapper {
     List<Item> selectAllItems();
 
     Item selectItemById(Integer id);
+    List<Item> selectItemByStatus(String status);
 
     void insertItem(Integer sellerId, String name, Integer price, String tag, String status, String description);
 
@@ -18,4 +19,6 @@ public interface ItemMapper {
     void deleteItemById(Integer id);
 
     void updateItem(Integer id,Integer sellerId, String name, Integer price, String tag, String status, String description);
+
+    List<Item> queryItem(Integer id,Integer sellerId, String name, Integer maxPrice, Integer minPrice, String tag, String status);
 }

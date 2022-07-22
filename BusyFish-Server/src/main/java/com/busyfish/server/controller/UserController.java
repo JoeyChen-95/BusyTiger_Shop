@@ -153,5 +153,21 @@ public class UserController {
         return new ResponseBody(200, "Update user successfully");
     }
 
+    @PutMapping(value = "/updateUserProfile")
+    public ResponseBody updateUserProfile(@RequestParam("id") Integer id,
+                                   @RequestParam("username") String username,
+                                   @RequestParam("email") String email,
+                                   @RequestParam("primaryPhone") String primaryPhone){
+        try{
+            User user=new User(id,username,"",email,primaryPhone,null);
+            userService.updateUserProfile(user);
+        }catch (Exception e){
+            return new ResponseBody(500, e.getMessage());
+        }
+        return new ResponseBody(200, "Update user profile successfully");
+    }
+
+
+
 
 }

@@ -36,4 +36,9 @@
         update user set username=#{username}, password=#{password}, email=#{email}, primaryPhone=#{primaryPhone}, memberShip=#{memberShip} where id=#{id}
     </update>
 
+    <update id="updateUserProfile">
+        update user set username=#{username}, email=#{email}, primaryPhone=#{primaryPhone} where id=#{id}
+    </update>
+
+
 </mapper>

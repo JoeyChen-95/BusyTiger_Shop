@@ -16,4 +16,5 @@ public interface UserMapper {
     void insertUser(String username, String password, String email, String primaryPhone, String memberShip);
 
     void updateUser(Integer id, String username,String password, String email, String primaryPhone, String memberShip);
+    void updateUserProfile(Integer id, String username,String email, String primaryPhone);
 }

@@ -11,6 +11,8 @@ public interface OrderMapper {
 
     Order selectOrderById(String id);
 
+    List<Order> selectOrdersByBuyerId(Integer buyerId);
+
     void buy(String id, Integer buyerId, Integer itemId, String comment);
 
     void updateShippingInfo(String id, String courier, String trackingNo, Integer courierFee);
@@ -18,4 +20,5 @@ public interface OrderMapper {
     void updateOrderStatus(String id, String status);
 
     void deleteOrderById(String id);
+
 }

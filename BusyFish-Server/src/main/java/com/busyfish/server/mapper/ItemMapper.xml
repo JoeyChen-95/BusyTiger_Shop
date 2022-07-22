@@ -24,6 +24,10 @@
         select * from item
     </select>
 
+    <select id="selectItemByStatus" resultMap="BaseResultMap">
+        select * from item where status=#{status}
+    </select>
+
     <insert id="insertItem" >
         insert into item (sellerId,name,price,tag,status,description) values (#{sellerId},#{name},#{price},#{tag},#{status},#{description});
     </insert>
@@ -39,6 +43,36 @@
     <update id="updateItem">
         update item set sellerId=#{sellerId}, name=#{name}, price=#{price}, tag=#{tag}, status=#{status}, description=#{description} where id=#{id}
     </update>
+
+    <select id="queryItem" resultMap="BaseResultMap">
+        select  * from item
+            <where>
+                <if test="id!=null">
+                    and id=#{id}
+                </if>
+                <if test="name!=null">
+                    and (name like CONCAT('%',#{name},'%') or description like CONCAT('%',#{name},'%'))
+                </if>
+<!--                <if test="name!=null">-->
+<!--                    and description like CONCAT('%',#{name},'%')-->
+<!--                </if>-->
+                <if test="sellerId!=null">
+                    and sellerId=#{sellerId}
+                </if>
+                <if test="maxPrice!=null">
+                    and price&lt;=#{maxPrice}
+                </if>
+                <if test="minPrice!=null">
+                    and price&gt;=#{minPrice}
+                </if>
+                <if test="tag!=null">
+                    and tag=#{tag}
+                </if>
+                <if test="status!=null">
+                    and status=#{status}
+                </if>
+            </where>
+    </select>
 
 
 </mapper>

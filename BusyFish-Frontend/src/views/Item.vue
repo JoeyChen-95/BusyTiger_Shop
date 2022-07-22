@@ -8,7 +8,9 @@
     </h1>
     <div>
       <b-button-group size="lg">
-        <b-button v-b-toggle.sidebar-no-header variant="primary">Create Item</b-button>
+        <b-button v-b-toggle.sidebar-no-header variant="primary">
+          <b-icon icon="plus-square"></b-icon> &nbsp;Create Item
+        </b-button>
         <b-button variant="danger">More Function</b-button>
       </b-button-group>
     </div>
@@ -157,20 +159,26 @@
 
 
       <template #cell(operation)="row">
-        <b-button @click="deleteItem(parseInt(row.item.id))" size="sm">Delete</b-button>
-        <b-dropdown dropright text="Update Status" size="sm">
+        <b-button @click="deleteItem(parseInt(row.item.id))" size="sm" variant="danger">
+          <b-icon icon="bag-x"></b-icon> &nbsp;
+          Delete
+        </b-button>
+        <b-dropdown dropright text="Update Status" size="sm" >
           <b-dropdown-item @click="updateItemStatus(row.item.id,'ACTIVE')">ACTIVE</b-dropdown-item>
           <b-dropdown-item @click="updateItemStatus(row.item.id,'SOLD')">SOLD</b-dropdown-item>
           <b-dropdown-item @click="updateItemStatus(row.item.id,'BANNED')">BANNED</b-dropdown-item>
           <b-dropdown-item @click="updateItemStatus(row.item.id,'PRIVATE')">PRIVATE</b-dropdown-item>
           <b-dropdown-item @click="updateItemStatus(row.item.id,'PENDING')">PENDING</b-dropdown-item>
         </b-dropdown>
-        <b-button v-b-toggle.update-sidebar size="sm" @click="loadUpdateItem(row.item.id,row.item.sellerId,row.item.name,row.item.price,row.item.tag,row.item.status,row.item.description)">Update</b-button>
+        <b-button v-b-toggle.update-sidebar size="sm" variant="info" @click="loadUpdateItem(row.item.id,row.item.sellerId,row.item.name,row.item.price,row.item.tag,row.item.status,row.item.description)" >
+          <b-icon icon="bag-check"></b-icon> &nbsp;
+          Update
+        </b-button>
       </template>
 
       <template #cell(show_details)="row">
         <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-          {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
+          <b-icon icon="three-dots"></b-icon>
         </b-button>
       </template>
 

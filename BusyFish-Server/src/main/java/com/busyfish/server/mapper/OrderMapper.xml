@@ -27,6 +27,14 @@
         select * from orderTable
     </select>
 
+    <select id="selectOrdersByBuyerId" resultMap="BaseResultMap">
+        select * from orderTable where buyerId=#{buyerId}
+    </select>
+
+<!--    <select id="selectOrdersBy" resultMap="BaseResultMap">-->
+<!--        select * from ordertable where buyerId=#{buyerId}-->
+<!--    </select>-->
+
     <insert id="buy">
         insert into orderTable (id,buyerId,itemId,comment) values (#{id},#{buyerId},#{itemId},#{comment});
     </insert>

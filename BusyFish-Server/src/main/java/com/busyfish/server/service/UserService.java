@@ -166,4 +166,27 @@ public class UserService {
                 +"<br/>userId: "+userId;
     }
 
+    @Transactional
+    public void updateUserProfile(User userUpdate){
+
+        User userCurrent=selectUserById(userUpdate.getId());
+
+        if(userCurrent==null){
+            throw new UserException(ErrorCode.NO_EXISTING_USER,"Cannot find the user, so fail to update!");
+        }
+
+        if(!userUpdate.getUsername().equals(userCurrent.getUsername())){
+            if (selectUserByUsername(userUpdate.getUsername()) != null) {
+                throw new UserException(ErrorCode.DUPLICATE_USERNAME, "User with this username already exists!");
+            }
+        }
+
+        try{
+            userMapper.updateUserProfile(userUpdate.getId(), userUpdate.getUsername(), userUpdate.getEmail(), userUpdate.getPrimaryPhone());
+        }catch (Exception e){
+            throw new UserException(ErrorCode.USER_UPDATE_FAILURE,"Fail to update user profile!");
+        }
+
+    }
+
 }

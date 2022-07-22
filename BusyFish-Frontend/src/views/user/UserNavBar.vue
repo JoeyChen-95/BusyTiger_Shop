@@ -12,7 +12,7 @@
             <b-nav-item><router-link to="/byCategory">By Category</router-link></b-nav-item>
             <b-nav-item><router-link to="/myOrder">My Order</router-link></b-nav-item>
             <b-nav-item><router-link to="/mySell">My Sell</router-link></b-nav-item>
-            <b-nav-item href="#">More...</b-nav-item>
+            <b-nav-item><router-link to="/userProfile">My Profile</router-link></b-nav-item>
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->
@@ -24,11 +24,13 @@
             <b-nav-item-dropdown right>
               <!-- Using 'button-content' slot -->
               <template #button-content>
+                <b-icon icon="person-circle"></b-icon>
                 <em>Hello, {{ currentUser.username }} !</em>
               </template>
               <b-dropdown-item href="/userProfile">Profile</b-dropdown-item>
               <b-dropdown-item @click="deleteSession" href="/">Sign Out</b-dropdown-item>
             </b-nav-item-dropdown>
+            <b-nav-item><router-link to="/userProfile">My Profile</router-link></b-nav-item>
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>

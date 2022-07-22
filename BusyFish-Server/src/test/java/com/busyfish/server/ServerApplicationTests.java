@@ -1,6 +1,8 @@
 package com.busyfish.server;
 
+import com.busyfish.server.model.Item;
 import com.busyfish.server.model.ItemEnum.ItemStatus;
+import com.busyfish.server.model.ItemEnum.Tag;
 import com.busyfish.server.model.OrderEnum.Courier;
 import com.busyfish.server.model.User;
 import com.busyfish.server.service.ItemService;
@@ -15,6 +17,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import java.util.List;
 
 @SpringBootTest
 class ServerApplicationTests {
@@ -82,5 +85,9 @@ class ServerApplicationTests {
 //        System.out.println(userService.setSessionId(httpServletRequest,user));
 //    }
 
-
+    @Test
+    void testQueryItem(){
+//        List<Item> itemList=itemService.queryItem(null,null,"1",null,null, null,null);
+//        System.out.println(itemList);
+    }
 }

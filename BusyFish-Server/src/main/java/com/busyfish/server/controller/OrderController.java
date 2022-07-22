@@ -3,9 +3,11 @@ package com.busyfish.server.controller;
 import com.busyfish.server.exception.OrderException.OrderException;
 import com.busyfish.server.model.Order;
 import com.busyfish.server.model.OrderEnum.Courier;
+import com.busyfish.server.model.OrderEnum.OrderMyOrderOverviewResponse;
 import com.busyfish.server.model.OrderEnum.OrderStatus;
 import com.busyfish.server.model.UserEnum.Shipping;
 import com.busyfish.server.service.OrderService;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +36,11 @@ public class OrderController {
     @GetMapping(value = "/selectOrderById")
     public Order selectOrderById(@RequestParam("orderId") String orderId) {
         return orderService.selectOrderById(orderId);
+    }
+
+    @GetMapping(value = "/selectOrdersByBuyerId")
+    public List<OrderMyOrderOverviewResponse> selectOrdersByBuyerId(@RequestParam("buyerId") Integer buyerId){
+        return orderService.selectOrdersByBuyerId(buyerId);
     }
 
     @PostMapping(value = "/buy")

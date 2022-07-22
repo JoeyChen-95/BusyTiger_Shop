@@ -9,9 +9,18 @@
     </h1>
     <div>
       <b-button-group size="lg">
-        <b-button v-b-toggle.sidebar-no-header variant="primary">Create User</b-button>
-        <b-button @click="flipShowPassword" variant="danger" >{{ showPassword?'Hide Password':'Show Password'}}</b-button>
-        <b-button variant="safe">More Function</b-button>
+        <b-button v-b-toggle.sidebar-no-header variant="primary">
+          <b-icon icon="person-plus"></b-icon> &nbsp;Create User
+        </b-button>
+        <b-button @click="flipShowPassword" variant="danger">
+          <b-icon icon="eye" v-show="!showPassword"></b-icon>
+          <b-icon icon="eye-slash" v-show="showPassword"></b-icon>
+          {{ showPassword?'Hide Password':'Show Password'}}
+        </b-button>
+        <b-button>
+          <b-icon icon="three-dots"></b-icon>
+          More Function
+        </b-button>
       </b-button-group>
     </div>
     <div>
@@ -139,13 +148,20 @@
     <b-table :items="userList" :fields="fields" striped responsive="sm">
       <template #cell(show_details)="row">
         <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-          {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
+<!--          {{ row.detailsShowing ? 'Hide' : 'Show'}} Details-->
+          <b-icon icon="three-dots"></b-icon>
         </b-button>
       </template>
 
       <template #cell(operation)="row">
-        <b-button @click="deleteUser(parseInt(row.item.id))" size="sm">Delete</b-button>
-        <b-button v-b-toggle.update-sidebar @click="loadUpdateUser(row.item)" size="sm">Update</b-button>
+        <b-button @click="deleteUser(parseInt(row.item.id))" variant="danger" size="sm">
+          <b-icon icon="person-x"></b-icon>
+          &nbsp;Delete
+        </b-button>
+        <b-button v-b-toggle.update-sidebar @click="loadUpdateUser(row.item)" variant="info" size="sm">
+          <b-icon icon="person-lines-fill"></b-icon>
+          &nbsp;Update
+        </b-button>
       </template>
 
       <template #row-details="row">

@@ -2,6 +2,7 @@ package com.busyfish.server.controller;
 
 import com.busyfish.server.exception.ItemException.ItemException;
 import com.busyfish.server.model.Item;
+import com.busyfish.server.model.ItemEnum.ItemOverviewResponse;
 import com.busyfish.server.model.ItemEnum.ItemStatus;
 import com.busyfish.server.model.ItemEnum.Tag;
 import com.busyfish.server.service.ItemService;
@@ -28,6 +29,11 @@ public class ItemController {
     @GetMapping(value = "/selectItemById")
     public Item selectItemById(@RequestParam("itemId") Integer itemId) {
         return itemService.selectItemById(itemId);
+    }
+
+    @GetMapping(value = "/selectAllActiveItem")
+    public List<ItemOverviewResponse> selectAllActiveItem(){
+        return itemService.queryItem(null,null,null,null,null,null,ItemStatus.ACTIVE);
     }
 
     @DeleteMapping(value = "/deleteItemById")

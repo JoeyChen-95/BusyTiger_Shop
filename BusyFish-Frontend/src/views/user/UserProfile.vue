@@ -3,34 +3,116 @@
     <div class="wrapper">
       <UserNavBar></UserNavBar>
     </div>
-    <div>{{currentUserProfile.username}}</div>
-    <div><b-button @click="console.log(currentUserProfile.username+'aaa')"></b-button></div>
+    <!--    User Edit Profile Sidebar-->
     <div>
-      <b-card>
-        <b-row class="mb-2">
-          <b-col sm="3" class="text-sm-right"><b>ID</b></b-col>
-          <b-col>{{currentUserProfile.id}}</b-col>
-        </b-row>
-        <b-row class="mb-2">
-          <b-col sm="3" class="text-sm-right"><b>Username</b></b-col>
-          <b-col>{{currentUserProfile.username}}</b-col>
-        </b-row>
-        <b-row class="mb-2">
-          <b-col sm="3" class="text-sm-right"><b>Email</b></b-col>
-          <b-col>{{currentUserProfile.email}}</b-col>
-        </b-row>
-        <b-row class="mb-2">
-          <b-col sm="3" class="text-sm-right"><b>Primary Phone</b></b-col>
-          <b-col>{{currentUserProfile.primaryPhone}}</b-col>
-        </b-row>
-<!--        <b-row class="mb-2">-->
-<!--          <b-col sm="3" class="text-sm-right"><b>Shipping Addresses</b></b-col>-->
-<!--          <b-card>-->
-<!--            <b-table striped hover :items="list" :fields="shippingAddressField"></b-table>-->
-<!--          </b-card>-->
-<!--        </b-row>-->
-      </b-card>
+      <b-sidebar id="edit-user-profile-sidebar" width="600px" aria-labelledby="sidebar-no-header-title" no-header shadow right>
+        <template #default="{ hide }">
+          <div class="p-3">
+            <h4 id="sidebar-no-header-title">Edit My Profile</h4>
+            <b-container fluid>
+
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Username</label>
+                </b-col>
+                <b-col sm="10">
+                  <b-form-input id="input-default" v-model="userProfileUpdate.username" placeholder="Enter username"></b-form-input>
+                </b-col>
+              </b-row>
+
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Email</label>
+                </b-col>
+                <b-col sm="10">
+                  <b-form-input id="input-default" v-model="userProfileUpdate.email" placeholder="Enter email"></b-form-input>
+                </b-col>
+              </b-row>
+
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Primary Phone</label>
+                </b-col>
+                <b-col sm="10">
+                  <b-form-input id="input-default" v-model="userProfileUpdate.primaryPhone" placeholder="Enter user's phone number"></b-form-input>
+                </b-col>
+              </b-row>
+
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Membership</label>
+                </b-col>
+                <b-col sm="10">
+                  {{currentUserProfile.memberShip}}
+                </b-col>
+              </b-row>
+
+            </b-container>
+
+            <b-button variant="primary" block @click="editMyProfile(userProfileUpdate)">OK</b-button>
+            <b-button variant="danger" block @click="hide">Close</b-button>
+          </div>
+        </template>
+      </b-sidebar>
     </div>
+    <div class="box">
+<!--      Left Part of the page: User Avator-->
+      <div class="column-left" >
+        <div class="mb-2">
+          <div class="user-avator">
+            <b-avatar src="https://placekitten.com/300/300" size="20rem" class="a"></b-avatar>
+          </div>
+          <div class="username-under-avator">{{currentUserProfile.username}}</div>
+          <div class="change-photo-button">
+            <b-button variant="outline-primary" style="width: 50%">Change My Photo</b-button>
+          </div>
+          <div class="change-photo-button">
+            <b-button v-b-toggle.edit-user-profile-sidebar variant="outline-primary" style="width: 50%" @click="loadUpdateProfile">Edit My Profile</b-button>
+          </div>
+          <div class="change-photo-button">
+            <b-button variant="outline-primary" style="width: 50%">Edit Shipping Address</b-button>
+          </div>
+        </div>
+      </div>
+<!--      Right Part of the page: User Profile-->
+      <div class="column-right">
+        <div>
+          <b-card>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-lg-right" style="font-size: 20px"><b>ID</b></b-col>
+              <b-col style="font-size: 20px">{{currentUserProfile.id}}</b-col>
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right" style="font-size: 20px"><b>Username</b></b-col>
+              <b-col style="font-size: 20px">{{currentUserProfile.username}}</b-col>
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right" style="font-size: 20px"><b>Email</b></b-col>
+              <b-col style="font-size: 20px">{{currentUserProfile.email}}</b-col>
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right" style="font-size: 20px"><b>Primary Phone</b></b-col>
+              <b-col style="font-size: 20px">{{currentUserProfile.primaryPhone}}</b-col>
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right" style="font-size: 20px"><b>Membership</b></b-col>
+              <b-col style="font-size: 20px">{{currentUserProfile.memberShip}}</b-col>
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right" style="font-size: 20px">
+                <b>Shipping Addresses</b>
+              </b-col>
+              <b-card>
+                <b-table striped hover :items="currentUserProfile.shippingAddress" :fields="shippingAddressField"></b-table>
+              </b-card>
+            </b-row>
+          </b-card>
+        </div>
+
+
+      </div>
+    </div>
+
   </div>
 
 
@@ -45,7 +127,9 @@ var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPo
 var AXIOS = axios.create({
   baseURL: backendUrl,
   headers: {'Access-Control-Allow-Origin': frontendUrl,
-  }
+  },
+  withCredentials:true,
+  crossDomain:true
 })
 
 export default {
@@ -58,17 +142,13 @@ export default {
         username:'',
         email:'',
         primaryPhone: '',
-        memberShip: ''
+        memberShip: '',
+        shippingAddress:[]
       },
-      list:[]
-      ,
-      userUpdate:{
-        id:'',
+      userProfileUpdate:{
         username:'',
-        password:'',
         email:'',
         primaryPhone:'',
-        memberShip: null
       },
       userMemberShipOptions:['REGULAR', 'GOLDEN_PRIME', 'DIAMOND_PRIME', 'BANNED', 'FROZEN']
     }
@@ -81,18 +161,39 @@ export default {
           this.currentUserProfile.username=response.data.username
           this.currentUserProfile.email=response.data.email
           this.currentUserProfile.primaryPhone=response.data.primaryPhone
-          // AXIOS.get('user/selectAllShippingAddressFromUser?userId='+response.data.id)
-          //   .then(response2=>{
-          //     this.list=response2.data
-          //   })
+          this.currentUserProfile.memberShip=response.data.memberShip
+          AXIOS.get('user/selectAllShippingAddressFromUser?userId='+response.data.id)
+            .then(response=>{
+              this.currentUserProfile.shippingAddress=response.data
+            })
 
         })
+    },
+    refreshUserProfile(){
+      this.getUserProfile()
+    },
+    editMyProfile(userUpdate){
+      var form_data=new FormData()
+      form_data.append('id',this.currentUserProfile.id)
+      form_data.append('username',userUpdate.username)
+      form_data.append('email',userUpdate.email)
+      form_data.append('primaryPhone',userUpdate.primaryPhone)
+      AXIOS.put('/user/updateUserProfile',form_data,{})
+        .then(response=>{
+          this.refreshUserProfile()
+          this.toastMessage(response.data.msg)
+        })
+        .catch(e=>{
+          this.toastMessage('Fail to update user')
+        })
+    },
+    loadUpdateProfile(){
+      this.userProfileUpdate.username=this.currentUserProfile.username
+      this.userProfileUpdate.primaryPhone=this.currentUserProfile.primaryPhone
+      this.userProfileUpdate.email=this.currentUserProfile.email
     }
   },
   created() {
-    this.getUserProfile()
-    this.getUserProfile()
-    this.getUserProfile()
     this.getUserProfile()
   },
   computed:{
@@ -104,6 +205,33 @@ export default {
 </script>
 
 <style scoped>
+.column-right{
+
+  float: right;
+  width: 80%;
+}
+.column-left{
+
+  float: left;
+  width: 20%;
+}
+.username-under-avator {
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  background: #fff;
+  margin: 0 auto;
+}
+.user-avator{
+  text-align: center;
+  padding-top: 20px;
+}
+
+.change-photo-button{
+  padding-top: 10px;
+  text-align: center;
+}
 
 
 </style>

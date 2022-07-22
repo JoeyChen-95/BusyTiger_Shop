@@ -2,7 +2,9 @@ package com.busyfish.server.service;
 
 import com.busyfish.server.exception.OrderException.ErrorCode;
 import com.busyfish.server.mapper.OrderMapper;
+import com.busyfish.server.model.Item;
 import com.busyfish.server.model.ItemEnum.ItemStatus;
+import com.busyfish.server.model.OrderEnum.OrderMyOrderOverviewResponse;
 import com.busyfish.server.model.UserEnum.Shipping;
 import com.busyfish.server.model.UserEnum.UserMemberShip;
 import com.busyfish.server.util.ShippingCodeUtils;
@@ -47,6 +49,29 @@ public class OrderService {
 
     public Order selectOrderById(String id) {
         return orderMapper.selectOrderById(id);
+    }
+
+    public List<OrderMyOrderOverviewResponse> selectOrdersByBuyerId(Integer buyerId){
+        if(userService.selectUserById(buyerId)==null){
+            throw new OrderException(ErrorCode.NO_EXISTING_BUYER,"Buyer does not exist!");
+        }
+        try{
+            List<Order> orderList=orderMapper.selectOrdersByBuyerId(buyerId);
+            List<OrderMyOrderOverviewResponse> responseList=new ArrayList<>();
+            for(Order order:orderList){
+                Item item=itemService.selectItemById(order.getItemId());
+                Shipping shipping=selectShippingAddressByOrderId(order.getId());
+                if(item!=null){
+                    responseList.add(new OrderMyOrderOverviewResponse(order.getId(), order.getBuyerId(), order.getItemId(), item.getName(), order.getStatus(),order.getCourier(), order.getTrackingNo(), order.getCourierFee(), shipping.getName(),shipping.getPhone(),shipping.getAddress(),order.getCreateTime(),order.getCompleteTime()));
+                }
+
+            }
+            return responseList;
+        }catch (Exception e){
+//            throw new OrderException(ErrorCode.ORDER_EXCEPTION,"Fail to find orders!");
+            throw e;
+        }
+
     }
 
     /**
