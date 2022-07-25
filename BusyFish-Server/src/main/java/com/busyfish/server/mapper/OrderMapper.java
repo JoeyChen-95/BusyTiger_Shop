@@ -21,4 +21,6 @@ public interface OrderMapper {
 
     void deleteOrderById(String id);
 
+    List<Order> selectOrdersBySellerId(Integer sellerId);
+
 }

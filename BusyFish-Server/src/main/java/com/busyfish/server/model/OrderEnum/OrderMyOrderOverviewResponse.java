@@ -25,10 +25,13 @@ public class OrderMyOrderOverviewResponse {
     Timestamp createTime;
     Timestamp completeTime;
 
+    String sellerName;
+    String buyerName;
+
     public OrderMyOrderOverviewResponse() {
     }
 
-    public OrderMyOrderOverviewResponse(String id, Integer buyerId, Integer itemId, String itemName, OrderStatus status, Courier courier, String trackingNo, Integer courierFee, String shippingAddressName, String shippingAddressPhone, String shippingAddressAddress, Timestamp createTime, Timestamp completeTime) {
+    public OrderMyOrderOverviewResponse(String id, Integer buyerId, Integer itemId, String itemName, OrderStatus status, Courier courier, String trackingNo, Integer courierFee, String shippingAddressName, String shippingAddressPhone, String shippingAddressAddress, Timestamp createTime, Timestamp completeTime, String sellerName,String buyerName) {
         this.id = id;
         this.buyerId = buyerId;
         this.itemId = itemId;
@@ -42,5 +45,7 @@ public class OrderMyOrderOverviewResponse {
         this.shippingAddressAddress = shippingAddressAddress;
         this.createTime = createTime;
         this.completeTime = completeTime;
+        this.sellerName = sellerName;
+        this.buyerName= buyerName;
     }
 }

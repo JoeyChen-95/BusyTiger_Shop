@@ -5,6 +5,7 @@ import com.busyfish.server.mapper.OrderMapper;
 import com.busyfish.server.model.Item;
 import com.busyfish.server.model.ItemEnum.ItemStatus;
 import com.busyfish.server.model.OrderEnum.OrderMyOrderOverviewResponse;
+import com.busyfish.server.model.User;
 import com.busyfish.server.model.UserEnum.Shipping;
 import com.busyfish.server.model.UserEnum.UserMemberShip;
 import com.busyfish.server.util.ShippingCodeUtils;
@@ -52,7 +53,8 @@ public class OrderService {
     }
 
     public List<OrderMyOrderOverviewResponse> selectOrdersByBuyerId(Integer buyerId){
-        if(userService.selectUserById(buyerId)==null){
+        User buyer=userService.selectUserById(buyerId);
+        if(buyer==null){
             throw new OrderException(ErrorCode.NO_EXISTING_BUYER,"Buyer does not exist!");
         }
         try{
@@ -61,8 +63,12 @@ public class OrderService {
             for(Order order:orderList){
                 Item item=itemService.selectItemById(order.getItemId());
                 Shipping shipping=selectShippingAddressByOrderId(order.getId());
+                User seller = null;
                 if(item!=null){
-                    responseList.add(new OrderMyOrderOverviewResponse(order.getId(), order.getBuyerId(), order.getItemId(), item.getName(), order.getStatus(),order.getCourier(), order.getTrackingNo(), order.getCourierFee(), shipping.getName(),shipping.getPhone(),shipping.getAddress(),order.getCreateTime(),order.getCompleteTime()));
+                    seller=userService.selectUserById(item.getSellerId());
+                }
+                if(item!=null&&seller!=null){
+                    responseList.add(new OrderMyOrderOverviewResponse(order.getId(), order.getBuyerId(), order.getItemId(), item.getName(), order.getStatus(),order.getCourier(), order.getTrackingNo(), order.getCourierFee(), shipping.getName(),shipping.getPhone(),shipping.getAddress(),order.getCreateTime(),order.getCompleteTime(),seller.getUsername(),buyer.getUsername()));
                 }
 
             }
@@ -182,6 +188,32 @@ public class OrderService {
         shipping.setName( orderMap.get("name").toString());
         shipping.setPhone( orderMap.get("phone").toString());
         return shipping;
+    }
+
+    @Transactional
+    public List<OrderMyOrderOverviewResponse> selectOrdersBySellerId(Integer sellerId){
+        User seller=userService.selectUserById(sellerId);
+        if(seller==null){
+            throw new OrderException(ErrorCode.NO_EXISTING_SELLER,"Seller does not exist!");
+        }
+        try{
+            List<Order> orderList=orderMapper.selectOrdersBySellerId(sellerId);
+            List<OrderMyOrderOverviewResponse> responseList=new ArrayList<>();
+            for(Order order:orderList){
+                Item item=itemService.selectItemById(order.getItemId());
+                Shipping shipping=selectShippingAddressByOrderId(order.getId());
+                User buyer=userService.selectUserById(order.getBuyerId());
+                if(item!=null&&buyer!=null){
+                    responseList.add(new OrderMyOrderOverviewResponse(order.getId(), order.getBuyerId(), order.getItemId(), item.getName(), order.getStatus(),order.getCourier(), order.getTrackingNo(), order.getCourierFee(), shipping.getName(),shipping.getPhone(),shipping.getAddress(),order.getCreateTime(),order.getCompleteTime(),seller.getUsername(), buyer.getUsername()));
+                }
+
+            }
+            return responseList;
+
+        }catch (Exception e){
+            throw new OrderException(ErrorCode.ORDER_EXCEPTION,"Fail to find orders!");
+        }
+
     }
 
 

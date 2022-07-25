@@ -24,14 +24,29 @@
               <b-button
                 href="#"
                 variant="primary"
-                aria-controls="collapse-4"
+                aria-controls="order-detail-panel"
                 @click="item.visible=!item.visible">
                 View Order Detail
               </b-button>
-              <b-collapse id="collapse-4" v-model="item.visible" class="mt-2">
+              <b-button
+                variant="danger"
+                @click="loadOrderConfirm(item)"
+                v-b-modal.order-confirm-panel>
+                Buy Now
+              </b-button>
+              <b-button
+                variant="danger">
+                Add To Favorite
+                <b-icon icon="heart-fill"></b-icon>
+              </b-button>
+              <b-collapse id="order-detail-panel" v-model="item.visible" class="mt-2">
                 <b-card>
                   <b-card-text>
                     <div> <span class="order-card-detail-key">Item Name:</span> <span class="order-card-detail-value">&nbsp;{{item.name}}</span> </div>
+                    <div> <span class="order-card-detail-key">Seller:</span> <span class="order-card-detail-value">&nbsp;{{item.sellerName}}</span> </div>
+                    <div> <span class="order-card-detail-key">Price:</span> <span class="order-card-detail-value">&nbsp;{{item.price}}</span> </div>
+                    <div> <span class="order-card-detail-key">Category:</span> <span class="order-card-detail-value">&nbsp;{{item.tag}}</span> </div>
+                    <div> <span class="order-card-detail-key">Description:</span> <span class="order-card-detail-value">&nbsp;{{item.description}}</span> </div>
 <!--                    <div> <span class="order-card-detail-key">Status:</span> <span class="order-card-detail-value">&nbsp;{{order.status}}</span> </div>-->
 <!--                    <b-progress :max="100" height="1.5rem" animated>-->
 <!--                      <b-progress-bar :value="order.status=='PROCESSING'?25:(order.status=='SHIPPED'?50:(order.status=='COMPLETED'?100:0))">-->
@@ -58,6 +73,16 @@
       </b-container>
 
     </div>
+      <b-modal id="order-confirm-panel" centered title="Order Confirm" size="lg" @ok="placeOrder(orderConfirmItem)">
+        <h4><b>Item Information</b> </h4>
+        <div> <span class="order-card-detail-key">Seller:</span> <span class="order-card-detail-value">&nbsp;{{orderConfirmItem.sellerName}}</span> </div>
+        <div> <span class="order-card-detail-key">Item:</span> <span class="order-card-detail-value">&nbsp;{{orderConfirmItem.name}}</span> </div>
+<!--        <div> <span class="order-card-detail-key">Price:</span> <span class="order-card-detail-value">&nbsp;{{orderConfirmItem.price}}</span> </div>-->
+        <div> <span class="order-card-detail-key">Description:</span> <span class="order-card-detail-value">&nbsp;{{orderConfirmItem.description}}</span> </div>
+        <div> <span class="order-card-detail-key">Shipping Address:</span> <b-form-select v-model="orderConfirmItem.shippingAddress" :options="currentUserProfile.shippingAddress"></b-form-select></div>
+        <div> <span class="order-card-detail-key">Comment:</span> <b-input v-model="orderConfirmItem.comment"></b-input> </div>
+        <h2 style="text-align: right;padding-top: 20px"><b>{{orderConfirmItem.price}}￥ </b> </h2>
+      </b-modal>
 
   </div>
 
@@ -89,7 +114,24 @@ export default {
         memberShip: '',
         shippingAddress: []
       },
-      itemList:[]
+      itemList:[],
+      orderConfirmItem:{
+        id:'',
+        sellerId:'',
+        sellerName:'',
+        name:'',
+        price:'',
+        tag:'',
+        status:'',
+        description:'',
+        comment:'',
+        shippingAddress:{
+          address:'',
+          name:'',
+          phone:'',
+          code:''
+        }
+      }
     }
 
   },
@@ -104,7 +146,9 @@ export default {
           this.currentUserProfile.memberShip = response.data.memberShip
           AXIOS.get('user/selectAllShippingAddressFromUser?userId=' + response.data.id)
             .then(response => {
-              this.currentUserProfile.shippingAddress = response.data
+              for(var index in response.data){
+                this.currentUserProfile.shippingAddress.push({value:response.data[index],text:response.data[index].address+' '+response.data[index].name})
+              }
             })
         })
     },
@@ -116,6 +160,44 @@ export default {
         .catch(e=>{
 
         })
+    },
+    refreshItemList(){
+      this.getItemList()
+    },
+    loadOrderConfirm(item){
+      this.orderConfirmItem.id=item.id
+      this.orderConfirmItem.sellerId=item.sellerId
+      this.orderConfirmItem.sellerName=item.sellerName
+      this.orderConfirmItem.name=item.name
+      this.orderConfirmItem.price=item.price
+      this.orderConfirmItem.tag=item.tag
+      this.orderConfirmItem.status=item.status
+      this.orderConfirmItem.description=item.description
+      this.orderConfirmItem.comment=''
+    },
+    placeOrder(orderConfirmItem){
+      var form_data=new FormData()
+      form_data.append('buyerId',this.currentUserProfile.id)
+      form_data.append('itemId',orderConfirmItem.id)
+      form_data.append('shippingCode',orderConfirmItem.shippingAddress.code)
+      form_data.append('comment',orderConfirmItem.comment)
+      AXIOS.post('/order/buy',form_data,{})
+        .then(response=>{
+          this.toastMessage(response.data.msg)
+          this.refreshItemList()
+        })
+        .catch(e=>{
+
+        })
+    },
+    toastMessage(content){
+      this.$bvToast.toast(content, {
+        title: 'Tips',
+        autoHideDelay: 2000,
+        variant: 'warning',
+        solid: true,
+        appendToast: false
+      });
     }
   },
   created() {
@@ -134,5 +216,24 @@ export default {
   padding: 10px;
   background: #fff;
   margin: 0 auto;
+}
+.order-card-order-name-title{
+  font-size: 30px;
+  font-weight: bold;
+}
+.order-card-order-info-key{
+  font-size: 20px;
+  font-weight: bold;
+}
+.order-card-order-info-value{
+  font-size: 20px;
+}
+.order-card-detail-key{
+  font-size: 17px;
+  font-weight: bold;
+
+}
+.order-card-detail-value{
+  font-size: 17px;
 }
 </style>

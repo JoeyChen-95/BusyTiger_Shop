@@ -43,6 +43,11 @@ public class OrderController {
         return orderService.selectOrdersByBuyerId(buyerId);
     }
 
+    @GetMapping(value = "/selectOrdersBySellerId")
+    public List<OrderMyOrderOverviewResponse> selectOrdersBySellerId(@RequestParam("sellerId") Integer sellerId){
+        return orderService.selectOrdersBySellerId(sellerId);
+    }
+
     @PostMapping(value = "/buy")
     public ResponseBody buy(@RequestParam("buyerId") Integer buyerId,
                             @RequestParam("itemId") Integer itemId,

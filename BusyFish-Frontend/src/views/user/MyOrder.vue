@@ -18,7 +18,7 @@
               <b-card-text>
                 <div> <span class="order-card-order-info-key">Order Time:</span> <span class="order-card-order-info-value">&nbsp;{{order.createTime}}</span> </div>
                 <div> <span class="order-card-order-info-key">Status:</span>  <span class="order-card-order-info-value">&nbsp;{{order.status}}</span> </div>
-                <div v-show="order.completeTime"> <span class="order-card-order-info-key">Delivered Time:</span>  <span class="order-card-order-info-value">&nbsp;{{order.completeTime}}</span> </div>
+<!--                <div> <span class="order-card-order-info-key">Delivered Time:</span>  <span class="order-card-order-info-value">&nbsp;{{order.completeTime}}</span> </div>-->
 
               </b-card-text>
 
@@ -29,19 +29,26 @@
                 @click="order.visible=!order.visible">
                 View Order Detail
               </b-button>
+              <b-button
+                href="#"
+                variant="warning"
+                @click="updateOrderStatus(order,'COMPLETED')">
+                Confirm Received
+              </b-button>
               <b-collapse id="collapse-4" v-model="order.visible" class="mt-2">
                 <b-card>
                   <b-card-text>
                     <div> <span class="order-card-detail-key">Item Name:</span> <span class="order-card-detail-value">&nbsp;{{order.itemName}}</span> </div>
+                    <div> <span class="order-card-detail-key">Seller:</span> <span class="order-card-detail-value">&nbsp;{{order.sellerName}}</span> </div>
                     <div> <span class="order-card-detail-key">Status:</span> <span class="order-card-detail-value">&nbsp;{{order.status}}</span> </div>
                     <b-progress :max="100" height="1.5rem" animated>
                       <b-progress-bar :value="order.status=='PROCESSING'?25:(order.status=='SHIPPED'?50:(order.status=='COMPLETED'?100:0))">
                         <span><strong>{{order.status}}</strong></span>
                       </b-progress-bar>
                     </b-progress>
-                    <div v-show="order.status!='PROCESSING'&&order.status!='CANCELED'"> <span class="order-card-detail-value">&nbsp;{{order.courier}}</span> </div>
-                    <div v-show="order.status!='PROCESSING'&&order.status!='CANCELED'"> <span class="order-card-detail-value">&nbsp;{{order.trackingNo}}</span> </div>
-                    <div v-show="order.status!='PROCESSING'&&order.status!='CANCELED'"> <span class="order-card-detail-value">&nbsp;{{order.courierFee}}</span> </div>
+                    <div > <span class="order-card-detail-value">&nbsp;{{order.courier}}</span> </div>
+                    <div> <span class="order-card-detail-value">&nbsp;{{order.trackingNo}}</span> </div>
+                    <div > <span class="order-card-detail-value">&nbsp;{{order.courierFee}}</span> </div>
                     <div> <span class="order-card-detail-key">Shipping Address:</span></div>
                     <div> <span class="order-card-detail-value">&nbsp;{{order.shippingAddressName}}</span> </div>
                     <div> <span class="order-card-detail-value">&nbsp;{{order.shippingAddressPhone}}</span> </div>
@@ -117,6 +124,31 @@ export default {
           this.orderList=response.data
         })
     },
+    refreshOrderList() {
+      this.getUserProfile()
+    },
+    toastMessage(content){
+      this.$bvToast.toast(content, {
+        title: 'Tips',
+        autoHideDelay: 2000,
+        variant: 'warning',
+        solid: true,
+        appendToast: false
+      });
+    },
+    updateOrderStatus(item,status){
+      var form_data=new FormData()
+      form_data.append('orderId',item.id)
+      form_data.append('status',status)
+      AXIOS.put('order/updateOrderStatus',form_data,{})
+        .then(response=>{
+          this.toastMessage(response.data.msg)
+          location.reload()
+        })
+        .catch(e=>{
+          this.toastMessage("Fail to modify status of the order!")
+        })
+    }
   },
   created() {
     this.getUserProfile()

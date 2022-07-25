@@ -90,4 +90,9 @@ class ServerApplicationTests {
 //        List<Item> itemList=itemService.queryItem(null,null,"1",null,null, null,null);
 //        System.out.println(itemList);
     }
+
+    @Test
+    void selectOrdersBySeller(){
+        System.out.println(orderService.selectOrdersBySellerId(1));
+    }
 }
