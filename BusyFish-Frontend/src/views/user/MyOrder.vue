@@ -26,16 +26,24 @@
                 href="#"
                 variant="primary"
                 aria-controls="collapse-4"
-                @click="order.visible=!order.visible">
+                v-b-toggle="'myorder-detail-card-'+order.id">
                 View Order Detail
               </b-button>
               <b-button
                 href="#"
                 variant="warning"
-                @click="updateOrderStatus(order,'COMPLETED')">
+                v-show="order.status=='PROCESSING'||order.status=='SHIPPING'"
+                @click="loadOrderConfirmReceived(order)"
+                v-b-modal.order-confirm-received>
                 Confirm Received
               </b-button>
-              <b-collapse id="collapse-4" v-model="order.visible" class="mt-2">
+              <b-button
+                href="#"
+                variant="danger"
+                v-show="order.status=='COMPLETED'||order.status=='SHIPPED'">
+                Item has problem?
+              </b-button>
+              <b-collapse v-bind:id="'myorder-detail-card-'+order.id" class="mt-2">
                 <b-card>
                   <b-card-text>
                     <div> <span class="order-card-detail-key">Item Name:</span> <span class="order-card-detail-value">&nbsp;{{order.itemName}}</span> </div>
@@ -54,16 +62,21 @@
                     <div> <span class="order-card-detail-value">&nbsp;{{order.shippingAddressPhone}}</span> </div>
                     <div> <span class="order-card-detail-value">&nbsp;{{order.shippingAddressAddress}}</span> </div>
                     <div> <span class="order-card-detail-key">Order Time:</span> <span class="order-card-detail-value">&nbsp;{{order.createTime}}</span> </div>
-
-
                   </b-card-text>
-
                 </b-card>
               </b-collapse>
             </b-card>
           </b-col>
         </b-row>
       </b-container>
+
+      <b-modal size="lg" id="order-confirm-received" @ok="updateOrderStatus(orderConfirmReceived,'COMPLETED')" title="Confirm Received">
+        <h5><b>Click OK to confirm you have received {{orderConfirmReceived.itemName}}</b> </h5>
+        <h5><b>Order ID: {{orderConfirmReceived.id}}</b> </h5>
+        <br>
+        <h4><b style="color: red">Note: Be careful, after confirmation the money will be deposited to the seller's account</b> </h4>
+
+      </b-modal>
 
     </div>
 
@@ -98,7 +111,11 @@ export default {
         shippingAddress:[]
       },
       orderList:[],
-      visible: false
+      visible: false,
+      orderConfirmReceived:{
+        id:'',
+        itemName:''
+      }
     }
 
   },
@@ -143,11 +160,16 @@ export default {
       AXIOS.put('order/updateOrderStatus',form_data,{})
         .then(response=>{
           this.toastMessage(response.data.msg)
-          location.reload()
+          this.refreshOrderList()
+
         })
         .catch(e=>{
           this.toastMessage("Fail to modify status of the order!")
         })
+    },
+    loadOrderConfirmReceived(order){
+      this.orderConfirmReceived.id=order.id
+      this.orderConfirmReceived.itemName=order.itemName
     }
   },
   created() {

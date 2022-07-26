@@ -27,7 +27,7 @@
                 href="#"
                 variant="primary"
                 aria-controls="collapse-4"
-                @click="order.visible=!order.visible">
+                v-b-toggle="'mysell-order-detail-card-'+order.id">
                 View Order Detail
               </b-button>
               <b-button
@@ -35,30 +35,30 @@
                 @click="loadOrderConfirm(order)"
                 :disabled="order.status=='COMPLETED'||order.status=='CANCELED'||order.status=='EXCEPTION'||order.status=='RETURNING'"
                 v-b-modal.order-ship-panel>
-                {{ order.status=='PROCESSING'?'Ship Order':'Modify Courier Information' }}
+                {{ order.status=='PROCESSING'?'Ship Order':'Edit Courier Information' }}&nbsp;<b-icon icon="box-seam"></b-icon>
               </b-button>
               <b-button
                 variant="danger"
                 @click="updateOrderStatus(order,'CANCELED')"
-                :disabled="(order.status=='SHIPPED')||(order.status=='COMPLETED')||order.status=='CANCELED'"
+                v-show="order.status=='PROCESSING'"
                 >
                 Cancel
               </b-button>
-              <b-collapse id="collapse-4" v-model="order.visible" class="mt-2">
+              <b-collapse v-bind:id="'mysell-order-detail-card-'+order.id" class="mt-2">
                 <b-card>
                   <b-card-text>
                     <div> <span class="order-card-detail-key">Order ID:</span> <span class="order-card-detail-value">&nbsp;{{order.id}}</span> </div>
                     <div> <span class="order-card-detail-key">Item Name:</span> <span class="order-card-detail-value">&nbsp;{{order.itemName}}</span> </div>
                     <div> <span class="order-card-detail-key">Buyer:</span> <span class="order-card-detail-value">&nbsp;{{order.buyerName}}</span> </div>
                     <div> <span class="order-card-detail-key">Status:</span> <span class="order-card-detail-value">&nbsp;{{order.status}}</span> </div>
-<!--                    <b-progress :max="100" height="1.5rem">-->
-<!--                      <b-progress-bar :value="order.status=='PROCESSING'?25:(order.status=='SHIPPED'?50:(order.status=='COMPLETED'?100:0))">-->
-<!--                        <span><strong>{{order.status}}</strong></span>-->
-<!--                      </b-progress-bar>-->
-<!--                    </b-progress>-->
+                    <b-progress :max="100" height="1.5rem">
+                      <b-progress-bar :value="order.status=='PROCESSING'?25:(order.status=='SHIPPED'?50:(order.status=='COMPLETED'?100:0))" animated>
+                        <span><strong>{{order.status}}</strong></span>
+                      </b-progress-bar>
+                    </b-progress>
                     <div> <span class="order-card-detail-key">Courier Information</span> </div>
-                    <div> <span class="order-card-detail-value">{{order.courier}}&nbsp;{{order.trackingNo}}</span> </div>
-                    <div> <span class="order-card-detail-value">Courier Fee:&nbsp;{{order.courierFee}}</span> </div>
+                    <div v-show="order.trackingNo!=null&&order.courier.length!=null"> <span class="order-card-detail-value">{{order.courier}}&nbsp;{{order.trackingNo}}</span> </div>
+                    <div v-show="order.courierFee!=null"> <span class="order-card-detail-value">Courier Fee:&nbsp;{{order.courierFee}}</span> </div>
                     <div> <span class="order-card-detail-key">Shipping Address:</span></div>
                     <div> <span class="order-card-detail-value">&nbsp;{{order.shippingAddressName}}</span> </div>
                     <div> <span class="order-card-detail-value">&nbsp;{{order.shippingAddressPhone}}</span> </div>
@@ -190,7 +190,7 @@ export default {
       AXIOS.put('order/shipOrder',form_data,{})
         .then(response=>{
           this.toastMessage(response.data.msg)
-          location.reload()
+          this.refreshOrderList()
         })
         .catch(e=>{
           this.toastMessage("Fail to ship the order!")
@@ -203,7 +203,7 @@ export default {
       AXIOS.put('order/updateOrderStatus',form_data,{})
         .then(response=>{
           this.toastMessage(response.data.msg)
-          location.reload()
+          this.refreshOrderList()
         })
         .catch(e=>{
           this.toastMessage("Fail to modify status of the order!")

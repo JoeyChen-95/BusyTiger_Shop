@@ -36,6 +36,16 @@ public class ItemController {
         return itemService.queryItem(null,null,null,null,null,null,ItemStatus.ACTIVE);
     }
 
+    @PostMapping(value = "/queryItem")
+    public List<ItemOverviewResponse> queryItem(Integer id, Integer sellerId, String name, Integer maxPrice, Integer minPrice, Tag tag,ItemStatus status){
+        return itemService.queryItem(id, sellerId, name, maxPrice, minPrice, tag, status);
+    }
+
+    @GetMapping(value = "/selectItemBySellerId")
+    public List<ItemOverviewResponse> selectItemBySellerId(Integer sellerId){
+        return itemService.queryItem(null,sellerId,null,null,null,null,null);
+    }
+
     @DeleteMapping(value = "/deleteItemById")
     public ResponseBody deleteItemById(@RequestParam("id") Integer id) {
         try {

@@ -9,7 +9,7 @@
     <div>
       <b-button-group size="lg">
         <b-button v-b-toggle.sidebar-no-header variant="primary">
-          <b-icon icon="plus-square"></b-icon> &nbsp;Create Item
+          Create Item&nbsp;<b-icon icon="plus-square"></b-icon>
         </b-button>
         <b-button variant="danger">More Function</b-button>
       </b-button-group>
@@ -89,7 +89,7 @@
       <b-sidebar id="update-sidebar" width="600px" aria-labelledby="sidebar-update-title" no-header shadow right>
         <template #default="{ hide }">
           <div class="p-3">
-            <h4 id="sidebar-update-title">Create an new Item</h4>
+            <h4 id="sidebar-update-title">Update Item</h4>
             <b-container fluid>
               <b-row class="my-1">
                 <b-col sm="2">
@@ -160,8 +160,7 @@
 
       <template #cell(operation)="row">
         <b-button @click="deleteItem(parseInt(row.item.id))" size="sm" variant="danger">
-          <b-icon icon="bag-x"></b-icon> &nbsp;
-          Delete
+          Delete <b-icon icon="trash"></b-icon>
         </b-button>
         <b-dropdown dropright text="Update Status" size="sm" >
           <b-dropdown-item @click="updateItemStatus(row.item.id,'ACTIVE')">ACTIVE</b-dropdown-item>
@@ -171,8 +170,7 @@
           <b-dropdown-item @click="updateItemStatus(row.item.id,'PENDING')">PENDING</b-dropdown-item>
         </b-dropdown>
         <b-button v-b-toggle.update-sidebar size="sm" variant="info" @click="loadUpdateItem(row.item.id,row.item.sellerId,row.item.name,row.item.price,row.item.tag,row.item.status,row.item.description)" >
-          <b-icon icon="bag-check"></b-icon> &nbsp;
-          Update
+          Update&nbsp;<b-icon icon="bag-check"></b-icon>
         </b-button>
       </template>
 

@@ -12,6 +12,7 @@
             <b-nav-item><router-link to="/byCategory">By Category</router-link></b-nav-item>
             <b-nav-item><router-link to="/myOrder">My Order</router-link></b-nav-item>
             <b-nav-item><router-link to="/mySell">My Sell</router-link></b-nav-item>
+            <b-nav-item><router-link to="/myItem">My Published Item</router-link></b-nav-item>
             <b-nav-item><router-link to="/userProfile">My Profile</router-link></b-nav-item>
           </b-navbar-nav>
 

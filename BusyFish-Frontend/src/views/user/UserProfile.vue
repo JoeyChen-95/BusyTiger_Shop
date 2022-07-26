@@ -55,6 +55,52 @@
         </template>
       </b-sidebar>
     </div>
+
+    <div>
+      <b-sidebar id="add-shipping-address-sidebar" width="600px" aria-labelledby="sidebar-no-header-title" no-header shadow right>
+        <template #default="{ hide }">
+          <div class="p-3">
+            <h4 id="sidebar-no-header-title">Add a new shipping address</h4>
+            <b-container fluid>
+
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Name</label>
+                </b-col>
+                <b-col sm="10">
+                  <b-form-input id="input-default" v-model="shippingAddressCreate.name" placeholder="Name of the receiver"></b-form-input>
+                </b-col>
+              </b-row>
+
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Phone</label>
+                </b-col>
+                <b-col sm="10">
+                  <b-form-input id="input-default" v-model="shippingAddressCreate.phone" placeholder="Phone of the receiver"></b-form-input>
+                </b-col>
+              </b-row>
+
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Address</label>
+                </b-col>
+                <b-col sm="10">
+                  <b-form-input id="input-default" v-model="shippingAddressCreate.address" placeholder="Address of the receiver"></b-form-input>
+                </b-col>
+              </b-row>
+
+
+            </b-container>
+
+            <b-button variant="primary" block @click="addNewShippingAddress(shippingAddressCreate)">OK</b-button>
+            <b-button variant="danger" block @click="hide">Close</b-button>
+          </div>
+        </template>
+      </b-sidebar>
+    </div>
+
+
     <div class="box">
 <!--      Left Part of the page: User Avator-->
       <div class="column-left" >
@@ -70,7 +116,7 @@
             <b-button v-b-toggle.edit-user-profile-sidebar variant="outline-primary" style="width: 50%" @click="loadUpdateProfile">Edit My Profile</b-button>
           </div>
           <div class="change-photo-button">
-            <b-button variant="outline-primary" style="width: 50%">Edit Shipping Address</b-button>
+            <b-button v-b-toggle.add-shipping-address-sidebar variant="outline-primary" style="width: 50%" :disabled="currentUserProfile.shippingAddress.length>=10">Add Shipping Address</b-button>
           </div>
         </div>
       </div>
@@ -150,6 +196,11 @@ export default {
         email:'',
         primaryPhone:'',
       },
+      shippingAddressCreate:{
+        name:'',
+        phone:'',
+        address:''
+      },
       userMemberShipOptions:['REGULAR', 'GOLDEN_PRIME', 'DIAMOND_PRIME', 'BANNED', 'FROZEN']
     }
   },
@@ -187,10 +238,34 @@ export default {
           this.toastMessage('Fail to update user')
         })
     },
+    addNewShippingAddress(shippingAddressCreate){
+      var form_data=new FormData()
+      form_data.append('userId',this.currentUserProfile.id)
+      form_data.append('name',shippingAddressCreate.name)
+      form_data.append('phone',shippingAddressCreate.phone)
+      form_data.append('address',shippingAddressCreate.address)
+      AXIOS.post('/user/addShippingAddressToUser',form_data,{})
+        .then(response=>{
+          this.toastMessage(response.data.msg)
+          this.refreshUserProfile()
+        })
+        .catch(e=>{
+          this.toastMessage("Fail to add  the shipping address!")
+        })
+    },
     loadUpdateProfile(){
       this.userProfileUpdate.username=this.currentUserProfile.username
       this.userProfileUpdate.primaryPhone=this.currentUserProfile.primaryPhone
       this.userProfileUpdate.email=this.currentUserProfile.email
+    },
+    toastMessage(content){
+      this.$bvToast.toast(content, {
+        title: 'Tips',
+        autoHideDelay: 2000,
+        variant: 'warning',
+        solid: true,
+        appendToast: false
+      });
     }
   },
   created() {

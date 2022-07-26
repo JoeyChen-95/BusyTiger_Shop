@@ -11,6 +11,7 @@ import Recommend from "../views/user/Recommend";
 import myOrder from "../views/user/MyOrder";
 import mySell from "../views/user/MySell";
 import UserProfile from "../views/user/UserProfile";
+import myItem from "../views/user/MyItem";
 
 Vue.use(Router)
 
@@ -61,6 +62,11 @@ export default new Router({
     {
       path:'/userProfile',
       component: UserProfile
+    },
+    {
+      path:'/myItem',
+      component: myItem
     }
+
   ]
 })

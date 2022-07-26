@@ -24,22 +24,23 @@
               <b-button
                 href="#"
                 variant="primary"
-                aria-controls="order-detail-panel"
-                @click="item.visible=!item.visible">
-                View Order Detail
+                v-b-toggle="'recommend-item-detail-card-'+item.id">
+                View Detail
               </b-button>
               <b-button
-                variant="danger"
+                variant="warning"
                 @click="loadOrderConfirm(item)"
                 v-b-modal.order-confirm-panel>
                 Buy Now
+                <b-icon icon="cart"></b-icon>
               </b-button>
               <b-button
+                @click="toastMessage('The item has been added to your favorites!')"
                 variant="danger">
                 Add To Favorite
                 <b-icon icon="heart-fill"></b-icon>
               </b-button>
-              <b-collapse id="order-detail-panel" v-model="item.visible" class="mt-2">
+              <b-collapse v-bind:id="'recommend-item-detail-card-'+item.id" class="mt-2">
                 <b-card>
                   <b-card-text>
                     <div> <span class="order-card-detail-key">Item Name:</span> <span class="order-card-detail-value">&nbsp;{{item.name}}</span> </div>
@@ -82,6 +83,16 @@
         <div> <span class="order-card-detail-key">Shipping Address:</span> <b-form-select v-model="orderConfirmItem.shippingAddress" :options="currentUserProfile.shippingAddress"></b-form-select></div>
         <div> <span class="order-card-detail-key">Comment:</span> <b-input v-model="orderConfirmItem.comment"></b-input> </div>
         <h2 style="text-align: right;padding-top: 20px"><b>{{orderConfirmItem.price}}￥ </b> </h2>
+
+
+        <template #modal-footer="{ cancel,ok }">
+          <b-button variant="primary" @click="ok()">
+            Pay &nbsp;<b-icon icon="credit-card" aria-hidden="true"></b-icon>
+          </b-button>
+          <b-button variant="danger" @click="cancel()">
+            Cancel
+          </b-button>
+        </template>
       </b-modal>
 
   </div>
@@ -194,7 +205,7 @@ export default {
       this.$bvToast.toast(content, {
         title: 'Tips',
         autoHideDelay: 2000,
-        variant: 'warning',
+        variant: 'success',
         solid: true,
         appendToast: false
       });
