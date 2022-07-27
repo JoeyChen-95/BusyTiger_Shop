@@ -73,6 +73,11 @@
         update orderTable set status=#{status} where id=#{id}
     </update>
 
+    <update id="confirmReceived">
+        update orderTable set status='COMPLETED', completeTime=now() where id=#{id}
+    </update>
+
+
     <delete id="deleteOrderById">
         delete from orderTable where id=#{id}
     </delete>

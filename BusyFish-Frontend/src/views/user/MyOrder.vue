@@ -47,21 +47,23 @@
                 <b-card>
                   <b-card-text>
                     <div> <span class="order-card-detail-key">Item Name:</span> <span class="order-card-detail-value">&nbsp;{{order.itemName}}</span> </div>
-                    <div> <span class="order-card-detail-key">Seller:</span> <span class="order-card-detail-value">&nbsp;{{order.sellerName}}</span> </div>
+                    <div> <span class="order-card-detail-key">Seller:</span> <span class="order-card-detail-value">&nbsp;{{order.sellerName}}</span> <b-button size="sm" variant="primary" @click="viewSellerProfile(order.sellerName)"><b-icon icon="person"></b-icon></b-button></div>
+                    <div> <span class="order-card-detail-key">Price:</span> <span class="order-card-detail-value">&nbsp;{{order.price}}</span> </div>
                     <div> <span class="order-card-detail-key">Status:</span> <span class="order-card-detail-value">&nbsp;{{order.status}}</span> </div>
                     <b-progress :max="100" height="1.5rem" animated>
                       <b-progress-bar :value="order.status=='PROCESSING'?25:(order.status=='SHIPPED'?50:(order.status=='COMPLETED'?100:0))">
                         <span><strong>{{order.status}}</strong></span>
                       </b-progress-bar>
                     </b-progress>
-                    <div > <span class="order-card-detail-value">&nbsp;{{order.courier}}</span> </div>
-                    <div> <span class="order-card-detail-value">&nbsp;{{order.trackingNo}}</span> </div>
-                    <div > <span class="order-card-detail-value">&nbsp;{{order.courierFee}}</span> </div>
+                    <div v-show="order.courier!=null"> <span class="order-card-detail-value">&nbsp;{{order.courier}}</span> </div>
+                    <div v-show="order.trackingNo!=null"> <span class="order-card-detail-value">&nbsp;{{order.trackingNo}}</span> </div>
+                    <div v-show="order.courierFee!=null"><span class="order-card-detail-key">Courier Fee:</span> <span class="order-card-detail-value">&nbsp;{{order.courierFee}}</span> </div>
                     <div> <span class="order-card-detail-key">Shipping Address:</span></div>
-                    <div> <span class="order-card-detail-value">&nbsp;{{order.shippingAddressName}}</span> </div>
+                    <div > <span class="order-card-detail-value">&nbsp;{{order.shippingAddressName}}</span> </div>
                     <div> <span class="order-card-detail-value">&nbsp;{{order.shippingAddressPhone}}</span> </div>
                     <div> <span class="order-card-detail-value">&nbsp;{{order.shippingAddressAddress}}</span> </div>
                     <div> <span class="order-card-detail-key">Order Time:</span> <span class="order-card-detail-value">&nbsp;{{order.createTime}}</span> </div>
+                    <div v-show="order.completeTime!=null"> <span class="order-card-detail-key">Complete Time:</span> <span class="order-card-detail-value">&nbsp;{{order.completeTime}}</span> </div>
                   </b-card-text>
                 </b-card>
               </b-collapse>
@@ -70,7 +72,7 @@
         </b-row>
       </b-container>
 
-      <b-modal size="lg" id="order-confirm-received" @ok="updateOrderStatus(orderConfirmReceived,'COMPLETED')" title="Confirm Received">
+      <b-modal size="lg" id="order-confirm-received" @ok="confirmReceived(orderConfirmReceived.id)" title="Confirm Received">
         <h5><b>Click OK to confirm you have received {{orderConfirmReceived.itemName}}</b> </h5>
         <h5><b>Order ID: {{orderConfirmReceived.id}}</b> </h5>
         <br>
@@ -170,6 +172,26 @@ export default {
     loadOrderConfirmReceived(order){
       this.orderConfirmReceived.id=order.id
       this.orderConfirmReceived.itemName=order.itemName
+    },
+    viewSellerProfile(username){
+      AXIOS.get('/user/selectUserByUsername?username='+username)
+        .then(response=>{
+          if(response.data!=null){
+            window.open(frontendUrl + '/otherUserProfile/userId=' + response.data.id)
+          }
+        })
+    },
+    confirmReceived(id){
+      var form_data=new FormData()
+      form_data.append("id",id)
+      AXIOS.put('/order/confirmReceived',form_data,{})
+        .then(response=>{
+          this.refreshOrderList()
+          this.toastMessage(response.data.msg)
+        })
+        .catch(e=>{
+          this.toastMessage("Fail to confirm received!")
+        })
     }
   },
   created() {

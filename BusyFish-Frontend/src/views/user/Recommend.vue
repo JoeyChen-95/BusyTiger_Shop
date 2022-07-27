@@ -6,6 +6,72 @@
     <h1 class="item-title">
       BusyTiger Shop
     </h1>
+    <div style="padding-left: 10px">
+      <b-button-group size="lg">
+        <b-button variant="primary" v-b-toggle.item-search-bar>Search Item&nbsp;<b-icon icon="search"></b-icon></b-button>
+      </b-button-group>
+    </div>
+    <div style="padding-left: 10px">
+      <b-collapse id="item-search-bar">
+        <b-form inline style="margin: 15px 0" id="item-search-bar">
+          <b-form-group id="input-group-3" label="ID:" label-for="input-1" class="search-bar-key">
+            <b-form-input
+              id="input-1"
+              class="mb-2 mr-sm-2 mb-sm-0"
+              placeholder="Item's ID"
+              v-model="itemSearch.id"
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group id="input-group-3" label="Name/Desc:" label-for="input-1" class="search-bar-key">
+            <b-form-input
+              id="input-1"
+              class="mb-2 mr-sm-2 mb-sm-0"
+              placeholder="Item's Name or Description"
+              v-model="itemSearch.name"
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group id="input-group-3" label="Price Range: from" label-for="input-1" class="search-bar-key">
+            <b-form-input
+              id="input-1"
+              class="mb-2 mr-sm-2 mb-sm-0"
+              placeholder="Lower Price"
+              type="number"
+              v-model="itemSearch.minPrice"
+            ></b-form-input>
+            to&nbsp;
+            <b-form-input
+              id="input-1"
+              class="mb-2 mr-sm-2 mb-sm-0"
+              placeholder="Higher Price"
+              type="number"
+              v-model="itemSearch.maxPrice"
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group id="input-group-3" label="Tag:" label-for="input-1" class="search-bar-key">
+            <b-form-select :options="itemTagForCreate" v-model="itemSearch.tag">
+            </b-form-select>
+          </b-form-group>
+          <b-form-group type="number" id="input-group-3" label="Seller's ID:" label-for="input-1" class="search-bar-key">
+            <b-form-input
+              id="input-1"
+              class="mb-2 mr-sm-2 mb-sm-0"
+              placeholder="Item's Name or Description"
+              v-model="itemSearch.sellerId"
+            ></b-form-input>
+          </b-form-group>
+          <b-button-group style="padding-left: 5px">
+            <b-button variant="primary" @click="searchItem(itemSearch)"><b-icon icon="search"></b-icon></b-button>
+          </b-button-group>
+          <b-button-group style="padding-left: 5px">
+            <b-button variant="primary" @click="refreshItemList" style="padding-left: 10px">Show All</b-button>
+          </b-button-group>
+
+        </b-form>
+
+      </b-collapse>
+
+
+    </div>
     <div>
       <b-container fluid>
         <b-row cols="3">
@@ -30,6 +96,7 @@
               <b-button
                 variant="warning"
                 @click="loadOrderConfirm(item)"
+                v-show="currentUserProfile.id!=item.sellerId"
                 v-b-modal.order-confirm-panel>
                 Buy Now
                 <b-icon icon="cart"></b-icon>
@@ -44,7 +111,7 @@
                 <b-card>
                   <b-card-text>
                     <div> <span class="order-card-detail-key">Item Name:</span> <span class="order-card-detail-value">&nbsp;{{item.name}}</span> </div>
-                    <div> <span class="order-card-detail-key">Seller:</span> <span class="order-card-detail-value">&nbsp;{{item.sellerName}}</span> </div>
+                    <div> <span class="order-card-detail-key">Seller:</span> <span class="order-card-detail-value">&nbsp;{{item.sellerName}}</span> <b-button size="sm" variant="primary" @click="viewSellerProfile(item.sellerId)"><b-icon icon="person"></b-icon></b-button></div>
                     <div> <span class="order-card-detail-key">Price:</span> <span class="order-card-detail-value">&nbsp;{{item.price}}</span> </div>
                     <div> <span class="order-card-detail-key">Category:</span> <span class="order-card-detail-value">&nbsp;{{item.tag}}</span> </div>
                     <div> <span class="order-card-detail-key">Description:</span> <span class="order-card-detail-value">&nbsp;{{item.description}}</span> </div>
@@ -113,7 +180,6 @@ var AXIOS = axios.create({
   crossDomain:true
 })
 
-
 export default {
   data() {
     return {
@@ -142,6 +208,17 @@ export default {
           phone:'',
           code:''
         }
+      },
+      itemTagForCreate: [{text: 'Select a tag', value: null}, 'Book', 'Food', 'Electronics', 'Music', 'Movie','Men_Cloth','Women_Cloth','Sport','Health','Games','Tool','Baby'],
+      itemStatusOptions: [{text: 'Select a status', value: null}, 'ACTIVE', 'SOLD', 'BANNED', 'PRIVATE', 'PENDING'],
+      itemSearch:{
+        id:null,
+        name:null,
+        maxPrice:null,
+        minPrice:0,
+        tag:null,
+        status:null,
+        sellerId: null
       }
     }
 
@@ -201,6 +278,32 @@ export default {
 
         })
     },
+    searchItem(itemSearch){
+      var form_data=new FormData()
+      if(itemSearch.id!=null){
+        form_data.append('id',itemSearch.id)
+      }
+      if(itemSearch.name!=null){
+        form_data.append('name',itemSearch.name)
+      }
+      if(itemSearch.minPrice!=null){
+        form_data.append('minPrice',itemSearch.minPrice)
+      }
+      if(itemSearch.maxPrice!=null){
+        form_data.append('maxPrice',itemSearch.maxPrice)
+      }
+      if(itemSearch.tag!=null){
+        form_data.append('tag',itemSearch.tag)
+      }
+      if(itemSearch.sellerId!=null){
+        form_data.append('sellerId',itemSearch.sellerId)
+      }
+      form_data.append('status','ACTIVE')
+      AXIOS.post('/item/queryItem',form_data,{})
+        .then(response=>{
+          this.itemList=response.data
+        })
+    },
     toastMessage(content){
       this.$bvToast.toast(content, {
         title: 'Tips',
@@ -209,6 +312,14 @@ export default {
         solid: true,
         appendToast: false
       });
+    },
+    viewSellerProfile(id){
+      AXIOS.get('/user/selectUserById?userId='+id)
+        .then(response=>{
+          if(response.data!=null){
+            window.open(frontendUrl + '/otherUserProfile/userId=' + id)
+          }
+        })
     }
   },
   created() {

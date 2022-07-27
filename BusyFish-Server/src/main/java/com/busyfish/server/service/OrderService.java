@@ -68,7 +68,7 @@ public class OrderService {
                     seller=userService.selectUserById(item.getSellerId());
                 }
                 if(item!=null&&seller!=null){
-                    responseList.add(new OrderMyOrderOverviewResponse(order.getId(), order.getBuyerId(), order.getItemId(), item.getName(), order.getStatus(),order.getCourier(), order.getTrackingNo(), order.getCourierFee(), shipping.getName(),shipping.getPhone(),shipping.getAddress(),order.getCreateTime(),order.getCompleteTime(),seller.getUsername(),buyer.getUsername()));
+                    responseList.add(new OrderMyOrderOverviewResponse(order.getId(), order.getBuyerId(), order.getItemId(), item.getName(), order.getStatus(),order.getCourier(), order.getTrackingNo(), order.getCourierFee(), shipping.getName(),shipping.getPhone(),shipping.getAddress(),order.getCreateTime(),order.getCompleteTime(),seller.getUsername(),buyer.getUsername(),item.getPrice()));
                 }
 
             }
@@ -204,7 +204,7 @@ public class OrderService {
                 Shipping shipping=selectShippingAddressByOrderId(order.getId());
                 User buyer=userService.selectUserById(order.getBuyerId());
                 if(item!=null&&buyer!=null){
-                    responseList.add(new OrderMyOrderOverviewResponse(order.getId(), order.getBuyerId(), order.getItemId(), item.getName(), order.getStatus(),order.getCourier(), order.getTrackingNo(), order.getCourierFee(), shipping.getName(),shipping.getPhone(),shipping.getAddress(),order.getCreateTime(),order.getCompleteTime(),seller.getUsername(), buyer.getUsername()));
+                    responseList.add(new OrderMyOrderOverviewResponse(order.getId(), order.getBuyerId(), order.getItemId(), item.getName(), order.getStatus(),order.getCourier(), order.getTrackingNo(), order.getCourierFee(), shipping.getName(),shipping.getPhone(),shipping.getAddress(),order.getCreateTime(),order.getCompleteTime(),seller.getUsername(), buyer.getUsername(), item.getPrice()));
                 }
 
             }
@@ -214,6 +214,14 @@ public class OrderService {
             throw new OrderException(ErrorCode.ORDER_EXCEPTION,"Fail to find orders!");
         }
 
+    }
+
+    @Transactional
+    public void confirmReceived(String id){
+        if(selectOrderById(id)==null){
+            throw new OrderException(ErrorCode.NO_EXISTING_ORDER,"Order does not exist!");
+        }
+        orderMapper.confirmReceived(id);
     }
 
 

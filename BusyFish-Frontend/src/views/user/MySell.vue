@@ -16,7 +16,8 @@
 
               </div>
               <b-card-text>
-                <div> <span class="order-card-order-info-key">Buyer:</span> <span class="order-card-order-info-value">&nbsp;{{order.buyerName}}</span> </div>
+                <div> <span class="order-card-order-info-key">Buyer:</span> <span class="order-card-order-info-value">&nbsp;{{order.buyerName}}</span>  <b-button size="sm" variant="primary" @click="viewSellerProfile(order.buyerName)"><b-icon icon="person"></b-icon></b-button></div>
+                <div> <span class="order-card-order-info-key">Paid:</span> <span class="order-card-order-info-value">&nbsp;{{order.price}}</span> </div>
                 <div> <span class="order-card-order-info-key">Order Time:</span> <span class="order-card-order-info-value">&nbsp;{{order.createTime}}</span> </div>
                 <div> <span class="order-card-order-info-key">Status:</span>  <span class="order-card-order-info-value">&nbsp;{{order.status}}</span> </div>
                 <div v-show="order.completeTime"> <span class="order-card-order-info-key">Delivered Time:</span>  <span class="order-card-order-info-value">&nbsp;{{order.completeTime}}</span> </div>
@@ -49,7 +50,7 @@
                   <b-card-text>
                     <div> <span class="order-card-detail-key">Order ID:</span> <span class="order-card-detail-value">&nbsp;{{order.id}}</span> </div>
                     <div> <span class="order-card-detail-key">Item Name:</span> <span class="order-card-detail-value">&nbsp;{{order.itemName}}</span> </div>
-                    <div> <span class="order-card-detail-key">Buyer:</span> <span class="order-card-detail-value">&nbsp;{{order.buyerName}}</span> </div>
+                    <div> <span class="order-card-detail-key">Buyer:</span> <span class="order-card-detail-value">&nbsp;{{order.buyerName}}</span> <b-button size="sm" variant="primary" @click="viewSellerProfile(order.sellerName)"><b-icon icon="person"></b-icon></b-button></div>
                     <div> <span class="order-card-detail-key">Status:</span> <span class="order-card-detail-value">&nbsp;{{order.status}}</span> </div>
                     <b-progress :max="100" height="1.5rem">
                       <b-progress-bar :value="order.status=='PROCESSING'?25:(order.status=='SHIPPED'?50:(order.status=='COMPLETED'?100:0))" animated>
@@ -208,8 +209,15 @@ export default {
         .catch(e=>{
           this.toastMessage("Fail to modify status of the order!")
         })
-    }
-    ,
+    },
+    viewSellerProfile(username){
+      AXIOS.get('/user/selectUserByUsername?username='+username)
+        .then(response=>{
+          if(response.data!=null){
+            window.open(frontendUrl + '/otherUserProfile/userId=' + response.data.id)
+          }
+        })
+    },
     toastMessage(content){
       this.$bvToast.toast(content, {
         title: 'Tips',

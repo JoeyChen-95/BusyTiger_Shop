@@ -12,6 +12,9 @@ import myOrder from "../views/user/MyOrder";
 import mySell from "../views/user/MySell";
 import UserProfile from "../views/user/UserProfile";
 import myItem from "../views/user/MyItem";
+import otherUserProfile from "../views/user/OtherUserProfile";
+import Homepage from "../views/Homepage";
+import signUp from "../views/SignUp";
 
 Vue.use(Router)
 
@@ -20,7 +23,15 @@ export default new Router({
   routes: [
     {
       path:'/',
+      component: Homepage
+    },
+    {
+      path:'/login',
       component: Login
+    },
+    {
+      path:'/signUp',
+      component:signUp
     },
     {
       path: '/adminWelcome',
@@ -66,6 +77,10 @@ export default new Router({
     {
       path:'/myItem',
       component: myItem
+    },
+    {
+      path:'/otherUserProfile/*',
+      component: otherUserProfile
     }
 
   ]

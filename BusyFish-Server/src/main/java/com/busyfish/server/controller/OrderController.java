@@ -7,6 +7,7 @@ import com.busyfish.server.model.OrderEnum.OrderMyOrderOverviewResponse;
 import com.busyfish.server.model.OrderEnum.OrderStatus;
 import com.busyfish.server.model.UserEnum.Shipping;
 import com.busyfish.server.service.OrderService;
+import com.sun.org.apache.regexp.internal.RE;
 import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,6 +122,16 @@ public class OrderController {
             return orderService.selectShippingAddressByOrderId(orderId);
         }catch (Exception e){
             return new Shipping();
+        }
+    }
+
+    @PutMapping(value = "/confirmReceived")
+    public ResponseBody confirmReceived(@RequestParam("id") String id){
+        try{
+            orderService.confirmReceived(id);
+            return new ResponseBody(200,"Confirm recevied successfully!");
+        }catch (Exception e){
+            return new ResponseBody(500,"Fail to confirm received: "+e.getMessage());
         }
     }
 }

@@ -22,5 +22,6 @@ public interface OrderMapper {
     void deleteOrderById(String id);
 
     List<Order> selectOrdersBySellerId(Integer sellerId);
+    void confirmReceived(String id);
 
 }
