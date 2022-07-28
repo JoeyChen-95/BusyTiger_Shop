@@ -17,49 +17,61 @@
             controls
             indicators
             background="#ababab"
-            img-width="1px"
-            img-height="1px"
+            img-width="1024"
+            img-height="480"
             style="text-shadow: 1px 1px 2px #333;"
             @sliding-start="onSlideStart"
             @sliding-end="onSlideEnd"
           >
             <!-- Text slides with image -->
+
             <b-carousel-slide
-              caption="First slide"
-              text="Nulla vitae elit libero, a pharetra augue mollis interdum."
-              img-src="https://placekitten.com/50/50"
+              caption="BusyTiger Inc."
+              text="Found by 2022, one of the biggest online free market in the world. Provide clients with excellent and satisfactory service."
+              img-src="https://picsum.photos/id/593/1024/480/"
+            ></b-carousel-slide>
+            <b-carousel-slide
+              caption="Convenient&Fast"
+              text="Via your laptops or computers, you can purchase and sell goods worldwide."
+              img-src="https://picsum.photos/id/0/1024/480/"
             ></b-carousel-slide>
 
+            <b-carousel-slide
+              caption="All kinds of merchandise"
+              text="BusyTiger shop allows user to access all kinds of goods."
+              img-src="https://picsum.photos/id/491/1024/480/"
+            ></b-carousel-slide>
+
+
             <!-- Slides with custom text -->
-            <b-carousel-slide img-src="https://placekitten.com/50/50">
-              <h1>Hello world!</h1>
+            <b-carousel-slide img-src="https://picsum.photos/id/292/1024/480/">
+              <h1>BusyTiger EAT</h1>
             </b-carousel-slide>
             <!-- Slides with image only -->
-            <b-carousel-slide img-src="https://placekitten.com/50/50"></b-carousel-slide>
+
+            <b-carousel-slide img-src="https://picsum.photos/id/535/1024/480">
+              <h1>BusyTiger FASHION</h1>
+            </b-carousel-slide>
 
 
           </b-carousel>
 
-          <p class="mt-4">
-            Slide #: {{ slide }}<br>
-            Sliding: {{ sliding }}
-          </p>
         </div>
 
 
 
 
-        <div class="busyfish-desc" >
-          BusyTiger, one of the biggest online second hands shop in the world. Provide clients with excellent and satisfactory service.
-        </div>
+<!--        <div class="busyfish-desc" >-->
+<!--          BusyTiger, one of the biggest online second hands shop in the world. Provide clients with excellent and satisfactory service.-->
+<!--        </div>-->
 
         <div class="signUp">
-          <b-button href="/login" size="lg" type="submit" variant="primary">Login in
+          <b-button @click="$router.push('/login')" size="lg" type="submit" variant="primary">Login in
           </b-button>
         </div>
 
         <div class="signUp">
-          <b-button href="/signUp" size="lg" type="submit" variant="success">Don't have an account?
+          <b-button @click="$router.push('/signUp')" size="lg" type="submit" variant="success">Don't have an account?
           </b-button>
         </div>
         <div style="padding-top: 14vh"></div>

@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Created-By: IntelliJ IDEA
+Built-By: junjian.chen
+Build-Jdk: version 1.8.0_151
+Implementation-Title: Test
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: com.busyfish
+Main-Class: ${start-class}
+

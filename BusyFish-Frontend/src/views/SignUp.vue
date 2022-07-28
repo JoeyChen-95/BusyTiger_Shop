@@ -1,11 +1,9 @@
 <template id="login">
   <div class="user-main">
     <div>
+      <b-button @click="$router.push('/')" variant="outline-primary" class="goToHome"><b-icon icon="house"></b-icon></b-button>
       <div class="user-info">
         Sign Up
-      </div>
-      <div>
-        {{usernameRepeat}}
       </div>
     </div>
 
