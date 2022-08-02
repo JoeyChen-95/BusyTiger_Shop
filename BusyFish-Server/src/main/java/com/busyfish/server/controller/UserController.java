@@ -111,7 +111,9 @@ public class UserController {
             userService.login(username, password);
             request.getSession().setAttribute("userId",selectUserByUsername(username).getId().toString());
             request.getSession().setAttribute("username",username);
-            System.out.println("Set Session ID "+request.getSession().getId());
+            log.info("Login: Set Session ID "+request.getSession().getId());
+            log.info("Login: IP Address sending request: "+request.getRemoteAddr()+":"+request.getRemotePort());
+
         } catch (UserException e) {
             return new ResponseBody(500, e.getMessage());
         }
@@ -122,10 +124,20 @@ public class UserController {
     @GetMapping(value = "/getCurrentUserId")
     public User getCurrentSessionUserId(HttpServletRequest request){
         if(request.getSession().getAttribute("userId")==null){
+
+            log.info("getCurrentSessionUserId: User Id is null!");
+            log.info("getCurrentSessionUserId: Current Session ID-->"+request.getSession().getId());
+            log.info("getCurrentSessionUserId: IP Address sending request: "+request.getRemoteAddr()+":"+request.getRemotePort());
+
             return null;
         }else{
             Integer userId= Integer.valueOf(request.getSession().getAttribute("userId").toString());
             String username= request.getSession().getAttribute("username").toString();
+
+            log.info("getCurrentSessionUserId: User Id found!");
+            log.info("getCurrentSessionUserId: Current Session Id-->"+userId+"  Current Session Id-->"+request.getSession().getId());
+            log.info("getCurrentSessionUserId: IP Address sending request: "+request.getRemoteAddr()+":"+request.getRemotePort());
+
             User user=selectUserById(userId);
             user.setPassword("????????");
             return user;

@@ -28,7 +28,6 @@
                 <b-icon icon="person-circle"></b-icon>
                 <em>Hello, {{ currentUser.username }} !</em>
               </template>
-              <b-dropdown-item href="/userProfile">Profile</b-dropdown-item>
               <b-dropdown-item @click="deleteSession" href="/">Sign Out</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item><router-link to="/userProfile">My Profile</router-link></b-nav-item>
