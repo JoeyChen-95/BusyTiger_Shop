@@ -66,7 +66,7 @@ public class UserService {
         shippingInfo.put("phone", shipping.getPhone());
         shippingInfo.put("address", shipping.getAddress());
         String shippingListKey = "user_" + userId + "_shippingList";
-        String shippingKey = "user_" + userId + "_shipping_" + Math.abs(shipping.hashCode());
+        String shippingKey = "user_" + userId + "_shipping_" + (int)Math.abs(shipping.hashCode()*Math.random()+Math.random()*1000);
         if (redisTemplate.boundListOps(shippingListKey) != null) {
             BoundListOperations list = redisTemplate.boundListOps(shippingListKey);
             if (list.size() >= 10L) {
@@ -82,20 +82,38 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteShippingAddressFromUser(Integer userId, Integer shippingCode) {
+    public void deleteShippingAddressFromUser(Integer userId, String shippingCode) {
         if (selectUserById(userId) == null) {
             throw new UserException(ErrorCode.NO_EXISTING_USER, "The user does not exist!");
         }
         String shippingListKey = "user_" + userId + "_shippingList";
-        String code = "user_" + userId + "_shipping_" + shippingCode;
         List<JSONObject> shippingAddressList = selectAllShippingAddressFromUser(userId);
         for (JSONObject shippingAddress : shippingAddressList) {
-            if (shippingAddress.get("code").toString().equals(code)) {
-                redisTemplate.delete(code);
+            if (shippingAddress.get("code").toString().equals(shippingCode)) {
+                redisTemplate.delete(shippingCode);
                 BoundListOperations list = redisTemplate.boundListOps(shippingListKey);
-                list.remove(1L, code);
+                list.remove(1L, shippingCode);
             }
         }
+    }
+
+    @Transactional
+    public void updateShippingAddress(String shippingCode, Shipping shipping) {
+        if(redisTemplate.hasKey(shippingCode)==false){
+            throw new UserException(ErrorCode.NO_EXISTING_SHIPPING_ADDRESS,"This shipping address does not exist!");
+        }
+        if(shipping.getName()!=null){
+            redisTemplate.boundHashOps(shippingCode).put("name",shipping.getName());
+        }
+
+        if(shipping.getAddress()!=null){
+            redisTemplate.boundHashOps(shippingCode).put("address",shipping.getAddress());
+        }
+
+        if(shipping.getPhone()!=null){
+            redisTemplate.boundHashOps(shippingCode).put("phone",shipping.getPhone());
+        }
+
     }
 
     @Transactional

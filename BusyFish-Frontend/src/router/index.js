@@ -15,6 +15,7 @@ import myItem from "../views/user/MyItem";
 import otherUserProfile from "../views/user/OtherUserProfile";
 import Homepage from "../views/Homepage";
 import signUp from "../views/SignUp";
+import itemDetail from "../views/user/ItemDetail";
 
 Vue.use(Router)
 
@@ -59,6 +60,10 @@ export default new Router({
       component:ByCategory
     },
     {
+      path:'/recommend/*',
+      component:Recommend
+    },
+    {
       path:'/recommend',
       component:Recommend
     },
@@ -81,6 +86,18 @@ export default new Router({
     {
       path:'/otherUserProfile/*',
       component: otherUserProfile
+    },
+    {
+      path:'/otherUserProfile',
+      component: otherUserProfile
+    },
+    {
+      path:'/itemDetail/*',
+      component: itemDetail
+    },
+    {
+      path:'/itemDetail',
+      component: itemDetail
     }
 
   ]

@@ -40,9 +40,11 @@
 
               <b-row cols="3">
                 <b-col v-for="order in orderList" style="padding-top: 20px">
-                  <b-card bg-variant="light" >
+                  <b-card bg-variant="light">
                     <div>
-                      <h3 class="order-card-order-name-title">{{order.itemName}} &nbsp;<b-icon icon="cart"></b-icon></h3>
+                      <router-link v-bind:to="'/itemDetail/'+order.itemId">
+                        <h3 class="order-card-order-name-title">{{order.itemName}} &nbsp;<b-icon icon="cart"></b-icon></h3>
+                      </router-link>
                     </div>
                   </b-card>
                 </b-col>
@@ -57,7 +59,9 @@
                 <b-col v-for="order in sellList" style="padding-top: 20px">
                   <b-card bg-variant="light" >
                     <div>
-                      <h3 class="order-card-order-name-title">{{order.itemName}} &nbsp;<b-icon icon="cart"></b-icon></h3>
+                      <router-link v-bind:to="'/itemDetail/'+order.itemId">
+                        <h3 class="order-card-order-name-title">{{order.itemName}} &nbsp;<b-icon icon="cash-coin"></b-icon></h3>
+                      </router-link>
                     </div>
                   </b-card>
                 </b-col>
@@ -209,6 +213,14 @@ export default {
   padding: 10px;
   background: #fff;
   margin: 0 auto;
+}
+.router-link-active {
+  font-weight: bolder;
+  color: black;
+}
+a{
+  text-decoration: none;
+  color: black;
 }
 
 

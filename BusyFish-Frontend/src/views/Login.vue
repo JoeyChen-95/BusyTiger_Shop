@@ -52,7 +52,12 @@
         </b-form>
 
         <div class="signUp">
-          <b-button @click="" size="lg" type="submit" variant="success">Don't have an account?
+          <b-button size="lg" type="submit" variant="warning" v-b-popover.hover="'Contact: 707973013@qq.com to reset'" title="Reset your Password">Forget My Password
+          </b-button>
+        </div>
+
+        <div class="signUp">
+          <b-button @click="$router.push('/signUp')" size="lg" type="submit" variant="success">Don't have an account?
           </b-button>
         </div>
         <div style="padding-top: 14vh"></div>
@@ -124,7 +129,7 @@ export default {
         AXIOS.get('/user/login?username='+username+'&password='+password)
           .then(response=>{
             if(response.data.code==200){
-              this.$router.push('recommend')
+              this.$router.push('recommend/')
             }else{
               this.form.error=response.data.msg
             }
@@ -138,7 +143,7 @@ export default {
       AXIOS.get('user/getCurrentUserId')
         .then(response=>{
           if(response.data.id){
-            this.$router.push('recommend')
+            this.$router.push('recommend/')
           }
         })
     },

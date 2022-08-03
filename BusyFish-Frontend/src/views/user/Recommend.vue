@@ -304,6 +304,13 @@ export default {
           this.itemList=response.data
         })
     },
+    scanURLForSearch(){
+      var currentURL=window.location.href
+      var reg=/recommend\/(.*)/
+      var matchList=currentURL.match(reg)
+      this.itemSearch.tag=matchList.length>1?matchList[1]:null
+      this.searchItem(this.itemSearch)
+    },
     toastMessage(content){
       this.$bvToast.toast(content, {
         title: 'Tips',
@@ -325,6 +332,7 @@ export default {
   created() {
     this.getUserProfile()
     this.getItemList()
+    this.scanURLForSearch()
   }
 }
 </script>

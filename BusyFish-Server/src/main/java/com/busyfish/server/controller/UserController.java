@@ -78,9 +78,9 @@ public class UserController {
 
     @DeleteMapping(value = "/deleteShippingAddressFromUser")
     public ResponseBody deleteShippingAddressFromUser(@RequestParam("userId") Integer userId,
-                                                      @RequestParam("shippingNum") Integer shippingNum) {
+                                                      @RequestParam("shippingCode") String shippingCode) {
         try {
-            userService.deleteShippingAddressFromUser(userId, shippingNum);
+            userService.deleteShippingAddressFromUser(userId, shippingCode);
         } catch (UserException e) {
             return new ResponseBody(500, e.getMessage());
         }
@@ -90,6 +90,23 @@ public class UserController {
     @GetMapping(value = "/selectAllShippingAddressFromUser")
     public List<JSONObject> selectAllShippingAddressFromUser(@RequestParam("userId") Integer userId) {
         return userService.selectAllShippingAddressFromUser(userId);
+    }
+
+    @PutMapping(value = "/updateShippingAddress")
+    public ResponseBody updateShippingAddress(@RequestParam("shippingCode") String shippingCode,
+                                              String name,
+                                              String phone,
+                                              String address){
+        Shipping shipping=new Shipping();
+        shipping.setPhone(phone);
+        shipping.setName(name);
+        shipping.setAddress(address);
+        try{
+            userService.updateShippingAddress(shippingCode,shipping);
+            return new ResponseBody(200,"Update shipping address successfully");
+        }catch (Exception e){
+            return new ResponseBody(500,e.getMessage());
+        }
     }
 
     @GetMapping(value = "/login")

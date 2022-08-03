@@ -58,23 +58,43 @@
 
         </div>
 
+        <div style="padding-top: 20px">
+          <b-jumbotron>
+            <template #header>Join BusyTiger</template>
 
+            <template #lead>
+              Create an account or log in with an existing account, enjoy the fast and convenient seller/buyer service.
+            </template>
 
+            <hr class="my-4">
 
-<!--        <div class="busyfish-desc" >-->
-<!--          BusyTiger, one of the biggest online second hands shop in the world. Provide clients with excellent and satisfactory service.-->
-<!--        </div>-->
-
-        <div class="signUp">
-          <b-button @click="$router.push('/login')" size="lg" type="submit" variant="primary">Login in
-          </b-button>
+            <b-button @click="$router.push('/login')" size="lg" type="submit" variant="primary">Login in
+            </b-button>
+            <b-button @click="$router.push('/signUp')" size="lg" type="submit" variant="success">Don't have an account?
+            </b-button>
+          </b-jumbotron>
         </div>
 
-        <div class="signUp">
-          <b-button @click="$router.push('/signUp')" size="lg" type="submit" variant="success">Don't have an account?
-          </b-button>
+        <div>
+          <b-card
+            title="Author's Github"
+            img-src="https://logos-world.net/wp-content/uploads/2020/11/GitHub-Emblem.png"
+            img-alt="Image"
+            img-top
+            tag="article"
+            style="max-width: 20rem;"
+            class="mb-2"
+          >
+            <b-card-text>
+              Click here to view the author's github page.
+            </b-card-text>
+
+            <b-button href="https://github.com/JoeyChen-95" variant="primary">Go</b-button>
+          </b-card>
+
         </div>
-        <div style="padding-top: 14vh"></div>
+
+
 
       </div>
     </div>

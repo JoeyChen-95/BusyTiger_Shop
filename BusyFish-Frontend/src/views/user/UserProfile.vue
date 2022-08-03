@@ -55,6 +55,49 @@
         </template>
       </b-sidebar>
     </div>
+<!--    Edit Shipping Address Sidebar-->
+    <div>
+      <b-sidebar id="edit-shipping-sidebar" width="600px" aria-labelledby="sidebar-no-header-title" no-header shadow right>
+        <template #default="{ hide }">
+          <div class="p-3">
+            <h4 id="sidebar-no-header-title">Edit My Shipping Address</h4>
+            <b-container fluid>
+
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Name</label>
+                </b-col>
+                <b-col sm="10">
+                  <b-form-input id="input-default" v-model="shippingAddressUpdate.name" placeholder="Enter Name"></b-form-input>
+                </b-col>
+              </b-row>
+
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Phone</label>
+                </b-col>
+                <b-col sm="10">
+                  <b-form-input id="input-default" v-model="shippingAddressUpdate.phone" placeholder="Enter Phone"></b-form-input>
+                </b-col>
+              </b-row>
+
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Address</label>
+                </b-col>
+                <b-col sm="10">
+                  <b-form-input id="input-default" v-model="shippingAddressUpdate.address" placeholder="Enter Address"></b-form-input>
+                </b-col>
+              </b-row>
+
+            </b-container>
+
+            <b-button variant="primary" block @click="updateShippingAddress(shippingAddressUpdate)">OK</b-button>
+            <b-button variant="danger" block @click="hide">Close</b-button>
+          </div>
+        </template>
+      </b-sidebar>
+    </div>
 
     <div>
       <b-sidebar id="add-shipping-address-sidebar" width="600px" aria-labelledby="sidebar-no-header-title" no-header shadow right>
@@ -149,7 +192,16 @@
                 <b>Shipping Addresses</b>
               </b-col>
               <b-card>
-                <b-table striped hover :items="currentUserProfile.shippingAddress" :fields="shippingAddressField"></b-table>
+                <b-table striped hover :items="currentUserProfile.shippingAddress" :fields="shippingAddressField">
+                  <template #cell(operation)="row">
+                    <b-button @click="deleteShippingAddress(row.item.code)" variant="danger" size="sm">
+                      Delete&nbsp;<b-icon icon="x"></b-icon>
+                    </b-button>
+                    <b-button v-b-toggle.edit-shipping-sidebar @click="loadUpdateShippingAddress(row.item)" variant="info" size="sm">
+                      Edit&nbsp;<b-icon icon="person-lines-fill"></b-icon>
+                    </b-button>
+                  </template>
+                </b-table>
               </b-card>
             </b-row>
           </b-card>
@@ -182,7 +234,7 @@ export default {
   data() {
     return {
       fields: ['id', 'username','memberShip', 'show_details','Operation'],
-      shippingAddressField: ['name','phone', 'address'],
+      shippingAddressField: ['name','phone', 'address','operation'],
       currentUserProfile:{
         id:'',
         username:'',
@@ -200,6 +252,12 @@ export default {
         name:'',
         phone:'',
         address:''
+      },
+      shippingAddressUpdate:{
+        code:'',
+        name:'',
+        phone:'',
+        address:'',
       },
       userMemberShipOptions:['REGULAR', 'GOLDEN_PRIME', 'DIAMOND_PRIME', 'BANNED', 'FROZEN']
     }
@@ -257,6 +315,41 @@ export default {
       this.userProfileUpdate.username=this.currentUserProfile.username
       this.userProfileUpdate.primaryPhone=this.currentUserProfile.primaryPhone
       this.userProfileUpdate.email=this.currentUserProfile.email
+    },
+    loadUpdateShippingAddress(item){
+      this.shippingAddressUpdate.code=item.code
+      this.shippingAddressUpdate.address=item.address
+      this.shippingAddressUpdate.name=item.name
+      this.shippingAddressUpdate.phone=item.phone
+    },
+    updateShippingAddress(shippingAddressUpdate){
+      var form_data=new FormData()
+      form_data.append("shippingCode",shippingAddressUpdate.code)
+      form_data.append("name",shippingAddressUpdate.name)
+      form_data.append("phone",shippingAddressUpdate.phone)
+      form_data.append("address",shippingAddressUpdate.address)
+      AXIOS.put('/user/updateShippingAddress',form_data,{})
+        .then(response=>{
+          this.toastMessage(response.data.msg)
+          this.refreshUserProfile()
+        })
+        .catch(e=>{
+          this.toastMessage("Fail to update shipping address!")
+        })
+    },
+    deleteShippingAddress(code){
+      // var form_data=new FormData()
+      // form_data.append('userId',this.currentUserProfile.id)
+      // form_data.append('shippingNum',row.code)
+      AXIOS.delete('/user/deleteShippingAddressFromUser?userId='+this.currentUserProfile.id+"&shippingCode="+code)
+        .then(response=>{
+          this.toastMessage(response.data.msg)
+          this.refreshUserProfile()
+        })
+        .catch(e=>{
+          this.toastMessage('Fail to delete shipping address!')
+        })
+
     },
     toastMessage(content){
       this.$bvToast.toast(content, {

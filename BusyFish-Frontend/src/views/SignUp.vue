@@ -90,21 +90,48 @@
               Your confirm password is not identical to your password
             </b-form-invalid-feedback>
 
-            <b-form-text id="userPrimaryPhone">Your phone number</b-form-text>
+            <b-form-text id="userPrimaryPhone">Your phone number.</b-form-text>
           </div>
 
           <div style="text-align: center">
             <div class="formInputError">
               {{ formInputError.usernameInputError }}
             </div>
-            <b-button @click="signUp(form)" size="lg" type="submit" variant="primary" :disabled="!(checkEmail&&checkConfirmPassword&&checkUsername&&checkPassword&&checkPhone)">Sign Up!</b-button>
+            <div>
+              <b-form-checkbox
+                id="checkbox-1"
+                v-model="form.acceptTerm"
+                name="checkbox-1"
+              >
+                I accept the terms and use
+              </b-form-checkbox>
+
+            </div>
+            <div>
+              <b-button variant="info" size="sm" v-b-modal.terms-and-use>View Terms and Use</b-button>
+            </div>
+            <br>
+            <b-button @click="signUp(form)" size="lg" type="submit" variant="primary" :disabled="!(checkEmail&&checkConfirmPassword&&checkUsername&&checkPassword&&checkPhone&&form.acceptTerm)">Sign Up!</b-button>
             <b-button size="lg" type="reset" variant="danger">Reset</b-button>
+            <b-button size="lg" @click="$router.push('/')" >Close</b-button>
           </div>
         </b-form>
 
         <div style="padding-top: 14vh"></div>
 
       </div>
+
+      <b-modal id="terms-and-use" title="Terms and Use of BusyTiger">
+        <p>
+          1. The BusyTiger Inc. has right to use and share the information of users.
+          <br>
+          2. The company is not responsible for loss of any trade between users.
+          <br>
+          3. A 1% service fee of items' price is charged for every order.
+          <br>
+          4. Fraud, selling fake, illegal products will cause ban or freeze of your account.
+        </p>
+      </b-modal>
     </div>
 
 
@@ -134,6 +161,7 @@ export default {
         userPassword: '',
         userPrimaryPhone:'',
         confirmPassword:'',
+        acceptTerm:false,
         error: ''
       },
       show: true,

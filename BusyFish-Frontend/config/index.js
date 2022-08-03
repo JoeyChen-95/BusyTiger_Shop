@@ -25,6 +25,8 @@ module.exports = {
     env: require('./dev.env'),
     host: '47.103.219.4',
     port: '8087',
+    // backendHost: 'localhost',
+    // backendPort: '8080',
     backendHost: '47.103.219.4',
     backendPort: '8080/Server_war',
     autoOpenBrowser: true,
