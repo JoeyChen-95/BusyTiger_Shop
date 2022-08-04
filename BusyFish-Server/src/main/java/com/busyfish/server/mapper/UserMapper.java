@@ -17,4 +17,8 @@ public interface UserMapper {
 
     void updateUser(Integer id, String username,String password, String email, String primaryPhone, String memberShip);
     void updateUserProfile(Integer id, String username,String email, String primaryPhone);
+
+    List<User> queryUser(Integer id, String username, String primaryPhone, String email, String memberShip);
+
+    void updatePassword(Integer id, String newPassword);
 }

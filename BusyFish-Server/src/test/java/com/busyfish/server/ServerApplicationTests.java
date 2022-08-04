@@ -5,6 +5,7 @@ import com.busyfish.server.model.ItemEnum.ItemStatus;
 import com.busyfish.server.model.ItemEnum.Tag;
 import com.busyfish.server.model.OrderEnum.Courier;
 import com.busyfish.server.model.User;
+import com.busyfish.server.model.UserEnum.UserMemberShip;
 import com.busyfish.server.service.ItemService;
 import com.busyfish.server.service.OrderService;
 import com.busyfish.server.service.UserService;
@@ -94,5 +95,12 @@ class ServerApplicationTests {
 //    @Test
 //    void selectOrdersBySeller(){
 //        System.out.println(orderService.selectOrdersBySellerId(1));
+//    }
+
+//    @Test
+//    void testQueryUser(){
+//        for(User u:userService.queryUser(null,null,"15280071872",null, null)){
+//            System.out.println(u);
+//        }
 //    }
 }

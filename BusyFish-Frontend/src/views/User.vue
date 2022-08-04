@@ -17,11 +17,62 @@
           <b-icon icon="eye-slash" v-show="showPassword"></b-icon>
           {{ showPassword?'Hide Password':'Show Password'}}
         </b-button>
+        <b-button variant="primary" v-b-toggle.item-search-bar>Search Item&nbsp;<b-icon icon="search"></b-icon></b-button>
         <b-button>
           <b-icon icon="three-dots"></b-icon>
           More Function
         </b-button>
       </b-button-group>
+    </div>
+    <div style="padding-left: 10px">
+      <b-collapse id="item-search-bar">
+        <b-form inline style="margin: 15px 0" id="item-search-bar">
+          <b-form-group id="input-group-3" label="ID:" label-for="input-1" class="search-bar-key">
+            <b-form-input
+              id="input-1"
+              class="mb-2 mr-sm-2 mb-sm-0"
+              placeholder="User ID"
+              v-model="userSearch.id"
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group id="input-group-3" label="Username:" label-for="input-1" class="search-bar-key">
+            <b-form-input
+              id="input-1"
+              class="mb-2 mr-sm-2 mb-sm-0"
+              placeholder="Username"
+              v-model="userSearch.username"
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group id="input-group-3" label="Primary Phone:" label-for="input-1" class="search-bar-key">
+            <b-form-input
+              id="input-1"
+              class="mb-2 mr-sm-2 mb-sm-0"
+              placeholder="User's primary phone"
+              v-model="userSearch.primaryPhone"
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group id="input-group-3" label="Email:" label-for="input-1" class="search-bar-key">
+            <b-form-input
+              id="input-1"
+              class="mb-2 mr-sm-2 mb-sm-0"
+              placeholder="User's email address"
+              v-model="userSearch.email"
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group id="input-group-3" label="Membership:" label-for="input-1" class="search-bar-key">
+            <b-form-select :options="userCreateMembership" v-model="userSearch.memberShip">
+            </b-form-select>
+          </b-form-group>
+          <b-button-group style="padding-left: 5px">
+            <b-button variant="primary" @click="searchUser(userSearch)"><b-icon icon="search"></b-icon></b-button>
+          </b-button-group>
+          <b-button-group style="padding-left: 5px">
+            <b-button variant="primary" @click="refreshUserList" style="padding-left: 10px">Show All</b-button>
+          </b-button-group>
+
+        </b-form>
+
+      </b-collapse>
     </div>
     <div>
       <b-sidebar id="sidebar-no-header" width="600px" aria-labelledby="sidebar-no-header-title" no-header shadow right>
@@ -228,6 +279,13 @@ export default {
         primaryPhone:'',
         memberShip: null
       },
+      userSearch:{
+        id:null,
+        username:null,
+        memberShip:null,
+        primaryPhone:null,
+        email:null
+      },
       userCreateMembership:[ 'REGULAR', 'GOLDEN_PRIME', 'DIAMOND_PRIME', 'BANNED', 'FROZEN']
     }
   },
@@ -256,7 +314,30 @@ export default {
     deleteUser(id){
 
     },
-    updateUserMembership(id,newMembership){
+    searchUser(userSearch){
+      var form_data=new FormData()
+      if(userSearch.id!=null){
+        form_data.append('id',userSearch.id)
+      }
+      if(userSearch.primaryPhone!=null){
+        form_data.append('primaryPhone',userSearch.primaryPhone)
+      }
+      if(userSearch.email!=null){
+        form_data.append('email',userSearch.email)
+      }
+      if(userSearch.username!=null){
+        form_data.append('username',userSearch.username)
+      }
+      if(userSearch.memberShip!=null){
+        form_data.append('memberShip',userSearch.memberShip)
+      }
+      AXIOS.post('/user/queryUser',form_data,{})
+        .then(response=>{
+          this.userList=response.data
+        })
+        .catch(e=>{
+          this.toastMessage("Fail to query users!")
+        })
 
     },
     createUser(userCreate){

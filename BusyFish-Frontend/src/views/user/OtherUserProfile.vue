@@ -14,7 +14,7 @@
         </div>
       </div>
 <!--      Right Part of the page: User Profile-->
-      <div class="column-right">
+      <div class="column-right" style="padding-top: 20px">
         <div>
           <b-card>
             <b-row class="mb-2">
@@ -31,9 +31,30 @@
             </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right" style="font-size: 20px"><b>Membership</b></b-col>
-              <b-col style="font-size: 20px">{{currentViewUserProfile.memberShip}}</b-col>
+              <b-col style="font-size: 20px"><b-badge v-bind:variant="currentViewUserProfile.memberShip=='REGULAR'?'success':currentViewUserProfile.memberShip=='GOLDEN_PRIME'?'warning':currentViewUserProfile.memberShip=='DIAMOND_PRIME'?'info':'secondary'">{{currentViewUserProfile.memberShip.replace('_',' ')}}</b-badge></b-col>
             </b-row>
           </b-card>
+
+          <div style="padding-top: 20px">
+            <div class="recent-order-title">Selling:</div>
+            <b-container fluid>
+
+              <b-row cols="3">
+                <b-col v-for="item in sellingItemList" style="padding-top: 20px">
+                  <b-card bg-variant="light">
+                    <div>
+                      <router-link v-bind:to="'/itemDetail/'+item.id">
+                        <h3 class="order-card-order-name-title">{{item.name}} &nbsp;<b-icon icon="cash-coin"></b-icon></h3>
+                      </router-link>
+                    </div>
+                  </b-card>
+                </b-col>
+              </b-row>
+
+            </b-container>
+          </div>
+
+
           <div style="padding-top: 20px">
             <div class="recent-order-title">He/She recently bought:</div>
             <b-container fluid>
@@ -60,7 +81,7 @@
                   <b-card bg-variant="light" >
                     <div>
                       <router-link v-bind:to="'/itemDetail/'+order.itemId">
-                        <h3 class="order-card-order-name-title">{{order.itemName}} &nbsp;<b-icon icon="cash-coin"></b-icon></h3>
+                        <h3 class="order-card-order-name-title">{{order.itemName}} &nbsp;<b-icon icon="check-lg"></b-icon></h3>
                       </router-link>
                     </div>
                   </b-card>
@@ -111,7 +132,8 @@ export default {
       },
       userMemberShipOptions:['REGULAR', 'GOLDEN_PRIME', 'DIAMOND_PRIME', 'BANNED', 'FROZEN'],
       orderList:[],
-      sellList:[]
+      sellList:[],
+      sellingItemList:[]
     }
   },
   methods:{
@@ -158,6 +180,18 @@ export default {
           this.currentViewUserProfile.memberShip=response.data.memberShip
         })
     },
+    querySellingItem(){
+      var form_data=new FormData()
+      form_data.append('sellerId',this.currentViewUserProfile.id)
+      form_data.append('status','ACTIVE')
+      AXIOS.post('/item/queryItem',form_data,{})
+        .then(response=>{
+          this.sellingItemList=response.data
+        })
+        .catch(e=>{
+          this.toastMessage('Fail to find selling items!')
+        })
+    },
     refreshUserProfile(){
       this.getUserProfile()
     },
@@ -174,6 +208,7 @@ export default {
   created() {
     this.getUserProfile()
     this.getCurrentViewUserProfile()
+    this.querySellingItem()
   },
   computed:{
     key(){

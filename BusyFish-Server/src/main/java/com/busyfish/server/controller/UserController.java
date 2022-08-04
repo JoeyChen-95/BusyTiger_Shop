@@ -8,6 +8,8 @@ import com.busyfish.server.model.UserEnum.Shipping;
 import com.busyfish.server.model.UserEnum.UserMemberShip;
 
 import com.busyfish.server.service.UserService;
+import com.sun.org.apache.regexp.internal.RE;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +38,11 @@ public class UserController {
     @GetMapping(value = "/selectUserByUsername")
     public User selectUserByUsername(@RequestParam("username") String username) {
         return userService.selectUserByUsername(username);
+    }
+
+    @PostMapping(value = "/queryUser")
+    public List<User> queryUser(Integer id, String username, String primaryPhone, String email, UserMemberShip memberShip){
+        return userService.queryUser(id, username, primaryPhone, email, memberShip);
     }
 
     @PostMapping(value = "/insertUser")
@@ -194,6 +201,18 @@ public class UserController {
             return new ResponseBody(500, e.getMessage());
         }
         return new ResponseBody(200, "Update user profile successfully");
+    }
+
+    @PutMapping(value = "/updateUserPassword")
+    public ResponseBody updateUserPassword(@RequestParam("id") Integer id,
+                                           @RequestParam("newPassword") String newPassword,
+                                           @RequestParam("oldPassword") String oldPassword){
+        try{
+            userService.updatePassword(id, newPassword, oldPassword);
+            return new ResponseBody(200,"Modify password successfully");
+        }catch (Exception e){
+            return new ResponseBody(500,e.getMessage());
+        }
     }
 
 

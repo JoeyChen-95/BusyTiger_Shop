@@ -46,6 +46,11 @@ public class UserService {
         return userMapper.selectUserByUsername(username);
     }
 
+
+    public List<User> queryUser(Integer id, String username, String primaryPhone, String email, UserMemberShip memberShip){
+        List<User> userList=userMapper.queryUser(id,username,primaryPhone,email,memberShip==null?null: memberShip.name());
+        return userList;
+    }
     public void insertUser(User user) {
 //        if (selectUserById(user.getId()) != null) {
 //            throw new UserException(ErrorCode.DUPLICATE_USER, "User with this id already exists!");
@@ -205,6 +210,19 @@ public class UserService {
             throw new UserException(ErrorCode.USER_UPDATE_FAILURE,"Fail to update user profile!");
         }
 
+    }
+
+    @Transactional
+    public void updatePassword(Integer id, String newPassword, String oldPassword){
+        User user=selectUserById(id);
+        if(user==null){
+            throw new UserException(ErrorCode.NO_EXISTING_USER,"User not found!");
+        }
+        if(user.getPassword().equals(oldPassword)){
+            userMapper.updatePassword(id,newPassword);
+        }else{
+            throw new UserException(ErrorCode.WRONG_PASSWORD,"Password is not correct, fail to modify password!");
+        }
     }
 
 }

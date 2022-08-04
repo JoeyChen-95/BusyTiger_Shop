@@ -41,5 +41,33 @@
         update user set username=#{username}, email=#{email}, primaryPhone=#{primaryPhone} where id=#{id}
     </update>
 
+    <update id="updatePassword">
+        update user set password=#{newPassword} where id=#{id}
+    </update>
+
+    <select id="queryUser" resultMap="BaseResultMap">
+        select  * from user
+        <where>
+            <if test="id!=null">
+                and id=#{id}
+            </if>
+            <if test="username!=null">
+                and username like CONCAT('%',#{username},'%')
+            </if>
+
+            <if test="primaryPhone!=null">
+                and primaryPhone like CONCAT('%',#{primaryPhone},'%')
+            </if>
+
+            <if test="email!=null">
+                and email like CONCAT('%',#{email},'%')
+            </if>
+
+            <if test="memberShip!=null">
+                and memberShip=#{memberShip}
+            </if>
+        </where>
+    </select>
+
 
 </mapper>

@@ -113,7 +113,7 @@
                     <div> <span class="order-card-detail-key">Item Name:</span> <span class="order-card-detail-value">&nbsp;{{item.name}}</span> </div>
                     <div> <span class="order-card-detail-key">Seller:</span> <span class="order-card-detail-value">&nbsp;{{item.sellerName}}</span> <b-button size="sm" variant="primary" @click="viewSellerProfile(item.sellerId)"><b-icon icon="person"></b-icon></b-button></div>
                     <div> <span class="order-card-detail-key">Price:</span> <span class="order-card-detail-value">&nbsp;{{item.price}}</span> </div>
-                    <div> <span class="order-card-detail-key">Category:</span> <span class="order-card-detail-value">&nbsp;{{item.tag}}</span> </div>
+                    <div class="order-card-detail-key"> <span>Category:</span> <span class="order-card-detail-value"><b-badge variant="primary">{{item.tag}}</b-badge></span> </div>
                     <div> <span class="order-card-detail-key">Description:</span> <span class="order-card-detail-value">&nbsp;{{item.description}}</span> </div>
 <!--                    <div> <span class="order-card-detail-key">Status:</span> <span class="order-card-detail-value">&nbsp;{{order.status}}</span> </div>-->
 <!--                    <b-progress :max="100" height="1.5rem" animated>-->
@@ -304,12 +304,23 @@ export default {
           this.itemList=response.data
         })
     },
-    scanURLForSearch(){
+    searchItemByScanURL(){
       var currentURL=window.location.href
       var reg=/recommend\/(.*)/
       var matchList=currentURL.match(reg)
-      this.itemSearch.tag=matchList.length>1?matchList[1]:null
-      this.searchItem(this.itemSearch)
+      var scanCategory=matchList.length>1?matchList[1]:null
+
+      var form_data=new FormData()
+
+      if(scanCategory!=null){
+        form_data.append('tag',scanCategory)
+      }
+
+      form_data.append('status','ACTIVE')
+      AXIOS.post('/item/queryItem',form_data,{})
+        .then(response=>{
+          this.itemList=response.data
+        })
     },
     toastMessage(content){
       this.$bvToast.toast(content, {
@@ -331,8 +342,7 @@ export default {
   },
   created() {
     this.getUserProfile()
-    this.getItemList()
-    this.scanURLForSearch()
+    this.searchItemByScanURL()
   }
 }
 </script>

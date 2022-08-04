@@ -100,6 +100,7 @@
             <div>
               <b-form-checkbox
                 id="checkbox-1"
+                size="lg"
                 v-model="form.acceptTerm"
                 name="checkbox-1"
               >
@@ -108,7 +109,7 @@
 
             </div>
             <div>
-              <b-button variant="info" size="sm" v-b-modal.terms-and-use>View Terms and Use</b-button>
+              <b-button variant="info" size="md" v-b-modal.terms-and-use>View Terms and Use</b-button>
             </div>
             <br>
             <b-button @click="signUp(form)" size="lg" type="submit" variant="primary" :disabled="!(checkEmail&&checkConfirmPassword&&checkUsername&&checkPassword&&checkPhone&&form.acceptTerm)">Sign Up!</b-button>

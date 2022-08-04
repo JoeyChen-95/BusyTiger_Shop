@@ -76,21 +76,59 @@
         </div>
 
         <div>
-          <b-card
-            title="Author's Github"
-            img-src="https://logos-world.net/wp-content/uploads/2020/11/GitHub-Emblem.png"
-            img-alt="Image"
-            img-top
-            tag="article"
-            style="max-width: 20rem;"
-            class="mb-2"
-          >
-            <b-card-text>
-              Click here to view the author's github page.
-            </b-card-text>
+          <b-card-group deck>
+            <b-card
+              title="Author's Github"
+              img-src="https://logos-world.net/wp-content/uploads/2020/11/GitHub-Emblem.png"
+              img-height="180px"
+              img-alt="Image"
+              img-top
+              tag="article"
+              style="max-width: 20rem;"
+              class="mb-2"
+            >
+              <b-card-text>
+                Click here to view the author's github page.
+              </b-card-text>
 
-            <b-button href="https://github.com/JoeyChen-95" variant="primary">Go</b-button>
-          </b-card>
+              <b-button href="https://github.com/JoeyChen-95" variant="primary">Go</b-button>
+            </b-card>
+
+            <b-card
+              title="Have Questions?"
+              img-height="180px"
+              img-src="https://media.istockphoto.com/photos/managing-the-days-inquiries-picture-id938430346?k=20&m=938430346&s=612x612&w=0&h=-5azqEhroazZL-ofgB_UWwQe9JMFDar4KnhB8VZiSeU="
+              img-alt="Image"
+              img-top
+              tag="article"
+              style="max-width: 20rem;"
+              class="mb-2"
+            >
+              <b-card-text>
+                Contact our customer service for help. We will reply as soon as possible.
+              </b-card-text>
+
+              <b-button href="https://baidu.com" variant="success">Contact us</b-button>
+            </b-card>
+
+<!--            <b-card-->
+<!--              title="Author's Github"-->
+<!--              img-src="https://logos-world.net/wp-content/uploads/2020/11/GitHub-Emblem.png"-->
+<!--              img-alt="Image"-->
+<!--              img-top-->
+<!--              tag="article"-->
+<!--              style="max-width: 20rem;"-->
+<!--              class="mb-2"-->
+<!--            >-->
+<!--              <b-card-text>-->
+<!--                Click here to view the author's github page.-->
+<!--              </b-card-text>-->
+
+<!--              <b-button href="https://github.com/JoeyChen-95" variant="primary">Go</b-button>-->
+<!--            </b-card>-->
+
+          </b-card-group>
+
 
         </div>
 

@@ -8,11 +8,75 @@
     </h1>
     <div>
       <b-button-group size="lg">
-        <b-button v-b-toggle.sidebar-no-header variant="primary">
+        <b-button v-b-toggle.sidebar-no-header variant="success">
           Create Item&nbsp;<b-icon icon="plus-square"></b-icon>
         </b-button>
+        <b-button variant="primary" v-b-toggle.item-search-bar>Search Item&nbsp;<b-icon icon="search"></b-icon></b-button>
         <b-button variant="danger">More Function</b-button>
       </b-button-group>
+    </div>
+    <div style="padding-left: 10px">
+      <b-collapse id="item-search-bar">
+        <b-form inline style="margin: 15px 0" id="item-search-bar">
+          <b-form-group id="input-group-3" label="ID:" label-for="input-1" class="search-bar-key">
+            <b-form-input
+              id="input-1"
+              class="mb-2 mr-sm-2 mb-sm-0"
+              placeholder="Item's ID"
+              v-model="itemSearch.id"
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group id="input-group-3" label="Name/Desc:" label-for="input-1" class="search-bar-key">
+            <b-form-input
+              id="input-1"
+              class="mb-2 mr-sm-2 mb-sm-0"
+              placeholder="Item's Name or Description"
+              v-model="itemSearch.name"
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group id="input-group-3" label="Price Range: from" label-for="input-1" class="search-bar-key">
+            <b-form-input
+              id="input-1"
+              class="mb-2 mr-sm-2 mb-sm-0"
+              placeholder="Lower Price"
+              type="number"
+              v-model="itemSearch.minPrice"
+            ></b-form-input>
+            to&nbsp;
+            <b-form-input
+              id="input-1"
+              class="mb-2 mr-sm-2 mb-sm-0"
+              placeholder="Higher Price"
+              type="number"
+              v-model="itemSearch.maxPrice"
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group id="input-group-3" label="Tag:" label-for="input-1" class="search-bar-key">
+            <b-form-select :options="itemTagForCreate" v-model="itemSearch.tag">
+            </b-form-select>
+          </b-form-group>
+          <b-form-group id="input-group-3" label="Status:" label-for="input-1" class="search-bar-key">
+            <b-form-select :options="itemStatusForCreate" v-model="itemSearch.status">
+            </b-form-select>
+          </b-form-group>
+          <b-form-group type="number" id="input-group-3" label="Seller's ID:" label-for="input-1" class="search-bar-key">
+            <b-form-input
+              id="input-1"
+              class="mb-2 mr-sm-2 mb-sm-0"
+              placeholder="Item's Name or Description"
+              v-model="itemSearch.sellerId"
+            ></b-form-input>
+          </b-form-group>
+          <b-button-group style="padding-left: 5px">
+            <b-button variant="primary" @click="searchItem(itemSearch)"><b-icon icon="search"></b-icon></b-button>
+          </b-button-group>
+          <b-button-group style="padding-left: 5px">
+            <b-button variant="primary" @click="refreshItemList" style="padding-left: 10px">Show All</b-button>
+          </b-button-group>
+
+        </b-form>
+
+      </b-collapse>
     </div>
     <div>
       <b-sidebar id="sidebar-no-header" width="600px" aria-labelledby="sidebar-no-header-title" no-header shadow right>
@@ -255,8 +319,17 @@ export default {
         itemStatus: null,
         itemDesc:''
       },
-      itemTagForCreate: [{text: 'Select a tag', value: null}, 'Book', 'Food', 'Electronics', 'Music', 'Movie','Men_Cloth','Women_Cloth','Sport','Health','Games','Tool','Baby'],
-      itemStatusForCreate: [{text: 'Select a status', value: null}, 'ACTIVE', 'SOLD', 'PRIVATE', 'BANNED', 'PENDING']
+      itemSearch:{
+        id:null,
+        name:null,
+        maxPrice:null,
+        minPrice:0,
+        tag:null,
+        status:null,
+        sellerId: null
+      },
+      itemTagForCreate: [{text: 'All', value: null}, 'Book', 'Food', 'Electronics', 'Music', 'Movie','Men_Cloth','Women_Cloth','Sport','Health','Games','Tool','Baby'],
+      itemStatusForCreate: [{text: 'All', value: null}, 'ACTIVE', 'SOLD', 'PRIVATE', 'BANNED', 'PENDING']
     }
   },
   methods:{
@@ -354,7 +427,35 @@ export default {
         .catch(e=>{
           this.toastMessage("Update item fail!")
         })
-    }
+    },
+    searchItem(itemSearch){
+      var form_data=new FormData()
+      if(itemSearch.id!=null){
+        form_data.append('id',itemSearch.id)
+      }
+      if(itemSearch.name!=null){
+        form_data.append('name',itemSearch.name)
+      }
+      if(itemSearch.minPrice!=null){
+        form_data.append('minPrice',itemSearch.minPrice)
+      }
+      if(itemSearch.maxPrice!=null){
+        form_data.append('maxPrice',itemSearch.maxPrice)
+      }
+      if(itemSearch.tag!=null){
+        form_data.append('tag',itemSearch.tag)
+      }
+      if(itemSearch.sellerId!=null){
+        form_data.append('sellerId',itemSearch.sellerId)
+      }
+      if(itemSearch.status!=null){
+        form_data.append('status',itemSearch.status)
+      }
+      AXIOS.post('/item/queryItem',form_data,{})
+        .then(response=>{
+          this.itemList=response.data
+        })
+    },
   }
 ,
   created() {

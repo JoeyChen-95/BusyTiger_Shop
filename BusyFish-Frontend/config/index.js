@@ -23,10 +23,20 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    host: '47.103.219.4',
-    port: '8087',
+    /**
+     * Local Environment Host and Port
+     * Comment these four lines when using remotely
+     */
+    // host: 'localhost',
+    // port: '8087',
     // backendHost: 'localhost',
     // backendPort: '8080',
+    /**
+     * Remote Environment Host and Port
+     * Comment these four lines when using locally
+     */
+    host: '47.103.219.4',
+    port: '8087',
     backendHost: '47.103.219.4',
     backendPort: '8080/Server_war',
     autoOpenBrowser: true,
