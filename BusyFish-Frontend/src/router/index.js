@@ -16,6 +16,9 @@ import otherUserProfile from "../views/user/OtherUserProfile";
 import Homepage from "../views/Homepage";
 import signUp from "../views/SignUp";
 import itemDetail from "../views/user/ItemDetail";
+import ItemStatusHint from "../views/hint/ItemStatusHint";
+import MemberShipHint from "../views/hint/MemberShipHint";
+import orderStatusHint from "../views/hint/OrderStatusHint";
 
 Vue.use(Router)
 
@@ -98,6 +101,18 @@ export default new Router({
     {
       path:'/itemDetail',
       component: itemDetail
+    },
+    {
+      path:'/hint/itemStatus',
+      component: ItemStatusHint
+    },
+    {
+      path:'/hint/memberShip',
+      component: MemberShipHint
+    },
+    {
+      path:'/hint/orderStatus',
+      component: orderStatusHint
     }
 
   ]

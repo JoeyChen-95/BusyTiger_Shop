@@ -19,7 +19,7 @@
                 <div> <span class="order-card-order-info-key">Buyer:</span> <span class="order-card-order-info-value">&nbsp;{{order.buyerName}}</span>  <b-button size="sm" variant="primary" @click="viewSellerProfile(order.buyerName)"><b-icon icon="person"></b-icon></b-button></div>
                 <div> <span class="order-card-order-info-key">Paid:</span> <span class="order-card-order-info-value">&nbsp;{{order.price}}</span> </div>
                 <div> <span class="order-card-order-info-key">Order Time:</span> <span class="order-card-order-info-value">&nbsp;{{order.createTime}}</span> </div>
-                <div class="order-card-order-info-key"> <span >Status:</span>  <b-badge v-bind:variant="order.status=='PROCESSING'?'info':order.status=='SHIPPED'?'primary':order.status=='COMPLETED'?'success':order.status=='CANCELED'?'secondary':'warning'">{{order.status}}</b-badge></div>
+                <div class="order-card-order-info-key"> <span >Status:</span>  <b-badge href="/hint/orderStatus" v-bind:variant="order.status=='PROCESSING'?'info':order.status=='SHIPPED'?'primary':order.status=='COMPLETED'?'success':order.status=='CANCELED'?'secondary':'warning'">{{order.status}}</b-badge></div>
                 <div v-show="order.completeTime"> <span class="order-card-order-info-key">Delivered Time:</span>  <span class="order-card-order-info-value">&nbsp;{{order.completeTime}}</span> </div>
 
               </b-card-text>

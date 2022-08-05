@@ -13,7 +13,7 @@
 
 
       <b-card-text>
-        <span class="item-desc-key">Status:<b-badge v-bind:variant="this.currentItem.status=='ACTIVE'?'success':this.currentItem.status=='SOLD'?'danger':'warning'">{{this.currentItem.status}}</b-badge></span>
+        <span class="item-desc-key">Status:<b-badge href="/hint/itemStatus" v-bind:variant="this.currentItem.status=='ACTIVE'?'success':this.currentItem.status=='SOLD'?'danger':'warning'">{{this.currentItem.status}}</b-badge></span>
 
       </b-card-text>
 

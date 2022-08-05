@@ -28,6 +28,7 @@
               class="mb-2 mr-sm-2 mb-sm-0"
               placeholder="Item's Name or Description"
               v-model="itemSearch.name"
+              onkeyup="this.searchItem(itemSearch)"
             ></b-form-input>
           </b-form-group>
           <b-form-group id="input-group-3" label="Price Range: from" label-for="input-1" class="search-bar-key">

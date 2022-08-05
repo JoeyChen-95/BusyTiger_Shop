@@ -17,7 +17,7 @@
               </div>
               <b-card-text>
                 <div> <span class="order-card-order-info-key">Order Time:</span> <span class="order-card-order-info-value">&nbsp;{{order.createTime}}</span> </div>
-                <div class="order-card-order-info-key"> <span >Status:</span>  <b-badge v-bind:variant="order.status=='PROCESSING'?'info':order.status=='SHIPPED'?'primary':order.status=='COMPLETED'?'success':order.status=='CANCELED'?'secondary':'warning'">{{order.status}}</b-badge></div>
+                <div class="order-card-order-info-key"> <span >Status:</span>  <b-badge href="/hint/orderStatus" v-bind:variant="order.status=='PROCESSING'?'info':order.status=='SHIPPED'?'primary':order.status=='COMPLETED'?'success':order.status=='CANCELED'?'secondary':'warning'">{{order.status}}</b-badge></div>
 <!--                <div> <span class="order-card-order-info-key">Delivered Time:</span>  <span class="order-card-order-info-value">&nbsp;{{order.completeTime}}</span> </div>-->
 
               </b-card-text>
@@ -49,7 +49,7 @@
                     <div> <span class="order-card-detail-key">Item Name:</span> <span class="order-card-detail-value">&nbsp;{{order.itemName}}</span> </div>
                     <div> <span class="order-card-detail-key">Seller:</span> <span class="order-card-detail-value">&nbsp;{{order.sellerName}}</span> <b-button size="sm" variant="primary" @click="viewSellerProfile(order.sellerName)"><b-icon icon="person"></b-icon></b-button></div>
                     <div> <span class="order-card-detail-key">Price:</span> <span class="order-card-detail-value">&nbsp;{{order.price}}</span> </div>
-                    <div class="order-card-detail-key"> <span>Status:</span>  <b-badge v-bind:variant="order.status=='PROCESSING'?'info':order.status=='SHIPPED'?'primary':order.status=='COMPLETED'?'success':order.status=='CANCELED'?'secondary':'warning'">{{order.status}}</b-badge> </div>
+                    <div class="order-card-detail-key"> <span>Status:</span>  <b-badge href="/hint/orderStatus" v-bind:variant="order.status=='PROCESSING'?'info':order.status=='SHIPPED'?'primary':order.status=='COMPLETED'?'success':order.status=='CANCELED'?'secondary':'warning'">{{order.status}}</b-badge> </div>
                     <b-progress :max="100" height="1.5rem" animated>
                       <b-progress-bar :value="order.status=='PROCESSING'?25:(order.status=='SHIPPED'?50:(order.status=='COMPLETED'?100:0))">
                         <span><strong>{{order.status}}</strong></span>

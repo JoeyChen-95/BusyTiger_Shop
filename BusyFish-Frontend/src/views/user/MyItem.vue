@@ -76,7 +76,7 @@
                 <h3 class="order-card-order-name-title">{{item.name}} &nbsp;<b-icon icon="cart"></b-icon></h3>
               </div>
               <b-card-text>
-                <div class="order-card-order-info-key"> <span >Status:</span> <b-badge v-bind:variant="item.status=='ACTIVE'?'success':item.status=='SOLD'?'danger':'warning'">{{item.status}}</b-badge></div>
+                <div class="order-card-order-info-key"> <span >Status:</span> <b-badge href="/hint/itemStatus" v-bind:variant="item.status=='ACTIVE'?'success':item.status=='SOLD'?'danger':'warning'">{{item.status}}</b-badge></div>
                 <div class="order-card-order-info-key"> <span >Price:</span>  <span class="order-card-order-info-value">&nbsp;{{item.price}}</span> </div>
 
               </b-card-text>
@@ -111,7 +111,7 @@
                     <div> <span class="order-card-detail-key">Item Name:</span> <span class="order-card-detail-value">&nbsp;{{item.name}}</span> </div>
                     <div> <span class="order-card-detail-key">Seller:</span> <span class="order-card-detail-value">&nbsp;{{item.sellerName}}</span> </div>
                     <div> <span class="order-card-detail-key">Price:</span> <span class="order-card-detail-value">&nbsp;{{item.price}}</span> </div>
-                    <div class="order-card-detail-key"> <span >Category:</span> <b-badge variant="primary">{{item.tag}}</b-badge> </div>
+                    <div class="order-card-detail-key"> <span >Category:</span> <b-badge href="/hint/itemStatus" variant="primary">{{item.tag}}</b-badge> </div>
                     <div> <span class="order-card-detail-key">Description:</span> <span class="order-card-detail-value">&nbsp;{{item.description}}</span> </div>
 <!--                    <div> <span class="order-card-detail-key">Status:</span> <span class="order-card-detail-value">&nbsp;{{order.status}}</span> </div>-->
 <!--                    <b-progress :max="100" height="1.5rem" animated>-->

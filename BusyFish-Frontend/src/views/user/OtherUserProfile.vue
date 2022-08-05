@@ -31,7 +31,7 @@
             </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right" style="font-size: 20px"><b>Membership</b></b-col>
-              <b-col style="font-size: 20px"><b-badge v-bind:variant="currentViewUserProfile.memberShip=='REGULAR'?'success':currentViewUserProfile.memberShip=='GOLDEN_PRIME'?'warning':currentViewUserProfile.memberShip=='DIAMOND_PRIME'?'info':'secondary'">{{currentViewUserProfile.memberShip.replace('_',' ')}}</b-badge></b-col>
+              <b-col style="font-size: 20px"><b-badge href="/hint/memberShip" v-bind:variant="currentViewUserProfile.memberShip=='REGULAR'?'success':currentViewUserProfile.memberShip=='GOLDEN_PRIME'?'warning':currentViewUserProfile.memberShip=='DIAMOND_PRIME'?'info':'secondary'">{{currentViewUserProfile.memberShip.replace('_',' ')}}</b-badge></b-col>
             </b-row>
           </b-card>
 
