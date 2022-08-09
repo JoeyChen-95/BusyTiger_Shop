@@ -129,7 +129,7 @@ export default {
         AXIOS.get('/user/login?username='+username+'&password='+password)
           .then(response=>{
             if(response.data.code==200){
-              this.$router.push('recommend/')
+              this.$router.push('/recommend/')
             }else{
               this.form.error=response.data.msg
             }
@@ -138,18 +138,9 @@ export default {
             this.form.error="Unknown error"
           })
       }
-    },
-    tryToLoginWithSession(){
-      AXIOS.get('user/getCurrentUserId')
-        .then(response=>{
-          if(response.data.id){
-            this.$router.push('recommend/')
-          }
-        })
-    },
+    }
   },
   created() {
-    this.tryToLoginWithSession()
   }
 }
 

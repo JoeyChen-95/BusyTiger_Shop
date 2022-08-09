@@ -19,6 +19,8 @@ import itemDetail from "../views/user/ItemDetail";
 import ItemStatusHint from "../views/hint/ItemStatusHint";
 import MemberShipHint from "../views/hint/MemberShipHint";
 import orderStatusHint from "../views/hint/OrderStatusHint";
+import testImg from "../views/test/testImg";
+import busyTigerChoice from "../views/user/BusyTigerChoice";
 
 Vue.use(Router)
 
@@ -113,7 +115,14 @@ export default new Router({
     {
       path:'/hint/orderStatus',
       component: orderStatusHint
+    },
+    {
+      path:'/test/testImg',
+      component:testImg
+    },
+    {
+      path:'/busyTigerChoice',
+      component: busyTigerChoice
     }
-
   ]
 })

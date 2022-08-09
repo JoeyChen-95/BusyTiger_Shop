@@ -8,7 +8,8 @@
       <div class="column-left" >
         <div class="mb-2">
           <div class="user-avator">
-            <b-avatar src="https://placekitten.com/300/300" size="20rem" class="a"></b-avatar>
+<!--            <b-avatar src="https://placekitten.com/300/300" size="20rem" class="a"></b-avatar>-->
+            <b-avatar v-bind:src="myPhotoURL" size="20rem" class="a"></b-avatar>
           </div>
           <div class="username-under-avator">{{currentViewUserProfile.username}}</div>
         </div>
@@ -133,7 +134,8 @@ export default {
       userMemberShipOptions:['REGULAR', 'GOLDEN_PRIME', 'DIAMOND_PRIME', 'BANNED', 'FROZEN'],
       orderList:[],
       sellList:[],
-      sellingItemList:[]
+      sellingItemList:[],
+      myPhotoURL:null
     }
   },
   methods:{
@@ -175,6 +177,7 @@ export default {
         .then(response=>{
           this.getUserOrder(response.data.id)
           this.getUserSell(response.data.id)
+          this.myPhotoURL=config.dev.userProfileImgDirPath+'/user_profile_img_'+response.data.id+'.jpg'
           this.currentViewUserProfile.email=response.data.email
           this.currentViewUserProfile.username=response.data.username
           this.currentViewUserProfile.memberShip=response.data.memberShip

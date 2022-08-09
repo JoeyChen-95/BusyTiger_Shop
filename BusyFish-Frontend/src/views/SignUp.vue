@@ -206,7 +206,7 @@ export default {
         AXIOS.get('/user/login?username='+username+'&password='+password)
           .then(response=>{
             if(response.data.code==200){
-              this.$router.push('recommend')
+              this.$router.push('/recommend/')
             }else{
               this.form.error=response.data.msg
             }
@@ -236,7 +236,7 @@ export default {
           if(response.data.code==200){
             AXIOS.get('/user/login?username='+form.username+'&password='+form.userPassword)
               .then(response=>{
-                  this.$router.push('recommend')
+                  this.$router.push('/recommend/')
               })
           }else{
             this.formInputError.usernameInputError='Fail to sign up: '+response.data.msg

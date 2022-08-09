@@ -3,6 +3,7 @@
     <div class="wrapper">
       <UserNavBar></UserNavBar>
     </div>
+
     <!--    User Edit Profile Sidebar-->
     <div>
       <b-sidebar id="edit-user-profile-sidebar" width="600px" aria-labelledby="sidebar-no-header-title" no-header shadow right>
@@ -98,7 +99,7 @@
         </template>
       </b-sidebar>
     </div>
-
+<!--Edit Shipping Address Sidebar-->
     <div>
       <b-sidebar id="add-shipping-address-sidebar" width="600px" aria-labelledby="sidebar-no-header-title" no-header shadow right>
         <template #default="{ hide }">
@@ -143,18 +144,36 @@
       </b-sidebar>
     </div>
 
+    <b-modal id="change-my-photo-modal" centered title="Change My Photo" @ok="changeMyPhoto">
+      <div>
+        <b-form-file
+          v-model="uploadedPhoto"
+          :state="Boolean(uploadedPhoto)"
+          placeholder="Choose a file or drop it here..."
+          drop-placeholder="Drop file here..."
+        ></b-form-file>
+        <div class="change-photo-modal-tips">Selected file: <span style="color: coral">{{ uploadedPhoto ? uploadedPhoto.name : '' }}</span></div>
+        <div class="change-photo-modal-tips">Supported Image Type: jpg, jpeg, png, webp</div>
+      </div>
+
+    </b-modal>
+
 
     <div class="box">
 <!--      Left Part of the page: User Avator-->
       <div class="column-left" >
         <div class="mb-2">
           <div class="user-avator">
-            <b-avatar src="https://placekitten.com/300/300" size="20rem" class="a"></b-avatar>
+            <b-avatar id="user-profile-photo" v-bind:src="myPhotoURL" size="20rem" class="a"></b-avatar>
+<!--            <b-avatar src="http://img.jinghooo.com/img_1648544638755_GYXHesgG6toO8_Tdzl-.png" size="20rem" class="a"></b-avatar>-->
           </div>
           <div class="username-under-avator">{{currentUserProfile.username}}</div>
           <div class="change-photo-button">
-            <b-button variant="outline-primary" style="width: 50%">Change My Photo</b-button>
+            <b-button variant="outline-primary" style="width: 50%" v-b-modal.change-my-photo-modal>Change My Photo</b-button>
           </div>
+<!--          <div class="change-photo-button">-->
+<!--            <b-button variant="outline-primary" style="width: 50%" @click="getMyPhoto">Get My Photo</b-button>-->
+<!--          </div>-->
           <div class="change-photo-button">
             <b-button v-b-toggle.edit-user-profile-sidebar variant="outline-primary" style="width: 50%" @click="loadUpdateProfile">Edit My Profile</b-button>
           </div>
@@ -241,7 +260,7 @@ export default {
         email:'',
         primaryPhone: '',
         memberShip: '',
-        shippingAddress:[]
+        shippingAddress:[],
       },
       userProfileUpdate:{
         username:'',
@@ -259,7 +278,10 @@ export default {
         phone:'',
         address:'',
       },
-      userMemberShipOptions:['REGULAR', 'GOLDEN_PRIME', 'DIAMOND_PRIME', 'BANNED', 'FROZEN']
+      userMemberShipOptions:['REGULAR', 'GOLDEN_PRIME', 'DIAMOND_PRIME', 'BANNED', 'FROZEN'],
+      uploadedPhoto: null,
+      myPhotoFile: null,
+      myPhotoURL:null
     }
   },
   methods:{
@@ -267,6 +289,7 @@ export default {
       AXIOS.get('/user/getCurrentUserId')
         .then(response=>{
           this.currentUserProfile.id=response.data.id
+          this.myPhotoURL=config.dev.userProfileImgDirPath+'/user_profile_img_'+response.data.id+'.jpg'
           this.currentUserProfile.username=response.data.username
           this.currentUserProfile.email=response.data.email
           this.currentUserProfile.primaryPhone=response.data.primaryPhone
@@ -351,6 +374,18 @@ export default {
         })
 
     },
+    changeMyPhoto(){
+      var form_data=new FormData()
+      form_data.append('file',this.uploadedPhoto)
+      form_data.append('userId',this.currentUserProfile.id)
+      AXIOS.post('/user/addImg',form_data,{})
+        .then(response=>{
+          this.toastMessage(response.data)
+        })
+        .catch(e=>{
+          this.toastMessage('Fail to change the photo!')
+        })
+    },
     toastMessage(content){
       this.$bvToast.toast(content, {
         title: 'Tips',
@@ -367,6 +402,9 @@ export default {
   computed:{
     key(){
       return this.$route.path+Math.random();
+    },
+    userImgSrc(){
+      return config.dev.userProfileImgDirPath+"/user_profile_img_"+this.currentUserProfile.id+".jpg"
     }
   }
 }
@@ -399,6 +437,12 @@ export default {
 .change-photo-button{
   padding-top: 10px;
   text-align: center;
+}
+.change-photo-modal-tips {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px;
+  margin: 0 auto;
 }
 
 

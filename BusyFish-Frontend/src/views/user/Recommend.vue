@@ -6,6 +6,7 @@
     <h1 class="item-title">
       BusyTiger Shop
     </h1>
+
     <div style="padding-left: 10px">
       <b-button-group size="lg">
         <b-button variant="primary" v-b-toggle.item-search-bar>Search Item&nbsp;<b-icon icon="search"></b-icon></b-button>
@@ -73,6 +74,12 @@
 
 
     </div>
+
+    <div class="not-found-tip" v-show="itemList.length==0">
+      <h1>Sorry, no item found&nbsp;<b-icon-emoji-frown></b-icon-emoji-frown></h1>
+    </div>
+
+
     <div>
       <b-container fluid>
         <b-row cols="3">
@@ -83,7 +90,8 @@
 
               </div>
               <b-card-text>
-                <div> <span class="order-card-order-info-key">Seller:</span> <span class="order-card-order-info-value">&nbsp;{{item.sellerName}}</span> </div>
+<!--                <div> <span class="order-card-order-info-key">Seller:</span> <span class="order-card-order-info-value">&nbsp;{{item.sellerName}}</span> </div>-->
+                <div> <span class="order-card-order-info-key">Seller:</span> <b-link class="order-card-order-info-value" v-bind:href="'/otherUserProfile/userId='+item.sellerId">&nbsp;{{item.sellerName}}</b-link> </div>
                 <div> <span class="order-card-order-info-key">Price:</span>  <span class="order-card-order-info-value">&nbsp;{{item.price}}</span> </div>
 
               </b-card-text>
@@ -112,9 +120,10 @@
                 <b-card>
                   <b-card-text>
                     <div> <span class="order-card-detail-key">Item Name:</span> <span class="order-card-detail-value">&nbsp;{{item.name}}</span> </div>
-                    <div> <span class="order-card-detail-key">Seller:</span> <span class="order-card-detail-value">&nbsp;{{item.sellerName}}</span> <b-button size="sm" variant="primary" @click="viewSellerProfile(item.sellerId)"><b-icon icon="person"></b-icon></b-button></div>
+<!--                    <div> <span class="order-card-detail-key">Seller:</span> <span class="order-card-detail-value">&nbsp;{{item.sellerName}}</span> <b-button size="sm" variant="primary" @click="viewSellerProfile(item.sellerId)"><b-icon icon="person"></b-icon></b-button></div>-->
+                    <div> <span class="order-card-detail-key">Seller:</span> <b-button size="sm" variant="outline-primary" v-bind:href="'/otherUserProfile/userId='+item.sellerId">{{item.sellerName}}<b-icon icon="person"></b-icon></b-button></div>
                     <div> <span class="order-card-detail-key">Price:</span> <span class="order-card-detail-value">&nbsp;{{item.price}}</span> </div>
-                    <div class="order-card-detail-key"> <span>Category:</span> <span class="order-card-detail-value"><b-badge variant="primary">{{item.tag}}</b-badge></span> </div>
+                    <div class="order-card-detail-key"> <span>Category:</span> <b-badge class="order-card-detail-value" variant="primary">{{item.tag}}</b-badge> </div>
                     <div> <span class="order-card-detail-key">Description:</span> <span class="order-card-detail-value">&nbsp;{{item.description}}</span> </div>
 <!--                    <div> <span class="order-card-detail-key">Status:</span> <span class="order-card-detail-value">&nbsp;{{order.status}}</span> </div>-->
 <!--                    <b-progress :max="100" height="1.5rem" animated>-->
@@ -149,12 +158,13 @@
 <!--        <div> <span class="order-card-detail-key">Price:</span> <span class="order-card-detail-value">&nbsp;{{orderConfirmItem.price}}</span> </div>-->
         <div> <span class="order-card-detail-key">Description:</span> <span class="order-card-detail-value">&nbsp;{{orderConfirmItem.description}}</span> </div>
         <div> <span class="order-card-detail-key">Shipping Address:</span> <b-form-select v-model="orderConfirmItem.shippingAddress" :options="currentUserProfile.shippingAddress"></b-form-select></div>
+        <div v-show="currentUserProfile.shippingAddress.length==0" > <b-link class="no-shipping-address-tip" href="/userProfile"> You don't have any shipping address! Click here to add your shipping addresses in "My Profile"</b-link></div>
         <div> <span class="order-card-detail-key">Comment:</span> <b-input v-model="orderConfirmItem.comment"></b-input> </div>
         <h2 style="text-align: right;padding-top: 20px"><b>{{orderConfirmItem.price}}￥ </b> </h2>
 
 
         <template #modal-footer="{ cancel,ok }">
-          <b-button variant="primary" @click="ok()">
+          <b-button variant="primary" @click="ok()" :disabled="orderConfirmItem.shippingAddress.code==null">
             Pay &nbsp;<b-icon icon="credit-card" aria-hidden="true"></b-icon>
           </b-button>
           <b-button variant="danger" @click="cancel()">
@@ -162,6 +172,7 @@
           </b-button>
         </template>
       </b-modal>
+
 
   </div>
 
@@ -204,10 +215,10 @@ export default {
         description:'',
         comment:'',
         shippingAddress:{
-          address:'',
-          name:'',
-          phone:'',
-          code:''
+          address:null,
+          name:null,
+          phone:null,
+          code:null
         }
       },
       itemTagForCreate: [{text: 'Select a tag', value: null}, 'Book', 'Food', 'Electronics', 'Music', 'Movie','Men_Cloth','Women_Cloth','Sport','Health','Games','Tool','Baby'],
@@ -376,5 +387,14 @@ export default {
 }
 .order-card-detail-value{
   font-size: 17px;
+}
+.not-found-tip{
+  font-size: 40px;
+  text-align: center;
+  padding-top: 50px;
+}
+.no-shipping-address-tip{
+  color: red;
+  font-weight: bold;
 }
 </style>

@@ -68,7 +68,7 @@
 
             <hr class="my-4">
 
-            <b-button @click="$router.push('/login')" size="lg" type="submit" variant="primary">Login in
+            <b-button @click="tryToLoginWithSession" size="lg" type="submit" variant="primary">Login in
             </b-button>
             <b-button @click="$router.push('/signUp')" size="lg" type="submit" variant="success">Don't have an account?
             </b-button>
@@ -167,6 +167,16 @@ export default {
     },
     onSlideEnd(slide) {
       this.sliding = false
+    },
+    tryToLoginWithSession(){
+      AXIOS.get('user/getCurrentUserId')
+        .then(response=>{
+          if(response.data.id){
+            this.$router.push('/recommend/')
+          }else{
+            this.$router.push('/login')
+          }
+        })
     }
 
   },

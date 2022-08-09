@@ -67,6 +67,11 @@
 
 
     </div>
+
+    <div class="not-found-tip" v-show="itemList.length==0">
+      <h1>No item found&nbsp;<b-icon-question-circle-fill></b-icon-question-circle-fill></h1>
+    </div>
+
     <div>
       <b-container fluid>
         <b-row cols="3">
@@ -203,44 +208,74 @@
             <b-container fluid>
 
               <b-row class="my-1">
-                <b-col sm="2">
-                  <label for="input-default">Name</label>
-                </b-col>
+
                 <b-col sm="10">
-                  <b-form-input id="input-default" v-model="itemPublish.name" placeholder="Enter Item's Name"></b-form-input>
+                  <b-form-group id="input-group-2" label="Item Name:" label-for="itemName">
+                    <b-form-input
+                      placeholder="Enter Item's Name"
+                      v-model="itemPublish.name"
+                      :state="checkItemName"
+                    ></b-form-input>
+
+                    <b-form-invalid-feedback id="itemName">
+                      Please enter item's name.
+                    </b-form-invalid-feedback>
+                  </b-form-group>
+                </b-col>
+              </b-row>
+
+
+              <b-row class="my-1">
+                <b-col sm="10">
+                  <b-form-group id="input-group-2" label="Item Price:" label-for="itemPrice">
+                    <b-form-input
+                      placeholder="Enter Item's Price"
+                      v-model="itemPublish.price"
+                      :state="checkPrice"
+                      type="number"
+                    ></b-form-input>
+
+                    <b-form-invalid-feedback id="itemPrice">
+                      {{itemPublish.price.length==0?'Please enter item\'s price.':'Enter a price>=0.'}}
+                    </b-form-invalid-feedback>
+                  </b-form-group>
                 </b-col>
               </b-row>
 
               <b-row class="my-1">
-                <b-col sm="2">
-                  <label for="input-default">Price</label>
-                </b-col>
                 <b-col sm="10">
-                  <b-form-input id="input-default" type="number" v-model="itemPublish.price" placeholder="Enter Item's Price"></b-form-input>
+                  <b-form-group id="input-group-2" label="Item Tag:" label-for="itemTag">
+                    <b-form-select
+                      v-model="itemPublish.tag"
+                      :options="itemTagForCreate"
+                      :state="checkTag"
+                    ></b-form-select>
+
+                    <b-form-invalid-feedback id="itemTag">
+                      Please choose a tag.
+                    </b-form-invalid-feedback>
+                  </b-form-group>
                 </b-col>
               </b-row>
 
               <b-row class="my-1">
-                <b-col sm="2">
-                  <label for="input-default">Tag</label>
-                </b-col>
                 <b-col sm="10">
-                  <b-form-select id="input-default" v-model="itemPublish.tag" :options="itemTagForCreate"></b-form-select>
-                </b-col>
-              </b-row>
+                  <b-form-group id="input-group-2" label="Description:" label-for="itemTag">
+                    <b-form-textarea
+                      v-model="itemPublish.description"
+                      :state="checkDesc"
+                    ></b-form-textarea>
 
-              <b-row class="my-1">
-                <b-col sm="2">
-                  <label for="input-default">Name</label>
-                </b-col>
-                <b-col sm="10">
-                  <b-form-textarea id="input-default" v-model="itemPublish.description" placeholder="Enter Item's Description"></b-form-textarea>
+                    <b-form-invalid-feedback id="itemTag">
+                      The description is 1000 words max.
+                    </b-form-invalid-feedback>
+                  </b-form-group>
                 </b-col>
               </b-row>
 
             </b-container>
 
-            <b-button variant="primary" block :disabled="itemPublish.name.trim().length==0||itemPublish.tag==null||itemPublish.price==null" @click="createItem(itemPublish)">Create</b-button>
+            <b-button variant="primary" block :disabled="!(checkItemName&&checkPrice&&checkTag&&checkDesc==null)" @click="createItem(itemPublish)">Create</b-button>
             <b-button variant="danger" block @click="hide">Close</b-button>
           </div>
         </template>
@@ -442,8 +477,17 @@ export default {
     this.getUserProfile()
   },
   computed: {
-    validation() {
-      return this.itemPublish.name.trim().length>0 && this.itemPublish.name.trim().length<40
+    checkItemName(){
+      return this.itemPublish.name.length>0
+    },
+    checkPrice(){
+      return this.itemPublish.price>0
+    },
+    checkTag(){
+      return this.itemPublish.tag!=null&&this.itemPublish.tag.length>0
+    },
+    checkDesc(){
+      return this.itemPublish.description.length<=1000?null:false
     }
   }
 }
@@ -482,5 +526,10 @@ export default {
   padding-left: 10px;
   font-size: 20px;
   font-weight: bold;
+}
+.not-found-tip{
+  font-size: 40px;
+  text-align: center;
+  padding-top: 50px;
 }
 </style>

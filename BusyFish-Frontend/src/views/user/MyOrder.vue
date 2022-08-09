@@ -6,6 +6,11 @@
     <h1 class="item-title">
       My Orders
     </h1>
+
+    <div class="not-found-tip" v-show="orderList.length==0">
+      <h1>You don't have any order&nbsp;<b-icon-emoji-frown></b-icon-emoji-frown></h1>
+    </div>
+
     <div>
       <b-container fluid>
         <b-row cols="3">
@@ -47,7 +52,7 @@
                 <b-card>
                   <b-card-text>
                     <div> <span class="order-card-detail-key">Item Name:</span> <span class="order-card-detail-value">&nbsp;{{order.itemName}}</span> </div>
-                    <div> <span class="order-card-detail-key">Seller:</span> <span class="order-card-detail-value">&nbsp;{{order.sellerName}}</span> <b-button size="sm" variant="primary" @click="viewSellerProfile(order.sellerName)"><b-icon icon="person"></b-icon></b-button></div>
+                    <div> <span class="order-card-detail-key">Seller:</span> <b-button class="order-card-detail-value" size="sm" variant="outline-primary" v-bind:href="'/otherUserProfile/userId='+order.sellerId">{{order.sellerName}}<b-icon icon="person"></b-icon></b-button></div>
                     <div> <span class="order-card-detail-key">Price:</span> <span class="order-card-detail-value">&nbsp;{{order.price}}</span> </div>
                     <div class="order-card-detail-key"> <span>Status:</span>  <b-badge href="/hint/orderStatus" v-bind:variant="order.status=='PROCESSING'?'info':order.status=='SHIPPED'?'primary':order.status=='COMPLETED'?'success':order.status=='CANCELED'?'secondary':'warning'">{{order.status}}</b-badge> </div>
                     <b-progress :max="100" height="1.5rem" animated>
@@ -229,6 +234,9 @@ export default {
 .order-card-detail-value{
   font-size: 17px;
 }
-
-
+.not-found-tip {
+  font-size: 40px;
+  text-align: center;
+  padding-top: 50px;
+}
 </style>

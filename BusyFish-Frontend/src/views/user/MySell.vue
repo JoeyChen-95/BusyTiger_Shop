@@ -6,6 +6,11 @@
     <h1 class="item-title">
       My Sell
     </h1>
+
+    <div class="not-found-tip" v-show="orderList.length==0">
+      <h1>You haven't sold any item yet&nbsp;<b-icon-question-circle-fill></b-icon-question-circle-fill></h1>
+    </div>
+
     <div>
       <b-container fluid>
         <b-row cols="3">
@@ -263,6 +268,10 @@ export default {
 .order-card-detail-value{
   font-size: 17px;
 }
-
+.not-found-tip{
+  font-size: 40px;
+  text-align: center;
+  padding-top: 50px;
+}
 
 </style>
