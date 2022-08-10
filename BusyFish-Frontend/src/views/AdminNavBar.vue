@@ -12,6 +12,7 @@
             <b-nav-item><router-link to="/item">Item</router-link></b-nav-item>
             <b-nav-item><router-link to="/user">User</router-link></b-nav-item>
             <b-nav-item><router-link to="/order">Order</router-link></b-nav-item>
+            <b-nav-item><router-link to="/collection">Collection</router-link></b-nav-item>
             <b-nav-item href="#">More...</b-nav-item>
           </b-navbar-nav>
 

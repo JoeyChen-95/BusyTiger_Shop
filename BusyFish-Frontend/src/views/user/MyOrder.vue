@@ -52,7 +52,7 @@
                 <b-card>
                   <b-card-text>
                     <div> <span class="order-card-detail-key">Item Name:</span> <span class="order-card-detail-value">&nbsp;{{order.itemName}}</span> </div>
-                    <div> <span class="order-card-detail-key">Seller:</span> <b-button class="order-card-detail-value" size="sm" variant="outline-primary" v-bind:href="'/otherUserProfile/userId='+order.sellerId">{{order.sellerName}}<b-icon icon="person"></b-icon></b-button></div>
+                    <div> <span class="order-card-detail-key">Seller:</span> <b-button class="order-card-detail-value" size="sm" variant="outline-primary" @click="viewSellerProfile(order.sellerName)">{{order.sellerName}}<b-icon icon="person"></b-icon></b-button></div>
                     <div> <span class="order-card-detail-key">Price:</span> <span class="order-card-detail-value">&nbsp;{{order.price}}</span> </div>
                     <div class="order-card-detail-key"> <span>Status:</span>  <b-badge href="/hint/orderStatus" v-bind:variant="order.status=='PROCESSING'?'info':order.status=='SHIPPED'?'primary':order.status=='COMPLETED'?'success':order.status=='CANCELED'?'secondary':'warning'">{{order.status}}</b-badge> </div>
                     <b-progress :max="100" height="1.5rem" animated>

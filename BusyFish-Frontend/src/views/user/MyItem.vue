@@ -118,21 +118,6 @@
                     <div> <span class="order-card-detail-key">Price:</span> <span class="order-card-detail-value">&nbsp;{{item.price}}</span> </div>
                     <div class="order-card-detail-key"> <span >Category:</span> <b-badge href="/hint/itemStatus" variant="primary">{{item.tag}}</b-badge> </div>
                     <div> <span class="order-card-detail-key">Description:</span> <span class="order-card-detail-value">&nbsp;{{item.description}}</span> </div>
-<!--                    <div> <span class="order-card-detail-key">Status:</span> <span class="order-card-detail-value">&nbsp;{{order.status}}</span> </div>-->
-<!--                    <b-progress :max="100" height="1.5rem" animated>-->
-<!--                      <b-progress-bar :value="order.status=='PROCESSING'?25:(order.status=='SHIPPED'?50:(order.status=='COMPLETED'?100:0))">-->
-<!--                        <span><strong>{{order.status}}</strong></span>-->
-<!--                      </b-progress-bar>-->
-<!--                    </b-progress>-->
-<!--                    <div v-show="order.status!='PROCESSING'&&order.status!='CANCELED'"> <span class="order-card-detail-value">&nbsp;{{order.courier}}</span> </div>-->
-<!--                    <div v-show="order.status!='PROCESSING'&&order.status!='CANCELED'"> <span class="order-card-detail-value">&nbsp;{{order.trackingNo}}</span> </div>-->
-<!--                    <div v-show="order.status!='PROCESSING'&&order.status!='CANCELED'"> <span class="order-card-detail-value">&nbsp;{{order.courierFee}}</span> </div>-->
-<!--                    <div> <span class="order-card-detail-key">Shipping Address:</span></div>-->
-<!--                    <div> <span class="order-card-detail-value">&nbsp;{{order.shippingAddressName}}</span> </div>-->
-<!--                    <div> <span class="order-card-detail-value">&nbsp;{{order.shippingAddressPhone}}</span> </div>-->
-<!--                    <div> <span class="order-card-detail-value">&nbsp;{{order.shippingAddressAddress}}</span> </div>-->
-<!--                    <div> <span class="order-card-detail-key">Order Time:</span> <span class="order-card-detail-value">&nbsp;{{order.createTime}}</span> </div>-->
-
 
                   </b-card-text>
 

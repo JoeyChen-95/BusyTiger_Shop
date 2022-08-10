@@ -1,8 +1,10 @@
 package com.busyfish.server.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.busyfish.server.config.UserDataConfig;
 import com.busyfish.server.exception.UserException.UserException;
 
+import com.busyfish.server.model.Img;
 import com.busyfish.server.model.User;
 import com.busyfish.server.model.UserEnum.Shipping;
 import com.busyfish.server.model.UserEnum.UserMemberShip;
@@ -11,11 +13,19 @@ import com.busyfish.server.service.UserService;
 import com.sun.org.apache.regexp.internal.RE;
 import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
+
 
 @RestController
 @Slf4j
@@ -215,7 +225,25 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/addImg")
+    public String uploadUserProfileImg(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "userId") Integer userId) throws IOException {
+        /**
+         * 上传图片
+         */
+        System.out.println("Set user's profile image for: user-"+userId);
+        //图片上传成功后，将图片的地址写到数据库
+        //保存图片的路径（这是存在我项目中的images下了，你们可以设置路径）
+        String filePath = UserDataConfig.LOCAL_USER_PROFILE_IMG_DIR;
+        //获取原始图片的拓展名
+        String originalFilename = file.getOriginalFilename();
+        //新的文件名字
+        //Local File Name:" user_profile_img_{userId}.jpg/jpeg/png/...
+        String newFileName = "user_profile_img_"+userId +".jpg";
+        //封装上传文件位置的全路径
+        File targetFile = new File(filePath, newFileName);
+        //把本地文件上传到封装上传文件位置的全路径
+        file.transferTo(targetFile);
 
-
-
+        return "User "+userId+" 's profile image is set successfully!";
+    }
 }

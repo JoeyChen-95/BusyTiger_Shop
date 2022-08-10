@@ -21,6 +21,8 @@ import MemberShipHint from "../views/hint/MemberShipHint";
 import orderStatusHint from "../views/hint/OrderStatusHint";
 import testImg from "../views/test/testImg";
 import busyTigerChoice from "../views/user/BusyTigerChoice";
+import Collection from "../views/Collection";
+import busyTigerChoiceItems from "../views/user/BusyTigerChoiceItems";
 
 Vue.use(Router)
 
@@ -55,6 +57,10 @@ export default new Router({
     {
       path:'/order',
       component: Order
+    },
+    {
+      path:'/collection',
+      component: Collection
     },
     {
       path:'/overview',
@@ -123,6 +129,10 @@ export default new Router({
     {
       path:'/busyTigerChoice',
       component: busyTigerChoice
+    },
+    {
+      path:'/busyTigerChoice/*',
+      component: busyTigerChoiceItems
     }
   ]
 })

@@ -1,7 +1,13 @@
 <component name="ArtifactManager">
   <artifact type="war" name="Server:war">
-    <output-path>$PROJECT_DIR$/out/artifacts/Server_war</output-path>
-    <root id="archive" name="Server_war.war">
+    <output-path>$PROJECT_DIR$/BusyFish-Server/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>Server</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="busy-tiger-server.war">
       <element id="artifact" artifact-name="Server:war exploded" />
     </root>
   </artifact>

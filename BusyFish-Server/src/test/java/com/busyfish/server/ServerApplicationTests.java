@@ -8,6 +8,7 @@ import com.busyfish.server.model.User;
 import com.busyfish.server.model.UserEnum.UserMemberShip;
 import com.busyfish.server.service.ItemService;
 import com.busyfish.server.service.OrderService;
+import com.busyfish.server.service.PrimeCollectionService;
 import com.busyfish.server.service.UserService;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.connector.Request;
@@ -29,6 +30,8 @@ class ServerApplicationTests {
     OrderService orderService;
     @Autowired
     ItemService itemService;
+    @Autowired
+    PrimeCollectionService primeCollectionService;
 
     @Test
     void contextLoads() {
@@ -103,4 +106,33 @@ class ServerApplicationTests {
 //            System.out.println(u);
 //        }
 //    }
+
+    @Test
+    void testAddCollection(){
+        primeCollectionService.createPrimeCollection("NBA");
+    }
+
+    @Test
+    void testAddcollection(){
+        primeCollectionService.addItemToPrimeCollection("NBA",115);
+        primeCollectionService.addItemToPrimeCollection("NBA",116);
+        primeCollectionService.addItemToPrimeCollection("NBA",126);
+    }
+
+    @Test
+    void testDeleteItemFromCollection(){
+        primeCollectionService.deleteItemFromPrimeCollection("WNBA",120);
+    }
+
+    @Test
+    void testDeleteCollection(){
+        primeCollectionService.deletePrimeCollection("WNBA");
+    }
+
+    @Test
+    void testGetAllFromCollection(){
+        for(Item i: primeCollectionService.selectAllItemsOfPrimeCollection("A")){
+            System.out.println(i);
+        }
+    }
 }

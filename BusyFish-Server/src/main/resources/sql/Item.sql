@@ -7,6 +7,6 @@ CREATE TABLE `item`
     `price`       int          DEFAULT 0,
     `tag`         VARCHAR(30)  DEFAULT 'General',
     `status`      VARCHAR(20)  DEFAULT 'PENDING',
-    `description` VARCHAR(255) DEFAULT 'No description',
+    `description` VARCHAR(1024) DEFAULT 'No description',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
