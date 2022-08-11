@@ -1,5 +1,6 @@
 package com.busyfish.server.controller;
 
+import com.busyfish.server.config.UserDataConfig;
 import com.busyfish.server.exception.ItemException.ItemException;
 import com.busyfish.server.model.Item;
 import com.busyfish.server.model.ItemEnum.ItemOverviewResponse;
@@ -10,7 +11,10 @@ import com.sun.org.apache.regexp.internal.RE;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -105,5 +109,27 @@ public class ItemController {
         }
 
         return new ResponseBody(200, "Update item successfully");
+    }
+
+    @RequestMapping(value = "/addImg")
+    public String uploadUserProfileImg(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "itemId") Integer itemId) throws IOException {
+        /**
+         * 上传图片
+         */
+        System.out.println("Set user's profile image for: item-"+itemId);
+        //图片上传成功后，将图片的地址写到数据库
+        //保存图片的路径（这是存在我项目中的images下了，你们可以设置路径）
+        String filePath = UserDataConfig.LOCAL_ITEM_IMG_DIR;
+        //获取原始图片的拓展名
+        String originalFilename = file.getOriginalFilename();
+        //新的文件名字
+        //Local File Name:" user_profile_img_{userId}.jpg/jpeg/png/...
+        String newFileName = "item_img_"+itemId+".jpg";
+        //封装上传文件位置的全路径
+        File targetFile = new File(filePath, newFileName);
+        //把本地文件上传到封装上传文件位置的全路径
+        file.transferTo(targetFile);
+
+        return "Item "+itemId+" 's image is set successfully!";
     }
 }

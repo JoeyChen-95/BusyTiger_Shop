@@ -85,13 +85,9 @@
                 <div class="order-card-order-info-key"> <span >Price:</span>  <span class="order-card-order-info-value">&nbsp;{{item.price}}</span> </div>
 
               </b-card-text>
-
-              <b-button
-                href="#"
-                variant="primary"
-                aria-controls="order-detail-panel"
-                v-b-toggle="'item-detail-card-'+item.id">
-                View Detail
+              <b-button variant="primary" v-bind:href="'/itemDetail/'+item.id">
+                Item Page
+                <b-icon icon="link45deg"></b-icon>
               </b-button>
               <b-button
                 variant="warning"
@@ -110,20 +106,32 @@
                 Delete
                 <b-icon icon="trash"></b-icon>
               </b-button>
-              <b-collapse v-bind:id="'item-detail-card-'+item.id.toString()">
-                <b-card>
-                  <b-card-text>
-                    <div> <span class="order-card-detail-key">Item Name:</span> <span class="order-card-detail-value">&nbsp;{{item.name}}</span> </div>
-                    <div> <span class="order-card-detail-key">Seller:</span> <span class="order-card-detail-value">&nbsp;{{item.sellerName}}</span> </div>
-                    <div> <span class="order-card-detail-key">Price:</span> <span class="order-card-detail-value">&nbsp;{{item.price}}</span> </div>
-                    <div class="order-card-detail-key"> <span >Category:</span> <b-badge href="/hint/itemStatus" variant="primary">{{item.tag}}</b-badge> </div>
-                    <div> <span class="order-card-detail-key">Description:</span> <span class="order-card-detail-value">&nbsp;{{item.description}}</span> </div>
+              <b-button
+                href="#"
+                variant="primary"
+                aria-controls="order-detail-panel"
+                v-b-toggle="'item-detail-card-'+item.id">
+                <b-icon icon="three-dots"></b-icon>
+              </b-button>
 
-                  </b-card-text>
+              <div>
+                <b-collapse v-bind:id="'item-detail-card-'+item.id.toString()">
+                  <b-card>
+                    <b-card-text>
+                      <div> <span class="order-card-detail-key">Item Name:</span> <span class="order-card-detail-value">&nbsp;{{item.name}}</span> </div>
+                      <div> <span class="order-card-detail-key">Seller:</span> <span class="order-card-detail-value">&nbsp;{{item.sellerName}}</span> </div>
+                      <div> <span class="order-card-detail-key">Price:</span> <span class="order-card-detail-value">&nbsp;{{item.price}}</span> </div>
+                      <div class="order-card-detail-key"> <span >Category:</span> <b-badge href="/hint/itemStatus" variant="primary">{{item.tag}}</b-badge> </div>
+                      <div> <span class="order-card-detail-key">Description:</span> <span class="order-card-detail-value">&nbsp;{{item.description}}</span> </div>
 
-                </b-card>
-              </b-collapse>
+                    </b-card-text>
+
+                  </b-card>
+                </b-collapse>
+              </div>
+
             </b-card>
+
           </b-col>
         </b-row>
       </b-container>
@@ -173,7 +181,8 @@
               </b-row>
 
             </b-container>
-            <b-button variant="primary" @click="updateItem(itemUpdate)" block >Update</b-button>
+            <b-button variant="primary" @click="updateItem(itemUpdate),updateItemImg" block >Update</b-button>
+            <b-button v-b-modal.update-img-modal variant="warning" block>Update Image</b-button>
             <b-button variant="danger" block @click="hide">Close</b-button>
           </div>
 
@@ -258,6 +267,10 @@
                 </b-col>
               </b-row>
 
+              <b-row>
+                <h4>Note: To set a image for your item, please click "Edit" button.</h4>
+              </b-row>
+
             </b-container>
 
             <b-button variant="primary" block :disabled="!(checkItemName&&checkPrice&&checkTag&&checkDesc==null)" @click="createItem(itemPublish)">Create</b-button>
@@ -266,6 +279,20 @@
         </template>
       </b-sidebar>
     </div>
+
+    <b-modal id="update-img-modal" centered title="Update Item Image" @ok="updateItemImg">
+      <div>
+        <b-form-file
+          v-model="itemUpdate.itemImg"
+          :state="Boolean(itemUpdate.itemImg)"
+          placeholder="Choose a file or drop it here..."
+          drop-placeholder="Drop file here..."
+        ></b-form-file>
+        <div class="change-photo-modal-tips">Selected file: <span style="color: coral">{{ itemUpdate.itemImg ?itemUpdate.itemImg.name : '' }}</span></div>
+        <div class="change-photo-modal-tips">Supported Image Type: jpg, jpeg, png, webp</div>
+      </div>
+
+    </b-modal>
 
 
   </div>
@@ -306,7 +333,8 @@ export default {
         itemPrice:'',
         itemTag: null,
         itemStatus: null,
-        itemDesc:''
+        itemDesc:'',
+        itemImg:null
       },
     itemDelete:{
       id:'',
@@ -446,6 +474,18 @@ export default {
         })
         .catch(e=>{
           this.toastMessage('Fail to create item')
+        })
+    },
+    updateItemImg(){
+      var form_data=new FormData()
+      form_data.append('file',this.itemUpdate.itemImg)
+      form_data.append('itemId',this.itemUpdate.id)
+      AXIOS.post('/item/addImg',form_data,{})
+        .then(response=>{
+          this.toastMessage(response.data)
+        })
+        .catch(e=>{
+          this.toastMessage('Fail to update the photo!')
         })
     },
     toastMessage(content){

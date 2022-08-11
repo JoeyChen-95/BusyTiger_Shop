@@ -84,10 +84,9 @@
       <b-container fluid>
         <b-row cols="3">
           <b-col v-for="item in itemList" style="padding-top: 20px">
-            <b-card bg-variant="light" >
+            <b-card  v-bind:img-src="imgDirUrl+'/item_img_'+item.id+'.jpg'" img-height="150px" img-right bg-variant="light" >
               <div>
                 <h3 class="order-card-order-name-title">{{item.name}} &nbsp;<b-icon icon="cart"></b-icon></h3>
-
               </div>
               <b-card-text>
 <!--                <div> <span class="order-card-order-info-key">Seller:</span> <span class="order-card-order-info-value">&nbsp;{{item.sellerName}}</span> </div>-->
@@ -95,13 +94,11 @@
                 <div> <span class="order-card-order-info-key">Price:</span>  <span class="order-card-order-info-value">&nbsp;{{item.price}}</span> </div>
 
               </b-card-text>
-
-              <b-button
-                href="#"
-                variant="primary"
-                v-b-toggle="'recommend-item-detail-card-'+item.id">
-                View Detail
+              <b-button variant="primary" v-bind:href="'/itemDetail/'+item.id">
+                Item Page
+                <b-icon icon="link45deg"></b-icon>
               </b-button>
+
               <b-button
                 variant="warning"
                 @click="loadOrderConfirm(item)"
@@ -113,9 +110,16 @@
               <b-button
                 @click="toastMessage('The item has been added to your favorites!')"
                 variant="danger">
-                Add To Favorite
+                Favorite
                 <b-icon icon="heart-fill"></b-icon>
               </b-button>
+              <b-button
+                href="#"
+                variant="primary"
+                v-b-toggle="'recommend-item-detail-card-'+item.id">
+                <b-icon icon="three-dots"></b-icon>
+              </b-button>
+<!--              <b-avatar square src="http://47.103.219.4:8089/item_img_20.jpg" size="lg"></b-avatar>-->
               <b-collapse v-bind:id="'recommend-item-detail-card-'+item.id" class="mt-2">
                 <b-card>
                   <b-card-text>
@@ -231,7 +235,8 @@ export default {
         tag:null,
         status:null,
         sellerId: null
-      }
+      },
+      imgDirUrl:config.dev.itemImgDirPath
     }
 
   },

@@ -41,7 +41,7 @@ module.exports = {
     backendHost: '47.103.219.4',
     backendPort: '8080/Server_war',
     userProfileImgDirPath:'http://47.103.219.4:8088',
-
+    itemImgDirPath:'http://47.103.219.4:8089',
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',

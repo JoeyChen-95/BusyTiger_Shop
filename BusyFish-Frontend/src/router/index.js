@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Item from "../views/Item"
-import User from "../views/User"
-import Order from "../views/Order"
-import Overview from "../views/Overview";
-import Welcome from "../views/Welcome";
-import Login from "../views/Login";
+import Item from "../views/admin/Item"
+import User from "../views/admin/User"
+import Order from "../views/admin/Order"
+import Overview from "../views/admin/Overview";
+import Welcome from "../views/admin/Welcome";
+import Login from "../views/admin/Login";
 import ByCategory from "../views/user/ByCategory";
 import Recommend from "../views/user/Recommend";
 import myOrder from "../views/user/MyOrder";
@@ -13,15 +13,15 @@ import mySell from "../views/user/MySell";
 import UserProfile from "../views/user/UserProfile";
 import myItem from "../views/user/MyItem";
 import otherUserProfile from "../views/user/OtherUserProfile";
-import Homepage from "../views/Homepage";
-import signUp from "../views/SignUp";
+import Homepage from "../views/admin/Homepage";
+import signUp from "../views/admin/SignUp";
 import itemDetail from "../views/user/ItemDetail";
 import ItemStatusHint from "../views/hint/ItemStatusHint";
 import MemberShipHint from "../views/hint/MemberShipHint";
 import orderStatusHint from "../views/hint/OrderStatusHint";
 import testImg from "../views/test/testImg";
 import busyTigerChoice from "../views/user/BusyTigerChoice";
-import Collection from "../views/Collection";
+import Collection from "../views/admin/Collection";
 import busyTigerChoiceItems from "../views/user/BusyTigerChoiceItems";
 
 Vue.use(Router)

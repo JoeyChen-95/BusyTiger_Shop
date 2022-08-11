@@ -3,32 +3,29 @@
     <div class="wrapper">
       <UserNavBar></UserNavBar>
     </div>
-    <b-card img-src="https://placekitten.com/300/300" img-alt="Card image" img-left class="mb-3">
-      <b-card-text>
-        <span class="item-desc-key">Name: {{this.currentItem.name}}</span>
-      </b-card-text>
-      <b-card-text>
-        <span class="item-desc-value">Price: {{this.currentItem.price}}</span>
-      </b-card-text>
+    <div>
+      <b-img left v-bind:src="currentItemImgURL" alt="Sorry, this item has no images." height="350px" style="padding-top: 20px"></b-img>
+    </div>
+    <div>
+      <b-card img-width="800px" img-height="800px" img-alt="Card image" img-left class="mb-3" >
+        <h2 class="item-desc-key">Name</h2>
+        <p class="item-desc-value">{{this.currentItem.name}}</p>
+        <h2 class="item-desc-key">Price</h2>
+        <p class="item-desc-value">{{this.currentItem.price}}</p>
+        <h2 class="item-desc-key">Status</h2>
+        <p class="item-desc-value"><b-badge href="/hint/itemStatus" v-bind:variant="this.currentItem.status=='ACTIVE'?'success':this.currentItem.status=='SOLD'?'danger':'warning'">{{this.currentItem.status}}</b-badge></p>
+        <h2 class="item-desc-key">Tag</h2>
+        <p class="item-desc-value"><b-badge v-bind:href="'/recommend/'+this.currentItem.tag" variant="primary">{{this.currentItem.tag}}</b-badge></p>
+        <h2 class="item-desc-key">Description</h2>
+        <p class="item-desc-value">{{this.currentItem.description}}</p>
 
 
-      <b-card-text>
-        <span class="item-desc-key">Status:<b-badge href="/hint/itemStatus" v-bind:variant="this.currentItem.status=='ACTIVE'?'success':this.currentItem.status=='SOLD'?'danger':'warning'">{{this.currentItem.status}}</b-badge></span>
+        <b-button squared variant="outline-primary" size="sm" class="item-desc-value" v-bind:href="'/otherUserProfile/userId='+this.currentItem.sellerId">View Seller Profile</b-button>
 
-      </b-card-text>
+      </b-card>
 
-      <b-card-text>
-        <span class="item-desc-key">Tag: <b-badge v-bind:href="'/recommend/'+this.currentItem.tag" variant="primary">{{this.currentItem.tag}}</b-badge> </span>
-      </b-card-text>
 
-      <b-card-text>
-        <span class="item-desc-key">Description:{{this.currentItem.description}} </span>
-      </b-card-text>
-
-      <b-card-text>
-        <b-button variant="primary" size="sm" class="item-desc-key" v-bind:href="'/otherUserProfile/userId='+this.currentItem.sellerId">View Seller Profile</b-button>
-      </b-card-text>
-    </b-card>
+    </div>
 
   </div>
 </template>
@@ -56,7 +53,8 @@ export default {
       currentItem:{
         id:'',
         name:''
-      }
+      },
+      currentItemImgURL:''
     }
   },
   methods:{
@@ -67,6 +65,7 @@ export default {
       AXIOS.get('/item/selectItemById?itemId='+this.currentItemId)
         .then(response=>{
           this.currentItem=response.data
+          this.currentItemImgURL=config.dev.itemImgDirPath+'/item_img_'+response.data.id+'.jpg'
         })
     }
 
@@ -79,12 +78,11 @@ export default {
 
 <style scoped>
 .item-desc-key{
-  font-size: 35px;
+  font-size: 32px;
   font-weight: bold;
 }
 .item-desc-value{
-  font-size: 30px;
-  font-weight: bold;
+  font-size: 25px;
 }
 
 </style>

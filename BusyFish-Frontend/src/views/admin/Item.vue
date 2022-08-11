@@ -236,7 +236,11 @@
         <b-button v-b-toggle.update-sidebar size="sm" variant="info" @click="loadUpdateItem(row.item.id,row.item.sellerId,row.item.name,row.item.price,row.item.tag,row.item.status,row.item.description)" >
           Update&nbsp;<b-icon icon="bag-check"></b-icon>
         </b-button>
+        <b-button v-b-modal.update-img-modal size="sm" variant="warning" @click="loadItemImgUpdate(row.item.id)" >
+          Update Image&nbsp;<b-icon icon="cloud-arrow-up"></b-icon>
+        </b-button>
       </template>
+
 
       <template #cell(show_details)="row">
         <b-button size="sm" @click="row.toggleDetails" class="mr-2">
@@ -278,15 +282,29 @@
           </b-row>
 
           <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
+          <b-button size="sm" v-bind:href="'itemDetail/'+row.item.id">View Individual Page</b-button>
         </b-card>
       </template>
     </b-table>
+    <b-modal id="update-img-modal" centered title="Change My Photo" @ok="updateItemImg">
+      <div>
+        <b-form-file
+          v-model="itemImgUpdate.itemImg"
+          :state="Boolean(itemImgUpdate.itemImg)"
+          placeholder="Choose a file or drop it here..."
+          drop-placeholder="Drop file here..."
+        ></b-form-file>
+        <div class="change-photo-modal-tips">Selected file: <span style="color: coral">{{ itemImgUpdate.itemImg ?itemImgUpdate.itemImg.name : '' }}</span></div>
+        <div class="change-photo-modal-tips">Supported Image Type: jpg, jpeg, png, webp</div>
+      </div>
+
+    </b-modal>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-var config = require('../../config')
+var config = require('../../../config')
 var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
 var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
 var AXIOS = axios.create({
@@ -329,7 +347,11 @@ export default {
         sellerId: null
       },
       itemTagForCreate: [{text: 'All', value: null}, 'Book', 'Food', 'Electronics', 'Music', 'Movie','Men_Cloth','Women_Cloth','Sport','Health','Games','Tool','Baby'],
-      itemStatusForCreate: [{text: 'All', value: null}, 'ACTIVE', 'SOLD', 'PRIVATE', 'BANNED', 'PENDING']
+      itemStatusForCreate: [{text: 'All', value: null}, 'ACTIVE', 'SOLD', 'PRIVATE', 'BANNED', 'PENDING'],
+      itemImgUpdate:{
+        itemImg:null,
+        itemId:null
+      }
     }
   },
   methods:{
@@ -456,6 +478,21 @@ export default {
           this.itemList=response.data
         })
     },
+    loadItemImgUpdate(itemId){
+      this.itemImgUpdate.itemId=itemId
+    },
+    updateItemImg(){
+      var form_data=new FormData()
+      form_data.append('file',this.itemImgUpdate.itemImg)
+      form_data.append('itemId',this.itemImgUpdate.itemId)
+      AXIOS.post('/item/addImg',form_data,{})
+        .then(response=>{
+          this.toastMessage(response.data)
+        })
+        .catch(e=>{
+          this.toastMessage('Fail to update the photo!')
+        })
+    }
   }
 ,
   created() {

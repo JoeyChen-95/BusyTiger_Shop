@@ -7,7 +7,7 @@ import App from './views/App'
 import router from './router'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import AdminNavBar from "./views/AdminNavBar";
+import AdminNavBar from "./views/admin/AdminNavBar";
 import UserNavBar from "./views/user/UserNavBar";
 import axios from "axios";
 
