@@ -34,7 +34,10 @@ public class OrderService {
     @Autowired
     UserService userService;
 
-
+    /**
+     * Get information of all orders
+     * @return
+     */
     public List<Order> selectAllOrders() {
         List<Order> orderList=orderMapper.selectAllOrders();
         for(Order o:orderList){
@@ -48,10 +51,20 @@ public class OrderService {
         return orderMapper.selectAllOrders();
     }
 
+    /**
+     * Get information of an order by its id
+     * @param id
+     * @return
+     */
     public Order selectOrderById(String id) {
         return orderMapper.selectOrderById(id);
     }
 
+    /**
+     * Get information of all orders of an buyer
+     * @param buyerId
+     * @return
+     */
     public List<OrderMyOrderOverviewResponse> selectOrdersByBuyerId(Integer buyerId){
         User buyer=userService.selectUserById(buyerId);
         if(buyer==null){
@@ -135,6 +148,15 @@ public class OrderService {
         return order;
     }
 
+    /**
+     * A seller ship an order.
+     * It will modify the shipping information of an order.
+     * @param id
+     * @param courier
+     * @param trackingNo
+     * @param courierFee
+     * @return
+     */
     @Transactional
     public Order shipOrder(String id, Courier courier, String trackingNo, Integer courierFee) {
         if (selectOrderById(id) == null) {
@@ -148,6 +170,14 @@ public class OrderService {
         return selectOrderById(id);
     }
 
+    /**
+     * Update the shipping information of an order
+     * @param id
+     * @param courier
+     * @param trackingNo
+     * @param courierFee
+     * @return
+     */
     @Transactional
     public Order updateShippingInfo(String id, Courier courier, String trackingNo, Integer courierFee) {
         if (selectOrderById(id) == null) {
@@ -160,6 +190,12 @@ public class OrderService {
         return selectOrderById(id);
     }
 
+    /**
+     * Update the status of an order
+     * @param id
+     * @param status
+     * @return
+     */
     @Transactional
     public Order updateOrderStatus(String id, OrderStatus status) {
         if (selectOrderById(id) == null) {
@@ -169,6 +205,11 @@ public class OrderService {
         return selectOrderById(id);
     }
 
+    /**
+     * Delete an order by its id
+     * @param id
+     * @return
+     */
     @Transactional
     public Order deleteOrderById(String id){
         Order order=selectOrderById(id);
@@ -180,6 +221,11 @@ public class OrderService {
         return order;
     }
 
+    /**
+     * Get the shipping information of an order by order ID
+     * @param orderId
+     * @return
+     */
     @Transactional
     public Shipping selectShippingAddressByOrderId(String orderId){
         Map orderMap = redisTemplate.boundHashOps(ShippingCodeUtils.generateOrderShippingKey(orderId)).entries();
@@ -190,6 +236,11 @@ public class OrderService {
         return shipping;
     }
 
+    /**
+     * Get the information of all orders of a seller
+     * @param sellerId
+     * @return
+     */
     @Transactional
     public List<OrderMyOrderOverviewResponse> selectOrdersBySellerId(Integer sellerId){
         User seller=userService.selectUserById(sellerId);
@@ -216,6 +267,11 @@ public class OrderService {
 
     }
 
+    /**
+     * A buyer confirm that receiving an order.
+     * It will modify the status of an order to 'RECEIVED'
+     * @param id
+     */
     @Transactional
     public void confirmReceived(String id){
         if(selectOrderById(id)==null){

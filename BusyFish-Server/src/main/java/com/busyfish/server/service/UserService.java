@@ -34,23 +34,50 @@ public class UserService {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
+    /**
+     * Get information of all users.
+     * @return
+     */
     public List<User> selectAllUsers() {
         return userMapper.selectAllUsers();
     }
 
+    /**
+     * Get information of a user by user id.
+     * @param id
+     * @return
+     */
     public User selectUserById(Integer id) {
         return userMapper.selectUserById(id);
     }
 
+    /**
+     * Get information of a user by username
+     * @param username
+     * @return
+     */
     public User selectUserByUsername(String username) {
         return userMapper.selectUserByUsername(username);
     }
 
-
+    /**
+     * Query users by the following params. Ingore null params
+     * @param id
+     * @param username
+     * @param primaryPhone
+     * @param email
+     * @param memberShip
+     * @return
+     */
     public List<User> queryUser(Integer id, String username, String primaryPhone, String email, UserMemberShip memberShip){
         List<User> userList=userMapper.queryUser(id,username,primaryPhone,email,memberShip==null?null: memberShip.name());
         return userList;
     }
+
+    /**
+     * Create a new user;
+     * @param user
+     */
     public void insertUser(User user) {
 //        if (selectUserById(user.getId()) != null) {
 //            throw new UserException(ErrorCode.DUPLICATE_USER, "User with this id already exists!");
@@ -61,6 +88,11 @@ public class UserService {
         userMapper.insertUser(user.getUsername(), user.getPassword(), user.getEmail(), user.getPrimaryPhone(), user.getMemberShip().toString());
     }
 
+    /**
+     * Add a shipping address to a user
+     * @param userId
+     * @param shipping
+     */
     @Transactional
     public void addShippingAddressToUser(Integer userId, Shipping shipping) {
         if (selectUserById(userId) == null) {
@@ -86,6 +118,11 @@ public class UserService {
         redisTemplate.opsForHash().putAll(shippingKey, shippingInfo);
     }
 
+    /**
+     * Delete a shipping address of a user
+     * @param userId
+     * @param shippingCode
+     */
     @Transactional
     public void deleteShippingAddressFromUser(Integer userId, String shippingCode) {
         if (selectUserById(userId) == null) {
@@ -102,6 +139,11 @@ public class UserService {
         }
     }
 
+    /**
+     * Update a shipping address of a user
+     * @param shippingCode
+     * @param shipping
+     */
     @Transactional
     public void updateShippingAddress(String shippingCode, Shipping shipping) {
         if(redisTemplate.hasKey(shippingCode)==false){
@@ -121,6 +163,11 @@ public class UserService {
 
     }
 
+    /**
+     * Get all shipping addresses of an user
+     * @param userId
+     * @return
+     */
     @Transactional
     public List<JSONObject> selectAllShippingAddressFromUser(Integer userId) {
         String shippingListKey = "user_" + userId + "_shippingList";
@@ -136,6 +183,13 @@ public class UserService {
         return shippingAddressList;
     }
 
+    /**
+     * Login by username and password
+     * Logging in successfully will create a session
+     * @param username
+     * @param password
+     * @return
+     */
     public String login(String username, String password) {
         User user = selectUserByUsername(username);
         if (user == null) {
@@ -150,6 +204,10 @@ public class UserService {
 
     }
 
+    /**
+     * Update information of a user by its id
+     * @param userUpdate
+     */
     @Transactional
     public void updateUser(User userUpdate){
         User userCurrent=selectUserById(userUpdate.getId());
@@ -189,6 +247,10 @@ public class UserService {
                 +"<br/>userId: "+userId;
     }
 
+    /**
+     * Update user's profile
+     * @param userUpdate
+     */
     @Transactional
     public void updateUserProfile(User userUpdate){
 
@@ -212,6 +274,12 @@ public class UserService {
 
     }
 
+    /**
+     * Update user's password
+     * @param id
+     * @param newPassword
+     * @param oldPassword
+     */
     @Transactional
     public void updatePassword(Integer id, String newPassword, String oldPassword){
         User user=selectUserById(id);

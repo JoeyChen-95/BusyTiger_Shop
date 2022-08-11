@@ -28,18 +28,44 @@ public class ItemService {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
+    /**
+     * Get all information of items
+     * @return
+     */
     public List<Item> selectAllItems() {
         return itemMapper.selectAllItems();
     }
 
+    /**
+     * get information of an specific item
+     * @param id
+     * @return
+     */
     public Item selectItemById(Integer id) {
         return itemMapper.selectItemById(id);
     }
+
+    /**
+     * Get information of item in a specific status
+     * @param status
+     * @return
+     */
     public List<Item> selectItemByStatus(ItemStatus status){
 
         return itemMapper.selectItemByStatus(status.toString());
     }
 
+    /**
+     * Query items by the following param( if the param is set to null, then ignore it)
+     * @param id
+     * @param sellerId
+     * @param name
+     * @param maxPrice
+     * @param minPrice
+     * @param tag
+     * @param status
+     * @return
+     */
     public List<ItemOverviewResponse> queryItem(Integer id, Integer sellerId, String name, Integer maxPrice, Integer minPrice, Tag tag, ItemStatus status){
         List<Item> itemList= itemMapper.queryItem(id,sellerId,name,maxPrice,minPrice, tag==null?null: tag.name(), status==null?null: status.name());
         List<ItemOverviewResponse> responseList=new ArrayList<>();
@@ -52,6 +78,10 @@ public class ItemService {
         return responseList;
     }
 
+    /**
+     * Create a new item
+     * @param item
+     */
     public void insertItem(Item item) {
 //        if (selectItemById(item.getId()) != null) {
 //            throw new ItemException(ErrorCode.DUPLICATE_ITEM, "Item with this id already exists!");
@@ -67,6 +97,10 @@ public class ItemService {
 
     }
 
+    /**
+     * Delete an item by its id
+     * @param id
+     */
     public void deleteItemById(Integer id) {
         if (selectItemById(id) == null) {
             throw new ItemException(ErrorCode.NO_EXISTING_ITEM, "Item with this id already exists!");
@@ -74,7 +108,11 @@ public class ItemService {
         itemMapper.deleteItemById(id);
     }
 
-
+    /**
+     * Update status of an item
+     * @param id
+     * @param status
+     */
     @Transactional
     public void updateItemStatus(Integer id, ItemStatus status) {
         if (selectItemById(id) == null) {
@@ -83,6 +121,10 @@ public class ItemService {
         itemMapper.updateItemStatus(id, status.toString());
     }
 
+    /**
+     * Update an item by its id
+     * @param item
+     */
     @Transactional
     public void updateItem(Item item){
         if (userService.selectUserById(item.getSellerId()) == null) {
