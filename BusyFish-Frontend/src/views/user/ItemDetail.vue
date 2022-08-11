@@ -4,10 +4,10 @@
       <UserNavBar></UserNavBar>
     </div>
     <div>
-      <b-img left v-bind:src="currentItemImgURL" alt="Sorry, this item has no images." height="350px" style="padding-top: 20px"></b-img>
+      <b-img v-show="currentItem.name!=null&&currentItem.status!='PRIVATE'" left v-bind:src="currentItemImgURL" alt="Sorry, this item has no images." height="350px" style="padding-top: 20px"></b-img>
     </div>
     <div>
-      <b-card img-width="800px" img-height="800px" img-alt="Card image" img-left class="mb-3" >
+      <b-card img-width="800px" img-height="800px" img-alt="Card image" img-left class="mb-3" v-show="currentItem.name!=null&&currentItem.status!='PRIVATE'" >
         <h2 class="item-desc-key">Name</h2>
         <p class="item-desc-value">{{this.currentItem.name}}</p>
         <h2 class="item-desc-key">Price</h2>
@@ -50,10 +50,7 @@ export default {
   data(){
     return{
       currentItemId:'',
-      currentItem:{
-        id:'',
-        name:''
-      },
+      currentItem:null,
       currentItemImgURL:''
     }
   },

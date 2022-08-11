@@ -14,7 +14,7 @@
       <b-container fluid>
         <b-row cols="3">
           <b-col v-for="item in currentCollectionItems" style="padding-top: 20px" visible="false">
-            <b-card bg-variant="light" >
+            <b-card bg-variant="light" v-show="item.status!='PRIVATE'">
               <div>
                 <h3 class="order-card-order-name-title">{{item.name}} &nbsp;<b-icon icon="award"></b-icon></h3>
               </div>

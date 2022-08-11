@@ -43,6 +43,11 @@
                 v-b-modal.items-modal>
                 View Detail
               </b-button>
+              <b-button
+                @click="deleteCollection(collection)"
+                variant="danger">
+                Delete
+              </b-button>
             </b-card>
           </b-col>
         </b-row>
@@ -146,6 +151,13 @@ export default {
         })
         .catch(e=>{
           this.toastMessage('Fail to create the collection!')
+        })
+    },
+    deleteCollection(name){
+      AXIOS.delete('/collection/deleteCollection?collectionName='+name)
+        .then(response=>{
+          this.refreshCollectionList()
+          this.toastMessage(response.data.msg)
         })
     },
     refreshCollectionList(){

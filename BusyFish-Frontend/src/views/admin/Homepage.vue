@@ -59,7 +59,7 @@
         </div>
 
         <div style="padding-top: 20px">
-          <b-jumbotron>
+          <b-jumbotron class="jumbotron-rose-pudding">
             <template #header>Join BusyTiger</template>
 
             <template #lead>
@@ -68,9 +68,9 @@
 
             <hr class="my-4">
 
-            <b-button @click="tryToLoginWithSession" size="lg" type="submit" variant="primary">Login in
+            <b-button @click="tryToLoginWithSession" size="lg" type="submit" variant="outline-dark">Login in
             </b-button>
-            <b-button @click="$router.push('/signUp')" size="lg" type="submit" variant="success">Don't have an account?
+            <b-button @click="$router.push('/signUp')" size="lg" type="submit" variant="outline-dark">Don't have an account?
             </b-button>
           </b-jumbotron>
         </div>
@@ -91,7 +91,7 @@
                 Click here to view the author's github page.
               </b-card-text>
 
-              <b-button href="https://github.com/JoeyChen-95" variant="primary">Go</b-button>
+              <b-button href="https://github.com/JoeyChen-95" variant="primary">Go&nbsp;<b-icon icon="github"></b-icon></b-button>
             </b-card>
 
             <b-card
@@ -108,7 +108,7 @@
                 Contact our customer service for help. We will reply as soon as possible.
               </b-card-text>
 
-              <b-button href="https://baidu.com" variant="success">Contact us</b-button>
+              <b-button href="https://baidu.com" variant="success">Contact us&nbsp;<b-icon icon="patch-question"></b-icon></b-button>
             </b-card>
 
 <!--            <b-card-->
@@ -222,6 +222,10 @@ export default {
   font-size: 26px;
   font-weight: bold;
   margin-bottom: 20px;
+}
+.jumbotron-rose-pudding{
+  background-color: #FAEFDE;
+  color: #674B36;
 }
 
 </style>

@@ -81,7 +81,7 @@
 
 
     <div>
-      <b-container fluid>
+      <b-container fluid >
         <b-row cols="3">
           <b-col v-for="item in itemList" style="padding-top: 20px">
             <b-card  v-bind:img-src="imgDirUrl+'/item_img_'+item.id+'.jpg'" img-height="150px" img-right bg-variant="light" >
@@ -360,7 +360,9 @@ export default {
   created() {
     this.getUserProfile()
     this.searchItemByScanURL()
-  }
+  },
+  computed:{
+  },
 }
 </script>
 
@@ -401,5 +403,9 @@ export default {
 .no-shipping-address-tip{
   color: red;
   font-weight: bold;
+}
+.button-khaki{
+  background-color: #D8C7B5;
+  color: #674B36;
 }
 </style>

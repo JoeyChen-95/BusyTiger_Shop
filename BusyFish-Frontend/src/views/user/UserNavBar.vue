@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <b-navbar toggleable="xl" type="dark"style="background-color: #D8C7B5;color: #674B36">
+      <b-navbar toggleable="xl" type="dark" class="navbar-khaki">
         <b-navbar-brand><router-link to="/recommend/"><span style="font-size: 25px">BusyTiger</span></router-link></b-navbar-brand>
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -14,7 +14,7 @@
             &nbsp;&nbsp;
             <b-nav-item><router-link to="/busyTigerChoice">BusyTiger Prime Collection&nbsp;<b-icon icon="award-fill"></b-icon></router-link></b-nav-item>
             &nbsp;&nbsp;
-            <b-nav-item><router-link to="/myOrder">My Order&nbsp;<b-icon icon="box-seam"></b-icon></router-link></b-nav-item>
+            <b-nav-item><router-link to="/myOrder">My Order&nbsp;<b-icon icon="truck"></b-icon></router-link></b-nav-item>
             &nbsp;&nbsp;
             <b-nav-item><router-link to="/mySell">My Sell&nbsp;<b-icon icon="cash-coin"></b-icon></router-link></b-nav-item>
             &nbsp;&nbsp;
@@ -101,6 +101,10 @@ export default {
 a{
   font-size: 18px;
   font-weight: bold;
+  color: #674B36;
+}
+.navbar-khaki{
+  background-color: #D8C7B5;
   color: #674B36;
 }
 </style>

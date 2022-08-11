@@ -41,7 +41,7 @@
                 @click="loadOrderConfirm(order)"
                 :disabled="order.status=='COMPLETED'||order.status=='CANCELED'||order.status=='EXCEPTION'||order.status=='RETURNING'"
                 v-b-modal.order-ship-panel>
-                {{ order.status=='PROCESSING'?'Ship Order':'Edit Courier Information' }}&nbsp;<b-icon icon="box-seam"></b-icon>
+                {{ order.status=='PROCESSING'?'Ship Order':'Edit Courier Information' }}&nbsp;<b-icon icon="truck"></b-icon>
               </b-button>
               <b-button
                 variant="danger"

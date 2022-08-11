@@ -51,7 +51,7 @@ public class PrimeCollectionService {
     public void deletePrimeCollection(String name){
         String primeCollectionListKey=String.format("prime_collection_"+name);
         redisTemplate.delete(primeCollectionListKey);
-        redisTemplate.boundSetOps("prime_collection").remove(primeCollectionListKey);
+        redisTemplate.boundSetOps("prime_collection").remove(name);
     }
 
     @Transactional

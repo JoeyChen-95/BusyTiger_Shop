@@ -92,7 +92,7 @@
               <b-button
                 variant="warning"
                 @click="loadItemUpdate(item)"
-                :disabled="item.status=='SOLD'"
+                v-show="item.status!='SOLD'"
                 v-b-toggle.update-sidebar>
                 Edit
                 <b-icon icon="cart"></b-icon>
@@ -100,7 +100,7 @@
               <b-button
                 @click="loadItemDelete(item)"
                 variant="danger"
-                :disabled="item.status=='SOLD'"
+                v-show="item.status!='SOLD'"
                 v-b-modal.item-delete-panel
                 v-b-tooltip.hover title="Only unsold item can be deleted">
                 Delete
@@ -168,6 +168,19 @@
                 </b-col>
                 <b-col sm="10">
                   <b-form-select id="input-default" v-model="itemUpdate.itemTag" :options="itemTagForCreate"></b-form-select>
+                </b-col>
+              </b-row>
+
+              <b-row class="my-1">
+                <b-col sm="2">
+                  <label for="input-default">Set Private</label>
+                </b-col>
+                <b-col sm="10">
+                  <div>
+                    <b-form-checkbox :disabled="itemUpdate.itemStatus!='ACTIVE'&&itemUpdate.itemStatus!='PRIVATE'" size="lg" v-model="itemUpdate.isPrivate" name="check-button" switch>
+<!--                      Switch Checkbox <b>(Checked: {{ itemUpdate.isPrivate }})</b>-->
+                    </b-form-checkbox>
+                  </div>
                 </b-col>
               </b-row>
 
@@ -334,7 +347,8 @@ export default {
         itemTag: null,
         itemStatus: null,
         itemDesc:'',
-        itemImg:null
+        itemImg:null,
+        isPrivate:false
       },
     itemDelete:{
       id:'',
@@ -404,6 +418,7 @@ export default {
       this.itemUpdate.itemTag=item.tag
       this.itemUpdate.itemStatus=item.status
       this.itemUpdate.itemDesc=item.description
+      this.itemUpdate.isPrivate=(item.status=='PRIVATE')
     },
     loadItemDelete(item){
       this.itemDelete.id=item.id
@@ -416,7 +431,7 @@ export default {
       form_data.append('itemName',itemUpdate.itemName)
       form_data.append('itemPrice',itemUpdate.itemPrice)
       form_data.append('itemTag',itemUpdate.itemTag)
-      form_data.append('itemStatus',itemUpdate.itemStatus)
+      form_data.append('itemStatus',itemUpdate.isPrivate?'PRIVATE':'ACTIVE')
       form_data.append('itemDesc',itemUpdate.itemDesc)
       AXIOS.put('item/updateItem',form_data,{})
         .then(response=>{

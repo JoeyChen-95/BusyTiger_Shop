@@ -164,7 +164,8 @@
       <div class="column-left" >
         <div class="mb-2">
           <div class="user-avator">
-            <b-avatar id="user-profile-photo" v-bind:src="myPhotoURL" size="20rem" class="a"></b-avatar>
+            <b-avatar id="user-profile-photo" v-bind:src="myPhotoURL" size="20rem" class="a">
+            </b-avatar>
 <!--            <b-avatar src="http://img.jinghooo.com/img_1648544638755_GYXHesgG6toO8_Tdzl-.png" size="20rem" class="a"></b-avatar>-->
           </div>
           <div class="username-under-avator">{{currentUserProfile.username}}</div>
