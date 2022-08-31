@@ -8,29 +8,36 @@ The application also has a back-stage management page. Administrator can login a
 
 ## Quick Start
 
-1.
+1. Clone the repository to local.
 
-2.
+2. Create a database named 'temp_db' in MySQL.
 
-3.
+3. Execute `Item.sql` and `Order.sql` and `User.sql` in `BusyFish-Server/src/main/resources/sql`.
+
+4. Open `BusyFish-Server/src/main/resources/application.yml` and modify the password of redis and MySQL to your own passwords.
+5. Run `ServerApplication`.
+6. Open `localhost:8080` to check it runs successfully.
+7. Open terminal and go to `BusyFish-Server/BusyFish-Frontend`
+8. `npm intall`
+9. `npm run dev`
 
 
 
 
 ## Tech
 Backend
-- Spring Boot
+- Java (jdk1.8 8u241)
+- Spring Boot 2.5.6
 - MySQL
-- MyBatis
+- MyBatis 
 - Redis
 - Swagger2 
 
 Frontend
-
+- node and npm 
 - Vue.js
 - BootstrapVue
 
 Deployment
-
 - Tomcat
 - Nginx
