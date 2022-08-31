@@ -1,4 +1,4 @@
-e# BusyTiger Shop
+# BusyTiger Shop
 
 An online marketplace allowing users trade their second-hand items.e
 
