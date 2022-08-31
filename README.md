@@ -1,4 +1,4 @@
-# BusyTiger Shop
+e# BusyTiger Shop
 
 An online marketplace allowing users trade their second-hand items.e
 
@@ -21,9 +21,6 @@ The application also has a back-stage management page. Administrator can login a
 8. `npm intall`
 9. `npm run dev`
 
-
-
-
 ## Tech
 Backend
 - Java (jdk1.8 8u241)
@@ -41,3 +38,9 @@ Frontend
 Deployment
 - Tomcat
 - Nginx
+
+## Other
+
+1. To access the administrator page, login by username and password 'admin' and 'admin'.
+
+2. When running locally, the photo display of items and users are not available.
