@@ -1,6 +1,6 @@
 # BusyTiger Shop
 
-An online marketplace allowing users trade their second-hand items.e
+An online marketplace allowing users trade their second-hand items.
 
 Users can access the application by signing up their accounts and login. They can view all selling items and create order. Furthermore, users can publish their own items which they want to sell. Users are also able to edit theor personal profile, e.g username, email, head portrait.
 
